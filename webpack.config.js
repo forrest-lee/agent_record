@@ -22,24 +22,23 @@ module.exports = {
             //but get it from a global 'React' variable
             'react': 'React',
             'react-dom': 'ReactDOM',
-            'material-ui': 'MaterialUI'
         },
         loaders: [
             {
-                test: /\.(js|jsx)$/,
+                test:    /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel',
-                query: {
+                loader:  'babel',
+                query:   {
                     presets: ['es2015', 'react', 'stage-0'],
                     plugins: ['add-module-exports', 'typecheck']
                 }
             },
-            // {
-            //     test: /\.css$/,
-            //     loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-            // },
             { test: /\.css$/, exclude: /\.useable\.css$/, loader: "style!css" },
-            { test: /\.useable\.css$/, loader: "style/useable!css" }
+            { test: /\.useable\.css$/, loader: "style/useable!css" },
+            {
+                test: /\.scss$/,
+                loader: "style!css!sass"
+            }
         ]
     },
     babel: {

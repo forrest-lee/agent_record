@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Redirect, IndexRoute} from 'react-router';
 
-import MenuPage from './components/MenuPage';
+import Menu from './components/MenuBox';
 import Client from './components/Client';
 
 const AppRoutes = (
-    <Route path="/" component={MenuPage}>
+    <Route path="/" component={Menu}>
         <IndexRoute component={Client} />
         <Route path="clients" component={Client} />
     </Route>

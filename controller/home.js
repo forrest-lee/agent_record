@@ -2,6 +2,6 @@
 
 exports.index = function (req, res) {
     res.render('index', {
-        title: '人人花'
+        title: '小薇学贷'
     });
 }

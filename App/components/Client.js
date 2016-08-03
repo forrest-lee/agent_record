@@ -32,3 +32,15 @@ const columns = [{
     dataIndex: 'finance_stage',
     key: 'finance_stage'
 }];
+
+export default class ClientBox extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
+    render() {
+        return (
+            <div></div>
+        )
+    }
+}

@@ -20,7 +20,7 @@ const FormItem = Form.Item;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-class MenuPage extends Component {
+class MenuBox extends Component {
     constructor(props) {
         super(props);
 
@@ -49,13 +49,11 @@ class MenuPage extends Component {
                             selectedKeys={[this.state.current]}
                             mode="inline"
                         >
-                            <SubMenu key="sub1" title={<span><Icon type="mail"/> <span> 客户列表 </span></span>}>
-                                <Menu.Item key='1'>全部客户</Menu.Item>
+                            <SubMenu key="sub1" title={<span><Icon type="mail"/> <span> 客户 </span></span>}>
+                                <Menu.Item key='1'>客户列表</Menu.Item>
                             </SubMenu>
-                            <SubMenu key="sub2" title={<span> <Icon type="appstore"/> <span> 代理列表 </span></span>}>
-                                <Menu.Item key="2">全部代理</Menu.Item>
-                                <Menu.Item key="3">二级代理</Menu.Item>
-                                <Menu.Item key="4">三级代理</Menu.Item>
+                            <SubMenu key="sub2" title={<span> <Icon type="appstore"/> <span> 代理 </span></span>}>
+                                <Menu.Item key="2">代理列表</Menu.Item>
                             </SubMenu>
                         </Menu>
                     </Col>
@@ -68,4 +66,4 @@ class MenuPage extends Component {
     }
 }
 
-export default MenuPage;
+export default MenuBox;

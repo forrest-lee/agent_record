@@ -15,6 +15,7 @@ var UserSchema = new mongoose.Schema({
     parent:   {type: ObjectId, ref: 'User'}, // 上级代理id
     username: {type: String, unique: true},
     password: {type: String},
+    gender:   {type: Number, default: -1},  // 男:0, 女:1
     mobile: { type: String, unique: true },  // 手机号(限定11位)
     comment: String  // 备注
 

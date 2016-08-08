@@ -4,16 +4,20 @@ import ReactDOM                   from 'react-dom';
 import {Router, useRouterHistory} from 'react-router';
 import {createHashHistory}        from 'history';
 import AppRoutes                  from './routes';
-import Header                     from './layout/HeaderBox';
+
+import Header    from './layout/HeaderBox';
+import Container from './layout/ContainerBox';
 
 ReactDOM.render(
     <div>
         <Header />
-        <Router
-            history={useRouterHistory(createHashHistory)({queryKey: true})}
-            onUpdate={() => window.scrollTo(0, 0)}
-        >
-            {AppRoutes}
-        </Router>
+        <Container>
+            <Router
+                history={useRouterHistory(createHashHistory)({queryKey: true})}
+                onUpdate={() => window.scrollTo(0, 0)}
+            >
+                {AppRoutes}
+            </Router>
+        </Container>
     </div>
 , document.getElementById('app-content'));

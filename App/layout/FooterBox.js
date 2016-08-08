@@ -5,7 +5,7 @@ import { Select, Menu, Row, Col, Icon, Button } from 'antd';
 import styles from './styles.scss';
 let cx = classNames.bind(styles);
 
-class HeaderBox extends React.Component {
+class FooterBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,4 +47,4 @@ class HeaderBox extends React.Component {
     }
 }
 
-export default HeaderBox;
+export default FooterBox;

@@ -5,7 +5,7 @@ var webpack = require('webpack');
 module.exports = {
     devtool: 'eval',    // 会显示出报错行数与文件名, 等效命令: webpack --devtool eval
     entry: {
-        app: './App/app.js'
+        app: './App/index.js'
     },
     output: {
         path: path.join(__dirname, '/public/javascripts/'),

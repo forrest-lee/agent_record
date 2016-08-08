@@ -7,7 +7,7 @@ var webpackConfig = require('./webpack.config.js');         // 开发环境配�
 // var webpackProConfig = require('./webpack.pro.config.js');  // 生产环境配置
 
 // webpackConfig.entry = {
-//     app: './App/app.js'
+//     app: './App/index.js'
 // };
 
 gulp.task("webpack", function() {

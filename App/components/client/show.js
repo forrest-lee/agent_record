@@ -3,9 +3,12 @@ import classNames from 'classnames';
 import {
     Table,
     Button,
-    Input
+    Input,
+    Spin
 } from 'antd';
 const InputGroup = Input.Group;
+
+import Link from 'react-router';
 
 const columns = [{
     title: '姓名',
@@ -95,13 +98,20 @@ const SearchInput = React.createClass({
 export default class ClientBox extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: false
+        }
     }
     
     render() {
+        if(this.state.loading) {
+            return <Spin />;
+        }
+        
         return (
             <div>
                 <div>
-                    <Button type="primary">新增</Button>
+                    <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
                     <SearchInput
                         placeholder="输入姓名查询代理"
                         onSearch={value => console.log(value)}
@@ -113,5 +123,12 @@ export default class ClientBox extends React.Component {
                 </div>
             </div>
         )
+    }
+    
+    newClient() {
+        window.location.hash = '/client/new';
+        this.setState({
+            loading: true
+        })
     }
 }

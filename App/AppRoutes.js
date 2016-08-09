@@ -3,8 +3,8 @@ import { Router, Route, Redirect, IndexRoute, browserHistory} from 'react-router
 
 import IndexPage from './components/index';
 
-import ShowClient from './components/client/show';
-import NewClient from './components/client/new';
+import ShowClient from './components/agency/show';
+import NewClient from './components/agency/new';
 
 import useBasename from 'history/lib/useBasename'
 
@@ -21,7 +21,7 @@ const App = ({ content, sidebar }) => (
     <div>
         <HeaderBox siderbar={'/' || sidebar}/>
         <ContainerBox>
-            {content || <Index />}
+            {content || <IndexPage />}
         </ContainerBox>
     </div>
 );

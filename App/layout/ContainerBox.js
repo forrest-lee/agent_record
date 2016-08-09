@@ -26,10 +26,10 @@ class ContainerBox extends React.Component {
         return (
             <div className={style.mainWrapper}>
                 <Row>
-                    <Col className={'ant-col-md-6'}>
+                    <Col className={'ant-col-sm-8 ant-col-md-6'} style={{paddingBottom: 50}}>
                         <MenuBox />
                     </Col>
-                    <Col className={'main-container ant-col-md-18'}>
+                    <Col className={'main-container ant-col-sm-16 ant-col-md-18'}>
                         {this.props.children}
                     </Col>
                 </Row>

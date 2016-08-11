@@ -1,6 +1,9 @@
 import React from 'react';
 import { Router, Route, Redirect, IndexRoute, browserHistory} from 'react-router';
 
+import AppBox from './components/AppBox';
+import MainBox from './components/MainBox';
+
 import IndexPage from './components/index';
 import Login from './components/Login';
 import ShowClient from './components/agency/show';
@@ -15,41 +18,21 @@ export default function withBasename(history, dirname) {
 }
 
 
-import HeaderBox from './layout/HeaderBox';
-import ContainerBox from './layout/ContainerBox';
-const App = ({ content, sidebar }) => {
-    if(sidebar.type == 'login') {
-        return (
-            <Login />
-        );
-    } else {
-        return (
-            <div>
-                <HeaderBox siderbar={'/' || sidebar}/>
-                <ContainerBox>
-                    {content || <IndexPage />}
-                </ContainerBox>
-            </div>
-        );
-    }
-};
-
-
 const AppRoutes = (
     <Router history={withBasename(browserHistory, __dirname)}>
-        <Route path='/' component={App}>
-            <IndexRoute component={App} />
+        <Route path='/' component={AppBox}>
+            <IndexRoute component={IndexPage} />
     
-            <Route path='login' component={{ content: Login, sidebar: 'login' }}/>
+            <Route path='login' component={Login}/>
     
-            <Route path='client'>
-                <Route path='all' component={{ content: ShowClient, sidebar: 'showClients' }} />
+            <Route path='client' component={MainBox}>
+                <Route path='all' component={ShowClient} />
             </Route>
             
             <Redirect from="agency" to="/agency/all"/>
-            <Route path='agency'>
-                <Route path='all' component={{ content: ShowClient, sidebar: 'showClients' }} />
-                <Route path='new' component={{ content: NewClient, sidebar: 'newClient' }} />
+            <Route path='agency' component={MainBox}>
+                <Route path='all' component={ShowClient} />
+                <Route path='new' component={NewClient} />
             </Route>
         </Route>
     </Router>

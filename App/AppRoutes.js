@@ -17,22 +17,30 @@ export default function withBasename(history, dirname) {
 
 import HeaderBox from './layout/HeaderBox';
 import ContainerBox from './layout/ContainerBox';
-const App = ({ content, sidebar }) => (
-    <div>
-        <HeaderBox siderbar={'/' || sidebar}/>
-        <ContainerBox>
-            {content || <IndexPage />}
-        </ContainerBox>
-    </div>
-);
+const App = ({ content, sidebar }) => {
+    if(sidebar.type == 'login') {
+        return (
+            <Login />
+        );
+    } else {
+        return (
+            <div>
+                <HeaderBox siderbar={'/' || sidebar}/>
+                <ContainerBox>
+                    {content || <IndexPage />}
+                </ContainerBox>
+            </div>
+        );
+    }
+};
 
 
 const AppRoutes = (
     <Router history={withBasename(browserHistory, __dirname)}>
-        <Route path='/'>
+        <Route path='/' component={App}>
             <IndexRoute component={App} />
     
-            <Route path='login' component={Login}/>
+            <Route path='login' component={{ content: Login, sidebar: 'login' }}/>
     
             <Route path='client'>
                 <Route path='all' component={{ content: ShowClient, sidebar: 'showClients' }} />

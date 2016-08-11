@@ -6,8 +6,9 @@ import MainBox from './components/MainBox';
 
 import IndexPage from './components/index';
 import Login from './components/Login';
-import ShowClient from './components/agency/show';
-import NewClient from './components/agency/new';
+import ShowAgency from './components/agency/show';
+import NewAgency from './components/agency/new';
+import ShowClient from './components/client/show';
 
 import useBasename from 'history/lib/useBasename'
 
@@ -31,8 +32,8 @@ const AppRoutes = (
             
             <Redirect from="agency" to="/agency/all"/>
             <Route path='agency' component={MainBox}>
-                <Route path='all' component={ShowClient} />
-                <Route path='new' component={NewClient} />
+                <Route path='all' component={ShowAgency} />
+                <Route path='new' component={NewAgency} />
             </Route>
         </Route>
     </Router>

@@ -7,6 +7,7 @@ import {Spin} from 'antd';
 
 import HeaderBox from '../layout/HeaderBox';
 import ContainerBox from '../layout/ContainerBox';
+import PathBar from '../layout/PathBar';
 
 class MainBox extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class MainBox extends React.Component {
             <div>
                 <HeaderBox siderbar={'/' || sidebar}/>
                 <ContainerBox>
+                    <PathBar />
                     {this.props.children || <Spin />}
                 </ContainerBox>
             </div>

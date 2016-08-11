@@ -50,7 +50,7 @@ class MenuBox extends Component {
                         <Link to='/client/all'>系统公告</Link>
                     </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub1" title={<span><Icon type="mail"/> <span> 上传 </span></span>}>
+                <SubMenu key="sub1" title={<span><Icon type="upload"/> <span> 上传 </span></span>}>
                     <Menu.Item key='1-0'>
                         <Link to='/client/all'>借款资料上传</Link>
                     </Menu.Item>
@@ -58,12 +58,12 @@ class MenuBox extends Component {
                         <Link to='/client/all'>签约合同上传</Link>
                     </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2" title={<span><Icon type="mail"/> <span> 客户 </span></span>}>
+                <SubMenu key="sub2" title={<span><Icon type="team"/> <span> 客户 </span></span>}>
                     <Menu.Item key='2-0'>
                         <Link to='/client/all'>客户信息</Link>
                     </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub3" title={<span> <Icon type="appstore"/> <span> 代理 </span></span>}>
+                <SubMenu key="sub3" title={<span> <Icon type="user"/> <span> 代理 </span></span>}>
                     <Menu.Item key="3-0">
                         <Link to='/agency/new'>新增代理</Link>
                     </Menu.Item>

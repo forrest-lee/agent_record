@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, Redirect, IndexRoute, browserHistory} from 'react-router';
 
 import IndexPage from './components/index';
-
+import Login from './components/Login';
 import ShowClient from './components/agency/show';
 import NewClient from './components/agency/new';
 
@@ -29,12 +29,18 @@ const App = ({ content, sidebar }) => (
 
 const AppRoutes = (
     <Router history={withBasename(browserHistory, __dirname)}>
-        <Route path='/' component={App}>
+        <Route path='/'>
             <IndexRoute component={App} />
-        
-            <Redirect from="client" to="/client/show"/>
+    
+            <Route path='login' component={Login}/>
+    
             <Route path='client'>
-                <Route path='show' component={{ content: ShowClient, sidebar: 'showClients' }} />
+                <Route path='all' component={{ content: ShowClient, sidebar: 'showClients' }} />
+            </Route>
+            
+            <Redirect from="agency" to="/agency/all"/>
+            <Route path='agency'>
+                <Route path='all' component={{ content: ShowClient, sidebar: 'showClients' }} />
                 <Route path='new' component={{ content: NewClient, sidebar: 'newClient' }} />
             </Route>
         </Route>

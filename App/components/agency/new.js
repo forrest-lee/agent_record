@@ -15,10 +15,19 @@ export default class NewClient extends React.Component {
         return (
             <div>
                 <h2>新增代理</h2>
-                <Form horizontal>
+                <Form horizontal onSubmit={this.handleSubmit}>
                     <FormItem
                         id="control-input"
-                        label="名称"
+                        label="帐号"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 14 }}
+                    >
+                        <Input id="control-input" placeholder="请输入姓名" />
+                    </FormItem>
+                    
+                    <FormItem
+                        id="control-input"
+                        label="姓名"
                         labelCol={{ span: 6 }}
                         wrapperCol={{ span: 14 }}
                     >
@@ -71,12 +80,25 @@ export default class NewClient extends React.Component {
                     </FormItem>
     
                     <FormItem
+                        id="control-input"
+                        label="QQ号"
+                        labelCol={{ span: 6 }}
+                        wrapperCol={{ span: 14 }}
+                    >
+                        <Input id="control-input" placeholder="请输入手机号" />
+                    </FormItem>
+    
+                    <FormItem
                         id="control-textarea"
                         label="备注"
                         labelCol={{ span: 6 }}
                         wrapperCol={{ span: 14 }}
                     >
                         <Input type="textarea" id="control-textarea" rows="3" />
+                    </FormItem>
+    
+                    <FormItem wrapperCol={{ span: 16, offset: 8 }} style={{ marginTop: 24 }}>
+                        <Button type="primary" htmlType="submit">提交</Button>
                     </FormItem>
                 </Form>
             </div>
@@ -85,5 +107,10 @@ export default class NewClient extends React.Component {
     
     handleSelectChange(value) {
         console.log(`selected ${value}`);
+    }
+    
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log('收到表单值：', this.props.form.getFieldsValue());
     }
 }

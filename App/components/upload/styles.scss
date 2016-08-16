@@ -1,0 +1,18 @@
+.preWrap {
+  white-space: pre-wrap; /* css-3 */
+  word-wrap: break-word; /* InternetExplorer5.5+ */
+  white-space: -moz-pre-wrap; /* Mozilla,since1999 */
+  white-space: -o-pre-wrap; /* Opera7 */
+}
+
+pre.detail-summary {
+  border-left: 4px solid #ddd;
+  padding:5px;
+  color:rgb(158, 158, 158);
+  white-space:pre-wrap;
+}
+
+.border-container {
+  border: 2px dotted #ddd;
+  padding: 8px;
+}

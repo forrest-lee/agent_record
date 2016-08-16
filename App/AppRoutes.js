@@ -10,7 +10,7 @@ import Register from './components/Register';
 import ShowAgency from './components/agency/show';
 import NewAgency from './components/agency/new';
 import ShowClient from './components/client/show';
-
+import Information from './components/upload/Infomation';   // 借款资料上传
 import NotificationBox from './components/NotificationBox';
 
 import useBasename from 'history/lib/useBasename';
@@ -29,6 +29,10 @@ const AppRoutes = (
 
             <Route path='login' component={Login}/>
             <Route path='register' component={Register} />
+            
+            <Route path='upload' component={MainBox}>
+                <Route path='information' component={Information} />
+            </Route>
             
             <Route path='notification' component={MainBox}>
                 <Route path='all' component={NotificationBox} />

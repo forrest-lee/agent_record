@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
-import homeCtrl from '../controller/home';
-import userCtrl from '../controller/user';
+var homeCtrl = require('../controller/home');
+var userCtrl = require('../controller/user');
 
 
 /* GET home page. */

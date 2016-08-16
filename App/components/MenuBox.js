@@ -47,7 +47,7 @@ class MenuBox extends Component {
             >
                 <SubMenu key="sub0" title={<span><Icon type="book"/> <span> 公告 </span></span>}>
                     <Menu.Item key='0-0'>
-                        <Link to='/client/all'>系统公告</Link>
+                        <Link to='/notification/all'>系统公告</Link>
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub1" title={<span><Icon type="upload"/> <span> 上传 </span></span>}>

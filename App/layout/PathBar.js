@@ -32,10 +32,10 @@ class HeaderBox extends React.Component {
                         <span>Home</span>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item href="">
-                        <span>客户</span>
+                        <span>xx</span>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
-                        客户信息
+                        xxxx
                     </Breadcrumb.Item>
                 </Breadcrumb>
             </div>

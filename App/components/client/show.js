@@ -9,10 +9,6 @@ import {
 const InputGroup = Input.Group;
 
 const columns = [{
-    title: '流水号',
-    dataIndex: 'swiftNum',
-    key: 'swiftNum'
-}, {
     title: '类型',
     dataIndex: 'type',
     key: 'type'
@@ -20,6 +16,10 @@ const columns = [{
     title: '标题',
     dataIndex: 'title',
     key: 'title'
+}, {
+    title: '手机号',
+    dataIndex: 'mobile',
+    key: 'mobile'
 }, {
     title: '更新时间',
     dataIndex: 'updateAt',
@@ -35,19 +35,19 @@ const columns = [{
 }];
 
 const dataSource = [{
-    swiftNum: 'HT3002201608111830511771',
     type: '签约合同上传',
-    title: '魏磊2433武汉生物工程学院',
+    title: '魏磊-武汉生物工程学院',
+    mobile: '12345678901',
     updateAt: '2016-08-11 18:42',
     owner: '人人花1',
-    status: 2
+    status: '已完成'
 }, {
-    swiftNum: 'ZL3002201608111343219504',
     type: '借款资料上传审批',
-    title: '黄紫迎8929武昌职业学院',
+    title: '黄紫迎-武昌职业学院',
+    mobile: '21345678902',
     updateAt: '2016-08-11 15:19',
     owner: '人人花1',
-    status: 1
+    status: '待审核'
 }];
 
 const SearchInput = React.createClass({

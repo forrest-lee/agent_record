@@ -69,9 +69,16 @@ class Login extends React.Component {
         );
     }
     
-    handleSubmit(e) {
-        e.preventDefault();
-        console.log('收到表单值：', this.props.form.getFieldsValue());
+    
+    handleSubmit() {
+        this.props.form.validateFields((errors, values) => {
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
+            }
+            console.log('Submit!!!');
+            console.log(values);
+        });
     }
 }
 

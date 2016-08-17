@@ -11,9 +11,11 @@ import {
     Row,
     Col,
     Upload,
-    Icon
+    Icon,
+    message
 } from 'antd';
 const FormItem = Form.Item;
+const Dragger = Upload.Dragger;
 
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -39,6 +41,24 @@ class Information extends React.Component {
         const formItemLayout = {
             labelCol: { span: 4 },
             wrapperCol:{ span: 20 }
+        };
+        
+        const uploadProps = {
+            name: 'file',
+            action: '/upload',
+            headers: {
+                authorization: 'files',
+            },
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                    console.log(info.file, info.fileList);
+                }
+                if (info.file.status === 'done') {
+                    message.success(`${info.file.name} 上传成功。`);
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} 上传失败。`);
+                }
+            },
         };
         
         return (
@@ -135,12 +155,7 @@ class Information extends React.Component {
                             </pre>
                         </Col>
                         <Col sm={18}>
-                            <Upload name="logo" action="/upload.do" listType="picture" onChange={this.handleUpload}
-                                    {...getFieldProps('upload', {
-                                        valuePropName: 'fileList',
-                                        normalize: this.normFile,
-                                    })}
-                            >
+                            <Upload {...uploadProps}>
                                 <Button type="ghost">
                                     <Icon type="upload" /> 点击上传
                                 </Button>

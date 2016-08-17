@@ -70,16 +70,16 @@ class Login extends React.Component {
     }
     
     
-    handleSubmit() {
+    handleSubmit = () => {
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
                 console.log('Errors in form!!!');
                 return;
             }
-            console.log('Submit!!!');
             console.log(values);
         });
-    }
+    };
+    
 }
 
 Login = Form.create()(Login);

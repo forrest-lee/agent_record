@@ -6,7 +6,7 @@ import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 const FormItem = Form.Item;
 
 import classNames from 'classnames';
-import styles from './styles.scss';
+import styles from '../styles.scss';
 let cx = classNames.bind(styles);
 
 function noop() {
@@ -34,25 +34,14 @@ class Register extends React.Component {
             ],
             trigger: ['onBlur', 'onChange']
         });
-        const emailProps = getFieldProps('email', {
-            validate: [{
-                rules: [
-                    { required: true },
-                ],
-            }, {
-                rules: [
-                    { type: 'email', message: '请输入正确的邮箱地址' },
-                ],
-                trigger: ['onBlur', 'onChange'],
-            }],
-        });
-        const passwdProps = getFieldProps('passwd', {
+
+        const passwdProps = getFieldProps('password', {
             rules: [
                 { required: true, whitespace: true, message: '请填写密码' },
                 { validator: this.checkPass },
             ],
         });
-        const rePasswdProps = getFieldProps('rePasswd', {
+        const rePasswdProps = getFieldProps('repassword', {
             rules: [{
                 required: true,
                 whitespace: true,
@@ -89,22 +78,6 @@ class Register extends React.Component {
                                 <Input {...nameProps} placeholder="帐号/用户名" />
                             </FormItem>
 
-                            {/*<FormItem
-                                {...formItemLayout}
-                                label="手机号"
-                                hasFeedback
-                            >
-                                <Input {...emailProps} type="mobile" placeholder='请输入手机号' />
-                            </FormItem>
-
-                            <FormItem
-                                {...formItemLayout}
-                                label="邮箱"
-                                hasFeedback
-                            >
-                                <Input {...emailProps} type="email" placeholder='请输入电子邮箱帐号' />
-                            </FormItem>*/}
-
                             <FormItem
                                 {...formItemLayout}
                                 label="密码"
@@ -129,7 +102,7 @@ class Register extends React.Component {
                                 {...formItemLayout}
                                 label="备注"
                             >
-                                <Input {...textareaProps} type="textarea" placeholder="随便写" id="textarea" name="textarea" />
+                                <Input {...textareaProps} type="textarea" placeholder="随便写" id="comment" name="comment" />
                             </FormItem>
 
                             <FormItem wrapperCol={{ span: 12, offset: 7 }}>
@@ -154,6 +127,10 @@ class Register extends React.Component {
         this.props.form.resetFields();
     }
 
+    /**
+     * 提交表单
+     * @param e
+     */
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((errors, values) => {
@@ -161,8 +138,23 @@ class Register extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
-            console.log('Submit!!!');
             console.log(values);
+
+            $.ajax({
+                type: 'POST',
+                url: '/user/signup',
+                data: {
+                    username: values.username,
+                    password: values.password,
+                    repassword: values.repassword,
+
+                },
+                success: function (res) {
+                },
+                error: function(err) {
+
+                }
+            });
         });
     }
 
@@ -171,7 +163,7 @@ class Register extends React.Component {
             callback();
         } else {
             setTimeout(() => {
-                if (value === 'JasonWood') {
+                if (value === '123456') {
                     callback([new Error('抱歉，该用户名已被占用。')]);
                 } else {
                     callback();
@@ -183,14 +175,14 @@ class Register extends React.Component {
     checkPass = (rule, value, callback) => {
         const { validateFields } = this.props.form;
         if (value) {
-            validateFields(['rePasswd'], { force: true });
+            validateFields(['repassword'], { force: true });
         }
         callback();
     };
 
     checkPass2 = (rule, value, callback) => {
         const { getFieldValue } = this.props.form;
-        if (value && value !== getFieldValue('passwd')) {
+        if (value && value !== getFieldValue('password')) {
             callback('两次输入密码不一致！');
         } else {
             callback();

@@ -4,13 +4,13 @@ var User = require('../models/User');
 var passport = require('passport');
 
 exports.signup = function (req, res) {
-    var name       = req.body.name;
+    var username   = req.body.username;
     var password   = req.body.password;
     var repassword = req.body.repassword;
     var mobile     = req.body.mobile;
 
     var user = new User({
-        name:     name,
+        username: username,
         password: password,
         mobile: mobile,
         comment: req.body.comment
@@ -34,6 +34,8 @@ exports.signup = function (req, res) {
 
 // create login
 exports.login = function (req, res, next) {
+    console.log(req.body);
+    
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             return next(err);

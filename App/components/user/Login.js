@@ -6,7 +6,7 @@ import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 const FormItem = Form.Item;
 
 import classNames from 'classnames';
-import styles from './styles.scss';
+import styles from '../styles.scss';
 let cx = classNames.bind(styles);
 
 class Login extends React.Component {
@@ -38,7 +38,7 @@ class Login extends React.Component {
                                 wrapperCol={{ span: 20 }}
                             >
                                 <Input placeholder="请输入账户名"
-                                       {...getFieldProps('userName')}
+                                       {...getFieldProps('username')}
                                 />
                             </FormItem>
                             <FormItem
@@ -77,6 +77,20 @@ class Login extends React.Component {
                 return;
             }
             console.log(values);
+            $.ajax({
+                type: 'POST',
+                url:  '/user/login',
+                data: {
+                    username: values.username,
+                    password: values.password
+                },
+                success: function(res) {
+                    
+                },
+                error: function(err) {
+        
+                }
+            })
         });
     };
     

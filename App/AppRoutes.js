@@ -5,8 +5,8 @@ import AppBox from './components/AppBox';
 import MainBox from './components/MainBox';
 
 import IndexPage from './components/index';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './components/user/Login';
+import Register from './components/user/Register';
 import ShowAgency from './components/agency/show';
 import NewAgency from './components/agency/new';
 import ShowClient from './components/client/show';

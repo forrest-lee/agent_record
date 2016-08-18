@@ -75,7 +75,12 @@ exports.login = function (req, res, next) {
 
 exports.logout = function (req, res) {
     req.logout();
-    res.redirect('/#/login');
+    return res.json({
+        err: 0,
+        msg: '退出登录',
+        redirect: true,
+        url: '/'
+    })
 };
 
 /**

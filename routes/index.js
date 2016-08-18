@@ -8,6 +8,7 @@ var uploadCtrl = require('../controller/upload');
 
 /* GET home page. */
 router.get('/', homeCtrl.index);
+router.get('/app', userCtrl.isLogined, homeCtrl.index);
 
 var userRouter = express.Router();
 userRouter.post('/signup', userCtrl.signup);
@@ -21,6 +22,6 @@ qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 
 
 router.use('/user', userRouter);
-router.use('/qiniu', qiniuApiRouter);
+router.use('/qiniu', userCtrl.isLogined, qiniuApiRouter);
 
 module.exports = router;

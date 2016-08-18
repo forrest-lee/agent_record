@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     createAt: Date,
     updateAt: Date,
 
-    role:     {
+    role: {
         type:    Number,
         default: -1
     }, // 角色: 0: 管理员, 1: 一级代理, 2: 二级代理, 3: 三级代理, -1: 角色异常
@@ -16,9 +16,8 @@ var UserSchema = new mongoose.Schema({
     username: {type: String, unique: true},
     password: {type: String},
     gender:   {type: Number, default: -1},  // 男:0, 女:1
-    mobile: { type: String, unique: true },  // 手机号(限定11位)
-    comment: String  // 备注
-
+    mobile:   {type: String, unique: true },  // 手机号(限定11位)
+    comment:  String  // 备注
 });
 
 UserSchema.pre('save', function (next) {

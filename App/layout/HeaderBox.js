@@ -11,7 +11,7 @@ class HeaderBox extends React.Component {
         this.state = {
         }
     }
-    
+
     render() {
         let style = {
             title: cx({
@@ -37,6 +37,7 @@ class HeaderBox extends React.Component {
                                 marginTop: 22,
                                 marginRight: 22
                             }}
+                            onClick={this.logout.bind(this)}
                         >
                             退出
                         </Button>
@@ -44,6 +45,19 @@ class HeaderBox extends React.Component {
                 </Row>
             </header>
         );
+    }
+
+    logout() {
+        $.ajax({
+            type: 'POST',
+            url: '/user/logout',
+            success: function (res) {
+
+            },
+            error: function (err) {
+
+            }
+        })
     }
 }
 

@@ -3,6 +3,18 @@
 var User = require('../models/User');
 var passport = require('passport');
 
+function  is_wechat(req) {
+    if(req.headers['user-agent']) {
+        var ua = (req.headers['user-agent']).toLowerCase();
+        return (ua.indexOf("micromessenger") > -1);
+    } else {
+        return false;
+    }
+}
+
+/**
+ * 注册
+ */
 exports.signup = function (req, res) {
     var username = req.body.username;
     var mobile   = req.body.mobile;
@@ -35,21 +47,26 @@ exports.signup = function (req, res) {
 
 // create login
 exports.login = function (req, res, next) {
-    console.log(req.body);
-
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             return next(err);
         }
         if (!user) {
-            req.flash('errors', {msg: info.message});
-            return res.redirect('/');
+            return res.json({
+                err: 2,
+                msg: info.message,
+                redirect: true,
+                url: '/'
+            });
         }
         req.logIn(user, function (err) {
             if (err) {
                 return next(err);
             } else {
-                res.redirect('back');
+                return res.json({
+                    err: 0,
+                    msg: '登录成功'
+                });
             }
         });
     })(req, res, next);
@@ -58,5 +75,18 @@ exports.login = function (req, res, next) {
 
 exports.logout = function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/#/login');
+};
+
+/**
+ * 中间件: 判断是否登录
+ */
+exports.isLogined  = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        console.log('已经登录');
+        next();
+    } else {
+        console.log('没有登录');
+        return res.redirect('/');
+    }
 };

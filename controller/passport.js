@@ -23,10 +23,13 @@ passport.deserializeUser(function (id, done) {
  * Anytime a request is made to authorize an application, we must ensure that
  * a user is logged in before asking them to approve the request.
  */
-passport.use(new LocalStrategy({usernameField: 'mobile'}, function (phoneno, password, done) {
-    User.findOne({mobile: phoneno}, function (err, user) {
-        if (!user) return done(null, false, {message: '验证失败'});
-        if (user.role == 2) return done(null, false, {message: '此用户已被停用,请联老师或管理员'}); //forbidden user is forbided.role :2
+passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password'
+}, function (username, password, done) {
+    User.findOne({username: username}, function (err, user) {
+        if (!user) return done(null, false, {message: '该用户不存在'});
+
         user.comparePassword(password, function (err, isMatch) {
             if (isMatch) {
                 return done(null, user);

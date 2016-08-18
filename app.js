@@ -6,9 +6,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
+var settings = require('./settings');
 
+var passport     = require('passport');
+require('./controller/passport');
+var session  = require('express-session');
+var flash    = require('express-flash');
 var mongoose = require('mongoose');
-var settings = require('./settings.js');
+var redis      = require('redis');
+var RedisStore = require('connect-redis')(session);
+var redisClient = redis.createClient(settings.redisport, settings.redishost);
 
 var app = express();
 
@@ -25,6 +32,7 @@ mongoose.connection.on('error', function () {
     console.error('MongoDB Connection Error. Please make sure MongoDB is running.');
 });
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -32,6 +40,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    name:              "renrenhua.sid",
+    resave:            true,
+    saveUninitialized: true,
+    secret:            settings.sessionSecret,
+    store:             new RedisStore({
+        client:         redisClient,
+        auto_reconnect: true
+    })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use('/', routes);
 

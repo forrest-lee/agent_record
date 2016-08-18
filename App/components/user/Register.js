@@ -27,12 +27,18 @@ class Register extends React.Component {
             })
         };
 
-        const nameProps = getFieldProps('name', {
+        const nameProps = getFieldProps('username', {
             rules: [
                 { required: true, min: 5, message: '用户名至少为 5 个字符' },
                 { validator: this.userExists },
             ],
             trigger: ['onBlur', 'onChange']
+        });
+
+        const mobileProps = getFieldProps('mobile', {
+            rules: [
+                { required: true, len: 11, message: '手机号必须为11位' },
+            ],
         });
 
         const passwdProps = getFieldProps('password', {
@@ -50,7 +56,7 @@ class Register extends React.Component {
                 validator: this.checkPass2,
             }],
         });
-        const textareaProps = getFieldProps('textarea', {
+        const textareaProps = getFieldProps('comment', {
             rules: [
                 { required: false, message: '' },
             ],
@@ -73,9 +79,18 @@ class Register extends React.Component {
                                 {...formItemLayout}
                                 label="用户名"
                                 hasFeedback
-                                help={isFieldValidating('name') ? '校验中...' : (getFieldError('name') || []).join(', ')}
+                                help={isFieldValidating('username') ? '校验中...' : (getFieldError('username') || []).join(', ')}
                             >
                                 <Input {...nameProps} placeholder="帐号/用户名" />
+                            </FormItem>
+
+                            <FormItem
+                                {...formItemLayout}
+                                label="手机号"
+                                hasFeedback
+                                help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
+                            >
+                                <Input {...mobileProps} placeholder="手机号" />
                             </FormItem>
 
                             <FormItem
@@ -117,47 +132,6 @@ class Register extends React.Component {
         );
     }
 
-    /**
-     * 重置所有表单
-     * @param e
-     */
-    handleReset(e) {
-        e.preventDefault();
-        //Register.resetFields();
-        this.props.form.resetFields();
-    }
-
-    /**
-     * 提交表单
-     * @param e
-     */
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.form.validateFields((errors, values) => {
-            if (!!errors) {
-                console.log('Errors in form!!!');
-                return;
-            }
-            console.log(values);
-
-            $.ajax({
-                type: 'POST',
-                url: '/user/signup',
-                data: {
-                    username: values.username,
-                    password: values.password,
-                    repassword: values.repassword,
-
-                },
-                success: function (res) {
-                },
-                error: function(err) {
-
-                }
-            });
-        });
-    }
-
     userExists = (rule, value, callback) => {
         if (!value) {
             callback();
@@ -188,6 +162,49 @@ class Register extends React.Component {
             callback();
         }
     };
+
+
+    /**
+     * 提交表单
+     * @param e
+     */
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.form.validateFields((errors, values) => {
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
+            }
+            console.log(values);
+
+            $.ajax({
+                type: 'POST',
+                url: '/user/signup',
+                data: {
+                    username: values.username,
+                    mobile: values.mobile,
+                    password: values.password,
+                    repassword: values.repassword,
+                    comment: values.comment
+                },
+                success: function (res) {
+                },
+                error: function(err) {
+
+                }
+            });
+        });
+    }
+
+    /**
+     * 重置所有表单
+     * @param e
+     */
+    handleReset(e) {
+        e.preventDefault();
+        //Register.resetFields();
+        this.props.form.resetFields();
+    }
 }
 
 Register = Form.create()(Register);

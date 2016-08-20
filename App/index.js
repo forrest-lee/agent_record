@@ -27,7 +27,7 @@ const store = createStoreWithMiddleware(homeReducer);
 
 
 
-function checkAuth(nextState, replaceState) {
+function checkAuth(nextState, replace) {
     let { loggedIn } = store.getState();
     
     // check if the path isn't dashboard
@@ -36,18 +36,18 @@ function checkAuth(nextState, replaceState) {
     if (nextState.location.pathname !== '/notification/all') {
         if (loggedIn) {
             if (nextState.location.state && nextState.location.pathname) {
-                replaceState(null, nextState.location.pathname);
+                replace(null, nextState.location.pathname);
             } else {
-                replaceState(null, '/');
+                replace(null, '/');
             }
         }
     } else {
         // If the user is already logged in, forward them to the homepage
         if (!loggedIn) {
             if (nextState.location.state && nextState.location.pathname) {
-                replaceState(null, nextState.location.pathname);
+                replace(null, nextState.location.pathname);
             } else {
-                replaceState(null, '/');
+                replace(null, '/');
             }
         }
     }

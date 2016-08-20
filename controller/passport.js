@@ -34,7 +34,7 @@ passport.use(new LocalStrategy({
             if (isMatch) {
                 return done(null, user);
             } else {
-                return done(null, false, {message: '验证失败'});
+                return done(null, false, {message: '密码错误'});
             }
         });
     });

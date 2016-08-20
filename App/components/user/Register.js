@@ -2,7 +2,15 @@
  * Created by leo on 8/15/16.
  */
 import React from 'react';
-import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
+import {
+    Form,
+    Input,
+    Button,
+    Checkbox,
+    Row,
+    Col,
+    notification
+} from 'antd';
 const FormItem = Form.Item;
 
 import classNames from 'classnames';
@@ -188,9 +196,23 @@ class Register extends React.Component {
                     comment: values.comment
                 },
                 success: function (res) {
+                    if(res.err == 0) {
+                        notification.success({
+                            message:     'Success',
+                            description: res.msg
+                        });
+                    } else {
+                        notification.error({
+                            message:     'Error',
+                            description: res.msg
+                        });
+                    }
                 },
-                error: function(err) {
-
+                error:   function (res) {
+                    notification.error({
+                        message:     'Error',
+                        description: res.msg
+                    });
                 }
             });
         });

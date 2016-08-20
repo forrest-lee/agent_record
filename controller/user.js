@@ -16,34 +16,60 @@ function  is_wechat(req) {
  * 注册
  */
 exports.signup = function (req, res) {
-    var username = req.body.username;
-    var mobile   = req.body.mobile;
-    var password   = req.body.password;
-    var repassword = req.body.repassword;
-    var comment    = req.body.comment;
+    var username   = req.body.username;
+    var password   = req.body.password ? req.body.password : '123456';
+    var repassword = req.body.repassword ? req.body.repassword : '123456';
+    var role    = req.body.role;
+    var parent  = req.body.parent;
+    var gender  = req.body.gender;
+    var mobile  = req.body.mobile;
+    var qq      = req.body.qq;
+    var comment = req.body.comment;
+    
+    if(password != repassword) {
+        return res.json({
+            err: 1,
+            msg: '重复密码不相等'
+        });
+    }
+    
 
     var user = new User({
         username: username,
-        mobile:   mobile,
         password: password,
+        role:     role,
+        parent:   parent,
+        gender:   gender,
+        mobile:   mobile,
+        qq:       qq,
         comment:  comment
     });
+    
+    
     user.save(function (err) {
         if (err) {
             if (err.code === 11000) {
-                req.flash('errors', {msg: '此手机号已被注册'});
-            }
-            return res.redirect('/');
-        }
-        req.logIn(user, function (err) {
-            if (err) {
-                return next(err);
+                return res.json({
+                    err: 1,
+                    msg: '此账户已被注册'
+                });
             } else {
-                res.redirect('back');
+                return res.json({
+                    err: 1,
+                    msg: err
+                });
             }
-        });
+        } else {
+            return res.json({
+                err: 0,
+                msg: '注册成功'
+            });
+        }
     });
 };
+
+
+
 
 // create login
 exports.login = function (req, res, next) {

@@ -8,7 +8,7 @@ var uploadCtrl = require('../controller/upload');
 
 /* GET home page. */
 router.get('/', homeCtrl.index);
-router.get('/app', userCtrl.isLogined, homeCtrl.index);
+//router.get('/app', userCtrl.isLogined, homeCtrl.index);
 
 var userRouter = express.Router();
 userRouter.post('/signup', userCtrl.signup);

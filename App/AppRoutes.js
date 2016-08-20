@@ -22,9 +22,36 @@ export default function withBasename(history, dirname) {
 }
 
 
+function checkAuth(nextState, replaceState) {
+    let { loggedIn } = store.getState();
+
+    // check if the path isn't dashboard
+    // that way we can apply specific logic
+    // to display/render the path we want to
+    if (nextState.location.pathname !== '/notification/all') {
+        if (loggedIn) {
+            if (nextState.location.state && nextState.location.pathname) {
+                replaceState(null, nextState.location.pathname);
+            } else {
+                replaceState(null, '/');
+            }
+        }
+    } else {
+        // If the user is already logged in, forward them to the homepage
+        if (!loggedIn) {
+            if (nextState.location.state && nextState.location.pathname) {
+                replaceState(null, nextState.location.pathname);
+            } else {
+                replaceState(null, '/');
+            }
+        }
+    }
+}
+
+
 const AppRoutes = (
     <Router history={withBasename(browserHistory, __dirname)}>
-        <Route path='/' component={AppBox}>
+        <Route path='/' component={AppBox} onEnter={checkAuth}>
             <IndexRoute component={Login} />
 
             <Route path='login' component={Login}/>

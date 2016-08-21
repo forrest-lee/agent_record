@@ -8,7 +8,6 @@ let initialState = {};
 let user = (state = initialState, action) => {
     switch(action.type) {
         case 'USER_LOGIN':
-            console.log(action.user);
             return {...action.user};
         default:
             return state;

@@ -3,8 +3,10 @@
  */
 import { combineReducers } from 'redux';
 import userReducer from './user.js';
+import agencyReducer from './agency';
 
 export default combineReducers({
-    user: userReducer
+    user: userReducer,
+    agency: agencyReducer
 });
 

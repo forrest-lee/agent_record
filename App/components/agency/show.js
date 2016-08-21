@@ -9,11 +9,14 @@ import {
 const InputGroup = Input.Group;
 
 import Link from 'react-router';
+import { bindActionCreators, createStore, combineReducers, applyMiddleware } from 'redux';
+import { connect } from 'react-redux';
+import * as agencyActions from '../../action/agency';
 
 const columns = [{
     title: '姓名',
-    dataIndex: 'name',
-    key: 'name'
+    dataIndex: 'username',
+    key: 'username'
 }, {
     title: '手机号',
     dataIndex: 'mobile',
@@ -34,16 +37,16 @@ const columns = [{
 
 const dataSource = [{
     key: '1',
-    name: '胡彦斌',
+    username: '胡彦斌',
     role: 1,
-    parent: 123,
+    parent: '123',
     mobile: '123456',
     comment: '无'
 }, {
     key: '2',
-    name: '吴彦祖',
+    username: '吴彦祖',
     role: 2,
-    parent: 123,
+    parent: '123',
     mobile: '654321',
     comment: '无'
 }];
@@ -103,23 +106,30 @@ class SearchInput extends React.Component {
 }
 
 
-export default class ClientBox extends React.Component {
+class ClientBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: true
         }
     }
     
-    componentDidMount() {
+    componentWillMount() {
         $.ajax({
             type: 'GET',
             url: '/apiv1/user/all',
-            success: function(res) {
-                console.log(res);
+            success: (res) => {
+                if(res.err == 0) {
+                    this.props.agencyActions.setAgencies(res.users);
+                } else {
+                    console.error(res.msg);
+                }
             },
-            error: function(res) {
+            error: (res) => {
                 console.error(res);
+            },
+            complete: () => {
+                this.setState({loading: false});
             }
             
         })
@@ -141,7 +151,7 @@ export default class ClientBox extends React.Component {
                     />
                 </div>
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={dataSource} columns={columns} />
+                    <Table dataSource={this.props.agency} columns={columns} />
                 </div>
             </div>
         )
@@ -154,3 +164,21 @@ export default class ClientBox extends React.Component {
         })
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        user:   state.user,
+        agency: state.agency
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        agencyActions: bindActionCreators(agencyActions, dispatch),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ClientBox);

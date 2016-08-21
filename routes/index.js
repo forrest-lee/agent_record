@@ -3,7 +3,6 @@ var router     = express.Router();
 var homeCtrl   = require('../controller/home');
 var userCtrl   = require('../controller/user');
 var qiniuCtrl  = require('../controller/qiniu');
-var uploadCtrl = require('../controller/upload');
 var infoCtrl   = require('../controller/information');
 
 /**
@@ -29,8 +28,8 @@ userApiRouter.get('/all', userCtrl.allAgency);
 
 // 借款资料
 var infoApiRouter = express.Router();
-infoApiRouter.get('/:id', uploadCtrl.detail);
-infoApiRouter.post('/new', uploadCtrl.newInfo);
+infoApiRouter.get('/:id', infoCtrl.detail);
+infoApiRouter.post('/new', infoCtrl.newInfo);
 
 
 // 客户信息

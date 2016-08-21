@@ -5,13 +5,13 @@
 
 let initialState = [];
 
-let agency = (state = initialState, action) => {
+let agent = (state = initialState, action) => {
     switch(action.type) {
         case 'SET_AGENCY':
-            return [...action.agent];
+            return [...action.agents];
         default:
             return state;
     }
 };
 
-export default agency;
+export default agent;

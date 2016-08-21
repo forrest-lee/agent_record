@@ -144,10 +144,18 @@ class ClientBox extends React.Component {
                     />
                 </div>
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={this.props.infos} columns={columns} />
+                    <Table
+                        dataSource={this.props.infos} columns={columns}
+                        onRowClick={this.rowClick}
+                    />
                 </div>
             </div>
         )
+    }
+    
+    
+    rowClick = (record, index) => {
+        window.location.hash = '/information/' + record._id;
     }
     
 }

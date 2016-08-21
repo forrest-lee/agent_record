@@ -2,9 +2,9 @@
  * Created by leo on 8/22/16.
  */
 import React from 'react';
-import { notification } from 'antd';
+import { Spin, notification } from 'antd';
 
-import InfoForm from './InfoForm';
+import InfoForm from './new';
 import Attachment from './Attachment';
 import Message from './Message';
 
@@ -16,21 +16,20 @@ import * as userActions from '../../action/user';
 class UploadBox extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: true
+        }
     }
     
     componentWillMount() {
         var id = getUrlId('information');
-        console.log(id);
         
         $.ajax({
             type: 'GET',
             url:  '/apiv1/information/' + id,
             success: (res) => {
                 if(res.err == 0) {
-                    notification.success({
-                        message: 'Success',
-                        description: res.msg
-                    });
+                    this.setState({information: res.information, loading: false});
                 } else {
                     notification.success({
                         message: 'Error',
@@ -48,6 +47,12 @@ class UploadBox extends React.Component {
     }
     
     render() {
+        if(this.state.loading) {
+            return <Spin />;
+        }
+        
+        console.log(this.state.information);
+        
         return (
             <div>
                 <InfoForm/>
@@ -61,7 +66,7 @@ class UploadBox extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        user: state.user
+        user: state.user,
     }
 }
 

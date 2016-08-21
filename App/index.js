@@ -68,7 +68,7 @@ import ShowAgency from './components/agent/show';
 import NewAgency from './components/agent/new';
 import ShowClient from './components/client/show';
 import NotificationBox from './components/NotificationBox';
-import InfoForm from './components/upload/InfoForm';   // 借款资料上传
+import InfoForm from './components/upload/new';   // 借款资料上传
 import InfoDetail from './components/upload/index';
 
 import useBasename from 'history/lib/useBasename';
@@ -109,8 +109,8 @@ ReactDOM.render(
                         <Route path='all' component={ShowClient} />
                     </Route>
             
-                    <Redirect from="agency" to="/agency/all"/>
-                    <Route path='agency' component={MainBox} >
+                    <Redirect from="agent" to="/agent/all"/>
+                    <Route path='agent' component={MainBox} >
                         <Route path='all' component={ShowAgency} />
                         <Route path='new' component={NewAgency} />
                     </Route>

@@ -1,11 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Table,
-    Button,
-    Input,
-    Spin
-} from 'antd';
+import { Table, Button, Input, Spin } from 'antd';
 const InputGroup = Input.Group;
 
 import { bindActionCreators } from 'redux';
@@ -119,7 +114,7 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all',
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agencyActions.setAgencies(res.users);
+                    this.props.agentActions.setAgents(res.users);
                 } else {
                     console.error(res.msg);
                 }
@@ -166,7 +161,7 @@ class AgentBox extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        user:   state.user,
+        user:  state.user,
         agent: state.agent
     }
 }

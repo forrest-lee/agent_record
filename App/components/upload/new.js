@@ -49,13 +49,6 @@ class Information extends React.Component {
             wrapperCol: { span: 20 }
         };
 
-        
-    
-        const typeProps = getFieldProps('role', {
-            rules:   [
-                {required: true, message: '请选择代理类别'}
-            ]
-        });
         const nameProps = getFieldProps('name', {
             rules: [
                 {required: true, min: 2, message: '请填写客户姓名(至少两个字)'},
@@ -86,20 +79,6 @@ class Information extends React.Component {
                             <Col sm={12}>
                                 <FormItem
                                     {...infoFormLayout}
-                                    label='类型'
-                                    hasFeedback
-                                >
-                                    <Select
-                                        {...typeProps}
-                                        placeholder='请选择'
-                                    >
-                                        <Select.Option value="information">借款资料</Select.Option>
-                                        <Select.Option value="contract">借款合同</Select.Option>
-                                    </Select>
-                                </FormItem>
-
-                                <FormItem
-                                    {...infoFormLayout}
                                     label="姓名"
                                     hasFeedback
                                 >
@@ -113,7 +92,14 @@ class Information extends React.Component {
                                     >
                                     <Input {...schoolProps} placeholder="学校" />
                                 </FormItem>
-
+    
+                                <FormItem
+                                    {...infoFormLayout}
+                                    label="备注"
+                                    hasFeedback
+                                >
+                                    <Input {...getFieldProps('comment')} placeholder="备注" />
+                                </FormItem>
                             </Col>
 
                             <Col sm={12}>
@@ -132,22 +118,18 @@ class Information extends React.Component {
                                 >
                                     <Input {...qqProps} type="qq" placeholder='请输入QQ号' />
                                 </FormItem>
-
-                                <FormItem
-                                    {...infoFormLayout}
-                                    label="备注"
-                                    hasFeedback
-                                >
-                                    <Input {...getFieldProps('comment')} placeholder="备注" />
-                                </FormItem>
-
                             </Col>
+                            
                         </Row>
 
 
                         <Row>
                             <Col span={12} offset={12} style={{ textAlign: 'right' }}>
-                                <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
+                                {
+                                    window.location.hash.indexOf('/upload/information') == -1 ?
+                                        <Button type="primary">更新</Button> :
+                                        <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
+                                }
                             </Col>
                         </Row>
                     </Form>
@@ -183,7 +165,6 @@ class Information extends React.Component {
                 type: 'POST',
                 url:  '/apiv1/information/new',
                 data: {
-                    type: values.type,
                     mobile: values.mobile,
                     name: values.name,
                     qq: values.qq,

@@ -3,12 +3,12 @@
  */
 import { combineReducers } from 'redux';
 import userReducer from './user.js';
-import agencyReducer from './agent';
-import information from './information';
+import agentReducer from './agent';
+import information from './infos';
 
 export default combineReducers({
     user: userReducer,
-    agency: agencyReducer,
+    agent: agentReducer,
     infos: information,
 });
 

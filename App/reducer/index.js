@@ -4,9 +4,11 @@
 import { combineReducers } from 'redux';
 import userReducer from './user.js';
 import agencyReducer from './agent';
+import information from './information';
 
 export default combineReducers({
     user: userReducer,
-    agency: agencyReducer
+    agency: agencyReducer,
+    infos: information,
 });
 

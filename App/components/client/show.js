@@ -1,18 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Table,
-    Button,
-    Input,
-    Spin
-} from 'antd';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as infoActions from '../../action/information';
+
+import { Table, Button, Input, Spin } from 'antd';
 const InputGroup = Input.Group;
 
 const columns = [{
-    title: '类型',
-    dataIndex: 'type',
-    key: 'type'
-}, {
     title: '标题',
     dataIndex: 'title',
     key: 'title'
@@ -26,8 +22,8 @@ const columns = [{
     key: 'updateAt'
 }, {
     title: '提交人',
-    dataIndex: 'owner',
-    key: 'owner'
+    dataIndex: 'agentName',
+    key: 'agentName'
 }, {
     title: '状态',
     dataIndex: 'status',
@@ -50,28 +46,15 @@ const dataSource = [{
     status: '待审核'
 }];
 
-const SearchInput = React.createClass({
-    getInitialState() {
-        return {
+class SearchInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             value: '',
-            focus: false,
-        };
-    },
-    handleInputChange(e) {
-        this.setState({
-            value: e.target.value,
-        });
-    },
-    handleFocusBlur(e) {
-        this.setState({
-            focus: e.target === document.activeElement,
-        });
-    },
-    handleSearch() {
-        if (this.props.onSearch) {
-            this.props.onSearch(this.state.value);
+            focus: false
         }
-    },
+    }
+    
     render() {
         const { style, size, placeholder } = this.props;
         const btnCls = classNames({
@@ -82,6 +65,7 @@ const SearchInput = React.createClass({
             'ant-search-input': true,
             'ant-search-input-focus': this.state.focus,
         });
+        
         return (
             <div className="ant-search-input-wrapper" style={style}>
                 <InputGroup className={searchCls}>
@@ -94,10 +78,29 @@ const SearchInput = React.createClass({
                 </InputGroup>
             </div>
         );
-    },
-});
+    }
+    
+    handleInputChange(e) {
+        this.setState({
+            value: e.target.value,
+        });
+    }
+    
+    handleFocusBlur(e) {
+        this.setState({
+            focus: e.target === document.activeElement,
+        });
+    }
+    
+    handleSearch() {
+        if (this.props.onSearch) {
+            this.props.onSearch(this.state.value);
+        }
+    }
+    
+}
 
-export default class ClientBox extends React.Component {
+class ClientBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -105,10 +108,33 @@ export default class ClientBox extends React.Component {
         }
     }
     
+    componentWillMount() {
+        $.ajax({
+            type: 'GET',
+            url: '/apiv1/client/all',
+            success: (res) => {
+                if(res.err == 0) {
+                    this.props.infoActions.setInfos(res.infos);
+                } else {
+                    console.error(res.msg);
+                }
+            },
+            error: (res) => {
+                console.error(res);
+            },
+            complete: () => {
+                this.setState({loading: false});
+            }
+            
+        })
+    }
+    
     render() {
         if(this.state.loading) {
             return <Spin />;
         }
+        
+        console.log(this.props.infos);
         
         return (
             <div>
@@ -120,10 +146,28 @@ export default class ClientBox extends React.Component {
                     />
                 </div>
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={dataSource} columns={columns} />
+                    <Table dataSource={this.props.infos} columns={columns} />
                 </div>
             </div>
         )
     }
     
 }
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        infos: state.infos
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        infoActions: bindActionCreators(infoActions, dispatch),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ClientBox);

@@ -8,8 +8,7 @@ import {
 } from 'antd';
 const InputGroup = Input.Group;
 
-import Link from 'react-router';
-import { bindActionCreators, createStore, combineReducers, applyMiddleware } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as agentActions from '../../action/agent';
 
@@ -106,7 +105,7 @@ class SearchInput extends React.Component {
 }
 
 
-class ClientBox extends React.Component {
+class AgentBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -181,4 +180,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ClientBox);
+)(AgentBox);

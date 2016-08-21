@@ -1,13 +1,13 @@
 import 'antd/dist/antd.css';
-import React                      from 'react';
-import ReactDOM                   from 'react-dom';
-import {createHashHistory}        from 'history';
-import {
-    createStore,
-    applyMiddleware
-} from 'redux';
+import 'babel-polyfill';
+
+import React    from 'react';
+import ReactDOM from 'react-dom';
+import { createHashHistory } from 'history';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+
 import {
     Router,
     Route,
@@ -17,40 +17,26 @@ import {
     useRouterHistory
 } from 'react-router';
 
-import homeReducer from './reducer';
+import homeReducer from './reducer/index';
 
 
 // Creates the Redux reducer with the redux-thunk middleware, which allows us
 // to do asynchronous things in the actions
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(homeReducer);
+const store = createStoreWithMiddleware(homeReducer, window.devToolsExtension ? window.devToolsExtension() : undefined);
 
 
 
 function checkAuth(nextState, replace) {
-    let { loggedIn } = store.getState();
+    let { user } = store.getState();
     
-    // check if the path isn't dashboard
-    // that way we can apply specific logic
-    // to display/render the path we want to
-    if (nextState.location.pathname !== '/notification/all') {
-        if (loggedIn) {
-            if (nextState.location.state && nextState.location.pathname) {
-                replace(null, nextState.location.pathname);
-            } else {
-                replace(null, '/');
-            }
-        }
-    } else {
-        // If the user is already logged in, forward them to the homepage
-        if (!loggedIn) {
-            if (nextState.location.state && nextState.location.pathname) {
-                replace(null, nextState.location.pathname);
-            } else {
-                replace(null, '/');
-            }
-        }
+    if(!user.name) {
+        replace({
+            pathname: '/',
+            state: { nextPathname: nextState.location.pathname }
+        });
     }
+    console.log(user.username);
 }
 
 
@@ -82,26 +68,26 @@ ReactDOM.render(
             onUpdate={() => window.scrollTo(0, 0)}
         >
             <Router history={withBasename(browserHistory, __dirname)}>
-                <Route path='/' component={AppBox} onEnter={checkAuth}>
+                <Route path='/' component={AppBox} >
                     <IndexRoute component={Login} />
             
-                    <Route path='login' component={Login}/>
+                    <Route path='login' component={Login} onEnter={checkAuth}/>
                     <Route path='register' component={Register} />
             
-                    <Route path='upload' component={MainBox}>
+                    <Route path='upload' component={MainBox} onEnter={checkAuth}>
                         <Route path='information' component={Information} />
                     </Route>
             
-                    <Route path='notification' component={MainBox}>
+                    <Route path='notification' component={MainBox} onEnter={checkAuth}>
                         <Route path='all' component={NotificationBox} />
                     </Route>
             
-                    <Route path='client' component={MainBox}>
+                    <Route path='client' component={MainBox} onEnter={checkAuth}>
                         <Route path='all' component={ShowClient} />
                     </Route>
             
                     <Redirect from="agency" to="/agency/all"/>
-                    <Route path='agency' component={MainBox}>
+                    <Route path='agency' component={MainBox} onEnter={checkAuth}>
                         <Route path='all' component={ShowAgency} />
                         <Route path='new' component={NewAgency} />
                     </Route>

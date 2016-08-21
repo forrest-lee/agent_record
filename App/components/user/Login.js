@@ -2,6 +2,9 @@
  * Created by leo on 8/10/16.
  */
 import React from 'react';
+import { bindActionCreators, createStore, combineReducers, applyMiddleware } from 'redux';
+import { connect } from 'react-redux';
+
 import {
     Form,
     Input,
@@ -12,11 +15,16 @@ import {
     notification
 } from 'antd';
 
+
 const FormItem = Form.Item;
 
 import classNames from 'classnames';
 import styles from '../styles.scss';
 let cx = classNames.bind(styles);
+
+
+import * as userActions from '../../action/user';
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -31,7 +39,7 @@ class Login extends React.Component {
                 loginContainer: true
             })
         };
-
+        
         return (
             <div>
                 <div className={styles.loginContainer}>
@@ -99,12 +107,15 @@ class Login extends React.Component {
                     username: values.username,
                     password: values.password
                 },
-                success: function (res) {
+                success: (res) => {
                     if (res.err == 0) {
+                        this.props.userActions.login(res.user);
+                        
                         notification.success({
                             message: 'Success',
                             description: res.msg
                         });
+                        
                         window.location.hash = 'notification/all';
                     } else {
                         notification.error({
@@ -127,4 +138,20 @@ class Login extends React.Component {
 
 Login = Form.create()(Login);
 
-export default Login;
+
+function mapStateToProps(state) {
+    return {
+        user: state.user
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        userActions: bindActionCreators(userActions, dispatch),
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);

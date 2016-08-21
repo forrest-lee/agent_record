@@ -91,7 +91,8 @@ exports.login = function (req, res, next) {
             } else {
                 return res.json({
                     err: 0,
-                    msg: '登录成功'
+                    msg: '登录成功',
+                    user: user
                 });
             }
         });

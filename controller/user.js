@@ -133,9 +133,16 @@ exports.allAgency = function(req, res) {
     
     User.find({})
         .exec((users,err) => {
-            
-        })
-    return res.json({
-        err: 0
-    })
+            if(err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                });
+            } else {
+                return res.json({
+                    err: 0,
+                    users: users
+                });
+            }
+        });
 };

@@ -48,28 +48,15 @@ const dataSource = [{
     comment: '无'
 }];
 
-const SearchInput = React.createClass({
-    getInitialState() {
-        return {
+class SearchInput extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             value: '',
-            focus: false,
-        };
-    },
-    handleInputChange(e) {
-        this.setState({
-            value: e.target.value,
-        });
-    },
-    handleFocusBlur(e) {
-        this.setState({
-            focus: e.target === document.activeElement,
-        });
-    },
-    handleSearch() {
-        if (this.props.onSearch) {
-            this.props.onSearch(this.state.value);
+            focus: false
         }
-    },
+    }
+    
     render() {
         const { style, size, placeholder } = this.props;
         const btnCls = classNames({
@@ -80,6 +67,7 @@ const SearchInput = React.createClass({
             'ant-search-input': true,
             'ant-search-input-focus': this.state.focus,
         });
+        
         return (
             <div className="ant-search-input-wrapper" style={style}>
                 <InputGroup className={searchCls}>
@@ -92,8 +80,28 @@ const SearchInput = React.createClass({
                 </InputGroup>
             </div>
         );
-    },
-});
+    }
+    
+    handleInputChange(e) {
+        this.setState({
+            value: e.target.value,
+        });
+    }
+    
+    handleFocusBlur(e) {
+        this.setState({
+            focus: e.target === document.activeElement,
+        });
+    }
+    
+    handleSearch() {
+        if (this.props.onSearch) {
+            this.props.onSearch(this.state.value);
+        }
+    }
+    
+}
+
 
 export default class ClientBox extends React.Component {
     constructor(props) {

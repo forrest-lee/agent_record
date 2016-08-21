@@ -112,7 +112,7 @@ exports.logout = function (req, res) {
 /**
  * 中间件: 判断是否登录
  */
-exports.isLogined  = function (req, res, next) {
+exports.isLogined = function (req, res, next) {
     if (req.isAuthenticated()) {
         console.log('已经登录');
         next();
@@ -120,4 +120,22 @@ exports.isLogined  = function (req, res, next) {
         console.log('没有登录');
         return res.redirect('/');
     }
+};
+
+
+/**
+ * 查看代理列表(只有管理员可以看)
+ * @param req
+ * @param res
+ */
+exports.allAgency = function(req, res) {
+    console.log(req.user);
+    
+    User.find({})
+        .exec((users,err) => {
+            
+        })
+    return res.json({
+        err: 0
+    })
 };

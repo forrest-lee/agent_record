@@ -40,7 +40,7 @@ class Login extends React.Component {
                     </div>
 
                     <div style={{marginTop: 20}}>
-                        <Form horizontal onSubmit={this.handleSubmit}>
+                        <Form horizontal>
                             <FormItem
                                 label="账户"
                                 labelCol={{ span: 4 }}
@@ -68,7 +68,13 @@ class Login extends React.Component {
                                 </Col>
 
                                 <Col span={14}>
-                                    <Button type="primary" htmlType="submit" style={{float: 'right'}}>登录</Button>
+                                    <Button
+                                        type="primary"
+                                        style={{float: 'right'}}
+                                        onClick={this.handleSubmit.bind(this)}
+                                    >
+                                        登录
+                                    </Button>
                                 </Col>
                             </Row>
                         </Form>

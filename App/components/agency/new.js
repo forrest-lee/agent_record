@@ -162,7 +162,6 @@ class NewClient extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
-            console.log(values);
             
             $.ajax({
                 type:    'POST',

@@ -49,58 +49,32 @@ class Information extends React.Component {
             wrapperCol: { span: 20 }
         };
 
-        const commentFormLayout = {
-            labelCol: { span: 2 },
-            wrapperCol: { span: 22 }
-        };
-
-        const uploadProps = {
-            name: 'file',
-            action: '/upload',
-            headers: {
-                authorization: 'files',
-            },
-            onChange(info) {
-                if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
-                }
-                if (info.file.status === 'done') {
-                    message.success(`${info.file.name} 上传成功。`);
-                } else if (info.file.status === 'error') {
-                    message.error(`${info.file.name} 上传失败。`);
-                }
-            },
-        };
+        
     
         const typeProps = getFieldProps('role', {
             rules:   [
                 {required: true, message: '请选择代理类别'}
-            ],
-            trigger: ['onBlur', 'onChange']
+            ]
         });
         const nameProps = getFieldProps('name', {
             rules: [
                 {required: true, min: 2, message: '请填写客户姓名(至少两个字)'},
-            ],
-            trigger: ['onBlur', 'onChange']
+            ]
         });
         const mobileProps = getFieldProps('mobile', {
             rules: [
                 {required: true, len: 11, message: '手机号必须为11位'},
-            ],
-            trigger: ['onBlur', 'onChange']
+            ]
         });
         const qqProps = getFieldProps('qq', {
             rules: [
                 {required: true, message: '请填写QQ号'},
-            ],
-            trigger: ['onBlur', 'onChange']
+            ]
         });
         const schoolProps = getFieldProps('school', {
             rules: [
                 {required: true, message: '请填写学校名称'}
-            ],
-            trigger: ['onBlur', 'onChange']
+            ]
         });
 
         return (

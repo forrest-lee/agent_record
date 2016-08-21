@@ -2,7 +2,7 @@
  * Created by leo on 8/22/16.
  */
 import React from 'react';
-import { Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification } from 'antd';
+import { Icon, Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification } from 'antd';
 const FormItem = Form.Item;
 const Dragger  = Upload.Dragger;
 
@@ -24,6 +24,24 @@ class Attachment extends React.Component {
             borderBox: cx({
                 'border-container': true
             })
+        };
+    
+        const uploadProps = {
+            name: 'file',
+            action: '/upload',
+            headers: {
+                authorization: 'files',
+            },
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                    console.log(info.file, info.fileList);
+                }
+                if (info.file.status === 'done') {
+                    message.success(`${info.file.name} 上传成功。`);
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} 上传失败。`);
+                }
+            },
         };
         
         return (

@@ -29,7 +29,7 @@ apiUserRouter.get('/all', userCtrl.allAgency);
 
 // 借款资料
 var apiInfoRouter = express.Router();
-apiInfoRouter.get('/new', uploadCtrl.newInfo);
+apiInfoRouter.post('/new', uploadCtrl.newInfo);
 
 
 /**
@@ -38,6 +38,7 @@ apiInfoRouter.get('/new', uploadCtrl.newInfo);
 var apiRouter = express.Router();
 apiRouter.use('/qiniu', qiniuApiRouter);
 apiRouter.use('/user', apiUserRouter);
+apiRouter.use('/information', apiInfoRouter);
 
 
 router.use('/user', userRouter);

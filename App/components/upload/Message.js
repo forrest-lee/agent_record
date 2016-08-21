@@ -54,6 +54,11 @@ class Message extends React.Component {
                 'border-container': true
             })
         };
+    
+        const commentFormLayout = {
+            labelCol: { span: 2 },
+            wrapperCol: { span: 22 }
+        };
         
         return (
             <div>
@@ -72,7 +77,6 @@ class Message extends React.Component {
                         >
                             <Select
                                 id="select" size="large" style={{ width: 200 }}
-                                onChange={this.handleStatusChange.bind(this)}
                                 placeholder='请选择'
                             >
                                 <Option value="1">通过</Option>

@@ -2,7 +2,7 @@
  * Created by leo on 8/16/16.
  */
 'use strict';
-import Information from '../models/Information';
+var Information = require('../models/Information');
 
 /**
  * 新建借款资料

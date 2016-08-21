@@ -37,6 +37,6 @@ apiRouter.use('/user', apiUserRouter);
 
 
 router.use('/user', userRouter);
-router.user('/apiv1', userCtrl.isLogined, apiRouter);
+router.use('/apiv1', userCtrl.isLogined, apiRouter);
 
 module.exports = router;

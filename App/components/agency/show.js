@@ -111,6 +111,20 @@ export default class ClientBox extends React.Component {
         }
     }
     
+    componentDidMount() {
+        $.ajax({
+            type: 'GET',
+            url: '/apiv1/user/all',
+            success: function(res) {
+                console.log(res);
+            },
+            error: function(res) {
+                console.error(res);
+            }
+            
+        })
+    }
+    
     render() {
         if(this.state.loading) {
             return <Spin />;

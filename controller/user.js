@@ -131,8 +131,10 @@ exports.isLogined = function (req, res, next) {
 exports.allAgency = function(req, res) {
     console.log(req.user);
     
+    // TODO: 权限验证, 只有管理员有权(中间件也需要加)
+    
     User.find({})
-        .exec((users,err) => {
+        .exec((err, users) => {
             if(err) {
                 return res.json({
                     err: 1,

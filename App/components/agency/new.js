@@ -181,6 +181,7 @@ class NewClient extends React.Component {
                             message:     'Success',
                             description: res.msg
                         });
+                        window.location.hash = 'agency/all';
                     } else {
                         notification.error({
                             message:     'Error',

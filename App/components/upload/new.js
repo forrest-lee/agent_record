@@ -69,6 +69,8 @@ class Information extends React.Component {
                 {required: true, message: '请填写学校名称'}
             ]
         });
+        
+        console.log(this.props.information);
 
         return (
             <div>
@@ -82,7 +84,8 @@ class Information extends React.Component {
                                     label="姓名"
                                     hasFeedback
                                 >
-                                    <Input {...nameProps} placeholder="姓名" />
+                                    <Input {...nameProps} placeholder="姓名"
+                                           value={this.props.information.name || ''}/>
                                 </FormItem>
 
                                 <FormItem
@@ -90,7 +93,7 @@ class Information extends React.Component {
                                     label="学校"
                                     hasFeedback
                                     >
-                                    <Input {...schoolProps} placeholder="学校" />
+                                    <Input {...schoolProps} placeholder="学校" value={this.props.information.school || ''}/>
                                 </FormItem>
     
                                 <FormItem
@@ -98,7 +101,7 @@ class Information extends React.Component {
                                     label="备注"
                                     hasFeedback
                                 >
-                                    <Input {...getFieldProps('comment')} placeholder="备注" />
+                                    <Input {...getFieldProps('comment')} placeholder="备注" value={this.props.information.comment || ''}/>
                                 </FormItem>
                             </Col>
 
@@ -108,7 +111,7 @@ class Information extends React.Component {
                                     label="手机号"
                                     hasFeedback
                                 >
-                                    <Input {...mobileProps} type="mobile" placeholder='请输入手机号' />
+                                    <Input {...mobileProps} type="mobile" placeholder='请输入手机号' value={this.props.information.mobile || ''}/>
                                 </FormItem>
 
                                 <FormItem
@@ -116,7 +119,7 @@ class Information extends React.Component {
                                     label="QQ号"
                                     hasFeedback
                                 >
-                                    <Input {...qqProps} type="qq" placeholder='请输入QQ号' />
+                                    <Input {...qqProps} type="qq" placeholder='请输入QQ号' value={this.props.information.qq || ''}/>
                                 </FormItem>
                             </Col>
                             

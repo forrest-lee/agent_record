@@ -51,11 +51,10 @@ class UploadBox extends React.Component {
             return <Spin />;
         }
         
-        console.log(this.state.information);
         
         return (
             <div>
-                <InfoForm/>
+                <InfoForm information={this.state.information}/>
                 <Attachment/>
                 <Message/>
             </div>

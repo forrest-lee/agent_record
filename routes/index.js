@@ -5,10 +5,11 @@ var userCtrl = require('../controller/user');
 var qiniuCtrl = require('../controller/qiniu');
 var uploadCtrl = require('../controller/upload');
 
-
-/* GET home page. */
+/**
+ * Home
+ */
 router.get('/', homeCtrl.index);
-//router.get('/app', userCtrl.isLogined, homeCtrl.index);
+
 
 var userRouter = express.Router();
 userRouter.post('/signup', userCtrl.signup);
@@ -16,12 +17,26 @@ userRouter.post('/login', userCtrl.login);
 userRouter.post('/logout', userCtrl.logout);
 
 
-//qiniu
+
+
 var qiniuApiRouter = express.Router();
 qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 
 
+var apiUserRouter = express.Router();
+apiUserRouter.get('/all', userCtrl.allAgency);
+
+
+
+/**
+ * apiv1
+ */
+var apiRouter = express.Router();
+apiRouter.use('/qiniu', qiniuApiRouter);
+apiRouter.use('/user', apiUserRouter);
+
+
 router.use('/user', userRouter);
-router.use('/qiniu', userCtrl.isLogined, qiniuApiRouter);
+router.user('/apiv1', userCtrl.isLogined, apiRouter);
 
 module.exports = router;

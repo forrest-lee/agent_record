@@ -134,8 +134,6 @@ class ClientBox extends React.Component {
             return <Spin />;
         }
         
-        console.log(this.props.infos);
-        
         return (
             <div>
                 <div>

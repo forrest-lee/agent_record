@@ -44,7 +44,7 @@ class Login extends React.Component {
             <div>
                 <div className={styles.loginContainer}>
                     <div style={{textAlign: 'center'}}>
-                        <h1>小微学贷</h1>
+                        <h1>优贷录件系统</h1>
                     </div>
 
                     <div style={{marginTop: 20}}>

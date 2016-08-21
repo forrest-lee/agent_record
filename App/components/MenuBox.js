@@ -41,7 +41,7 @@ class MenuBox extends Component {
             <Menu
                 onClick={this.handleClick}
                 style={{ width: 240 }}
-                defaultOpenKeys={['sub1', 'sub2']}
+                defaultOpenKeys={['sub0', 'sub1', 'sub2', 'sub3']}
                 selectedKeys={[this.state.current]}
                 mode="inline"
             >

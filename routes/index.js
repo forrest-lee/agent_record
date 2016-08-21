@@ -29,6 +29,7 @@ apiUserRouter.get('/all', userCtrl.allAgency);
 
 // 借款资料
 var apiInfoRouter = express.Router();
+apiInfoRouter.get('/:id', uploadCtrl.detail);
 apiInfoRouter.post('/new', uploadCtrl.newInfo);
 
 

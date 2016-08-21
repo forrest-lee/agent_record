@@ -13,7 +13,7 @@ var webpackConfig = require('./webpack.config.js');         // 开发环境配�
 gulp.task("webpack", function() {
     return gulp.src('App/**/*.js')
         .pipe(webpack(webpackConfig))
-        .pipe(gulp.dest('./public/javascripts'));
+        .pipe(gulp.dest('./public/js'));
 });
 
 

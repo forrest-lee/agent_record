@@ -38,4 +38,28 @@ exports.newInfo = function(req, res) {
 };
 
 
+exports.detail = function(req, res) {
+    var id = req.params.id;
+    Information.find({_id: id})
+        .exec((err, info) => {
+            if(err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                })
+            } else if(!info) {
+                return res.json({
+                    err: 1,
+                    msg: '404 not found'
+                })
+            } else {
+                console.log(info);
+                return res.json({
+                    err: 0,
+                    information: info
+                })
+            }
+        });
+};
+
 

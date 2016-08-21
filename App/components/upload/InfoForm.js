@@ -93,8 +93,8 @@ class Information extends React.Component {
                                         {...typeProps}
                                         placeholder='请选择'
                                     >
-                                        <Option value="information">借款资料</Option>
-                                        <Option value="contract">借款合同</Option>
+                                        <Select.Option value="information">借款资料</Select.Option>
+                                        <Select.Option value="contract">借款合同</Select.Option>
                                     </Select>
                                 </FormItem>
 

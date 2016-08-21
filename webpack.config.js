@@ -1,9 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var nodeEnv = process.env.NODE_ENV || 'development';
+var isProd = nodeEnv === 'production';
 
 module.exports = {
-    //devtool: 'eval',    // webpack --devtool eval
+    devtool: isProd ? 'cheap-module-source-map' : 'eval',    // webpack --devtool eval
     entry: {
         app: './App/index.js'
     },
@@ -42,15 +44,27 @@ module.exports = {
         ]
     },
     babel: {
-        plugins: ['antd', {
-            style: 'css', // if true, use less
-        }]
+        plugins: [
+            {
+                libraryName: "antd",
+                libraryDirectory: "lib",   // default: lib
+                style: true,
+            },
+            {
+                libraryName: "antd-mobile",
+                libraryDirectory: "component",
+            },
+        ]
     },
     plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: false
+        }),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"development"',
-            DEVELOPMENT: true,
-            DEBUG: true
+            'process.env': { NODE_ENV: JSON.stringify(nodeEnv) }
         })
     ]
 };

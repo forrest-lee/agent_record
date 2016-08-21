@@ -2,15 +2,7 @@
  * Created by leo on 8/15/16.
  */
 import React from 'react';
-import {
-    Form,
-    Input,
-    Button,
-    Checkbox,
-    Row,
-    Col,
-    notification
-} from 'antd';
+import { Form, Input, Button, Checkbox, Row, Col, notification } from 'antd';
 const FormItem = Form.Item;
 
 import classNames from 'classnames';

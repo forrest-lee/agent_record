@@ -67,7 +67,7 @@ import Register from './components/user/Register';
 import ShowAgency from './components/agent/show';
 import NewAgency from './components/agent/new';
 import ShowClient from './components/client/show';
-import Information from './components/upload/Infomation';   // 借款资料上传
+import Information from './components/upload/InfoForm';   // 借款资料上传
 import NotificationBox from './components/NotificationBox';
 
 import useBasename from 'history/lib/useBasename';
@@ -94,6 +94,10 @@ ReactDOM.render(
             
                     <Route path='upload' component={MainBox} >
                         <Route path='information' component={Information} />
+                    </Route>
+    
+                    <Route path='information' component={MainBox} >
+                        <Route path=':id' component={Information} />
                     </Route>
             
                     <Route path='notification' component={MainBox} >

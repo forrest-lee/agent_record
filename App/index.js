@@ -30,13 +30,31 @@ const store = createStoreWithMiddleware(homeReducer, window.devToolsExtension ? 
 function checkAuth(nextState, replace) {
     let { user } = store.getState();
     
-    if(!user.name) {
-        replace({
-            pathname: '/',
-            state: { nextPathname: nextState.location.pathname }
-        });
+    //if(!user.name) {
+    //    replace({
+    //        pathname: '/',
+    //        state: { nextPathname: nextState.location.pathname }
+    //    });
+    //}
+    
+    if (nextState.location.pathname !== '/notification/all') {
+        if (user.name) {
+            if (nextState.location.state && nextState.location.pathname) {
+                replace(nextState.location.pathname);
+            } else {
+                replace('/');
+            }
+        }
+    } else {
+        // If the user is already logged in, forward them to the homepage
+        if (!user.name) {
+            if (nextState.location.state && nextState.location.pathname) {
+                replace(nextState.location.pathname);
+            } else {
+                replace('/');
+            }
+        }
     }
-    console.log(user.username);
 }
 
 
@@ -68,26 +86,26 @@ ReactDOM.render(
             onUpdate={() => window.scrollTo(0, 0)}
         >
             <Router history={withBasename(browserHistory, __dirname)}>
-                <Route path='/' component={AppBox} >
+                <Route path='/' component={AppBox} onEnter={checkAuth}>
                     <IndexRoute component={Login} />
             
-                    <Route path='login' component={Login} onEnter={checkAuth}/>
+                    <Route path='login' component={Login} />
                     <Route path='register' component={Register} />
             
-                    <Route path='upload' component={MainBox} onEnter={checkAuth}>
+                    <Route path='upload' component={MainBox} >
                         <Route path='information' component={Information} />
                     </Route>
             
-                    <Route path='notification' component={MainBox} onEnter={checkAuth}>
+                    <Route path='notification' component={MainBox} >
                         <Route path='all' component={NotificationBox} />
                     </Route>
             
-                    <Route path='client' component={MainBox} onEnter={checkAuth}>
+                    <Route path='client' component={MainBox} >
                         <Route path='all' component={ShowClient} />
                     </Route>
             
                     <Redirect from="agency" to="/agency/all"/>
-                    <Route path='agency' component={MainBox} onEnter={checkAuth}>
+                    <Route path='agency' component={MainBox} >
                         <Route path='all' component={ShowAgency} />
                         <Route path='new' component={NewAgency} />
                     </Route>

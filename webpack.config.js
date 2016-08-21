@@ -44,17 +44,9 @@ module.exports = {
         ]
     },
     babel: {
-        plugins: [
-            {
-                libraryName: "antd",
-                libraryDirectory: "lib",   // default: lib
-                style: true,
-            },
-            {
-                libraryName: "antd-mobile",
-                libraryDirectory: "component",
-            },
-        ]
+        plugins: ['antd', {
+            style: 'css', // if true, use less
+        }]
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({

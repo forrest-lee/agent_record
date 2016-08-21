@@ -8,7 +8,7 @@ let initialState = [];
 let agency = (state = initialState, action) => {
     switch(action.type) {
         case 'SET_AGENCY':
-            return [...action.agencies];
+            return [...action.agent];
         default:
             return state;
     }

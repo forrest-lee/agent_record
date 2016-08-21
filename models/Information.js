@@ -5,6 +5,8 @@ var mongoose = require('mongoose'),
 var TransactionSchema = new mongoose.Schema({
     title: String,
     agentId: { type: ObjectId, ref: 'User'},
+    agentName: {type: String},
+    
 
     createAt: Date,
     updateAt: Date

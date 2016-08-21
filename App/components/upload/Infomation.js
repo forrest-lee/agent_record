@@ -254,13 +254,38 @@ class Information extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.form.validateFields((errors, values) => {
-            if (!!errors) {
-                console.log('Errors in form!!!');
-                return;
+        if (!!errors) {
+            console.log('Errors in form!!!');
+            return;
+        }
+    
+        $.ajax({
+            type:    'POST',
+            url:     '/apiv1/loanForm/new',
+            data:    {
+                
+                comment:  values.comment
+            },
+            success: function (res) {
+                if(res.err == 0) {
+                    notification.success({
+                        message:     'Success',
+                        description: res.msg
+                    });
+                    window.location.hash = 'agent/all';
+                } else {
+                    notification.error({
+                        message:     'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error:   function (err) {
+                notification.error({
+                    message:     'Error',
+                    description: res.msg
+                });
             }
-            console.log('Submit!!!');
-            console.log(values);
         });
     }
 

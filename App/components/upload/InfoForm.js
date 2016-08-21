@@ -205,35 +205,40 @@ class Information extends React.Component {
             
             console.log(values);
             
-            //$.ajax({
-            //    type: 'POST',
-            //    url:  '/apiv1/information/new',
-            //    data: {
-            //
-            //    },
-            //    success: (res) => {
-            //        if (res.err == 0) {
-            //
-            //            notification.success({
-            //                message: 'Success',
-            //                description: res.msg
-            //            });
-            //
-            //            window.location.hash = 'notification/all';
-            //        } else {
-            //            notification.error({
-            //                message: 'Error',
-            //                description: res.msg
-            //            });
-            //        }
-            //    },
-            //    error: function (err) {
-            //        notification.error({
-            //            message: '网络错误',
-            //            description: '如果该问题重复出现请联系客服人员'
-            //        });
-            //    }
-            //})
+            $.ajax({
+                type: 'POST',
+                url:  '/apiv1/information/new',
+                data: {
+                    type: values.type,
+                    mobile: values.mobile,
+                    name: values.name,
+                    qq: values.qq,
+                    school: values.school,
+                    comment: values.comment
+                },
+                success: (res) => {
+                    if (res.err == 0) {
+
+                        notification.success({
+                            message: 'Success',
+                            description: res.msg
+                        });
+
+                        window.location.hash = 'information/' + res.information._id;
+                    } else {
+                        notification.error({
+                            message: 'Error',
+                            description: res.msg
+                        });
+                    }
+                },
+                error: function (err) {
+                    notification.error({
+                        message: '网络错误',
+                        description: '如果该问题重复出现请联系客服人员'
+                    });
+                }
+            })
         });
     };
 }

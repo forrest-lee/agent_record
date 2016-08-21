@@ -1,26 +1,32 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
+    Schema   = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
 var TransactionSchema = new mongoose.Schema({
-    title: String,
-    agentId: { type: ObjectId, ref: 'User'},
+    title:     String,
+    agentId:   {type: ObjectId, ref: 'User'},
     agentName: {type: String},
     
-
+    mobile:  String,
+    name:    String,
+    qq:      String,
+    school:  String,
+    comment: String,
+    
+    
     createAt: Date,
     updateAt: Date
-}, {collection: 'transaction'});
+}, {collection: 'Information'});
 
 
-TransactionSchema.pre('save', function(next) {
-    if (this.isNew){
+TransactionSchema.pre('save', function (next) {
+    if (this.isNew) {
         this.createAt = this.updateAt = Date.now();
-    }else{
+    } else {
         this.updateAt = Date.now();
     }
     next();
 });
 
 
-module.exports = mongoose.model('transaction', TransactionSchema);
+module.exports = mongoose.model('Information', TransactionSchema);

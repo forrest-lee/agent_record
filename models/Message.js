@@ -25,4 +25,4 @@ MessageSchema.pre('save', function(next) {
 });
 
 
-module.exports = mongoose.model('message', MessageSchema);
+module.exports = mongoose.model('Message', MessageSchema);

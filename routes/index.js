@@ -18,14 +18,18 @@ userRouter.post('/logout', userCtrl.logout);
 
 
 
-
+// 七牛云存储
 var qiniuApiRouter = express.Router();
 qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 
-
+// 用户信息
 var apiUserRouter = express.Router();
 apiUserRouter.get('/all', userCtrl.allAgency);
 
+
+// 借款资料
+var apiInfoRouter = express.Router();
+apiInfoRouter.get('/new', uploadCtrl.newInfo);
 
 
 /**

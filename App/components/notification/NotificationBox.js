@@ -68,12 +68,17 @@ export default class NotificationBox extends React.Component {
         
         return (
             <div>
+                <Button type="primary" onClick={this.newNotification.bind(this)}>发布</Button>
                 
                 <div style={{marginTop: 20}}>
                     <Table dataSource={this.state.notifications} columns={columns} />
                 </div>
             </div>
         )
+    }
+    
+    newNotification() {
+        window.location.hash = 'notification/new';
     }
     
 }

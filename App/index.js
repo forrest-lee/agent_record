@@ -67,7 +67,8 @@ import Register from './components/user/Register';
 import ShowAgency from './components/agent/show';
 import NewAgency from './components/agent/new';
 import ShowClient from './components/client/show';
-import NotificationBox from './components/NotificationBox';
+import NotificationBox from './components/notification/NotificationBox';
+import NewNotification from './components/notification/new';
 import InfoForm from './components/upload/new';   // 借款资料上传
 import InfoDetail from './components/upload/index';
 
@@ -103,6 +104,7 @@ ReactDOM.render(
             
                     <Route path='notification' component={MainBox} >
                         <Route path='all' component={NotificationBox} />
+                        <Route path='new' component={NewNotification} />
                     </Route>
             
                     <Route path='client' component={MainBox} >

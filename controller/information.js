@@ -2,6 +2,7 @@
  * Created by leo on 8/22/16.
  */
 var Information = require('../models/Information');
+var Attachment = require('../models/Attatchment');
 
 /**
  * 新建借款资料
@@ -36,7 +37,11 @@ exports.newInfo = function(req, res) {
     })
 };
 
-
+/**
+ * 借款资料详情
+ * @param req
+ * @param res
+ */
 exports.detail = function(req, res) {
     var id = req.params.id;
     Information.findOne({_id: id})
@@ -60,6 +65,27 @@ exports.detail = function(req, res) {
             }
         });
 };
+
+
+/**
+ * 查寻借款资料下附件信息
+ * @param req
+ * @param res
+ */
+exports.attachments = function(req, res) {
+    Attachment.find({})
+        .exec((err, attaches) => {
+            if(err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                })
+            } else {
+                
+            }
+        })
+};
+
 
 /**
  * 查询所有客户信息

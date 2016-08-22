@@ -125,7 +125,6 @@ class Information extends React.Component {
                                            value={!this.props.information ? '' : this.props.information.qq}/>
                                 </FormItem>
                             </Col>
-                            
                         </Row>
 
 

@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var TransactionSchema = new mongoose.Schema({
+var InformationSchema = new mongoose.Schema({
     title:     String,
     agentId:   {type: ObjectId, ref: 'User'},
     agentName: {type: String},
@@ -19,7 +19,7 @@ var TransactionSchema = new mongoose.Schema({
 }, {collection: 'Information'});
 
 
-TransactionSchema.pre('save', function (next) {
+InformationSchema.pre('save', function (next) {
     if (this.isNew) {
         this.createAt = this.updateAt = Date.now();
     } else {
@@ -29,4 +29,4 @@ TransactionSchema.pre('save', function (next) {
 });
 
 
-module.exports = mongoose.model('Information', TransactionSchema);
+module.exports = mongoose.model('Information', InformationSchema);

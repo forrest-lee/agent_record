@@ -29,7 +29,8 @@ userApiRouter.get('/all', userCtrl.allAgency);
 // 借款资料
 var infoApiRouter = express.Router();
 infoApiRouter.get('/:id', infoCtrl.detail);
-infoApiRouter.get('/:id/attachment', infoCtrl.attachments);
+infoApiRouter.get('/:id/attachments', infoCtrl.attachments);
+infoApiRouter.post('/:id/attachments', infoCtrl.addAttaches);
 infoApiRouter.post('/new', infoCtrl.newInfo);
 
 

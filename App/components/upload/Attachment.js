@@ -39,16 +39,9 @@ class Attachment extends React.Component {
                 }
             }
         });
-        
-        var that = this;
-        if (window.navigator.userAgent.toLowerCase().match(/MicroMessenger/i) == "micromessenger") {
-            $.getScript('https://res.wx.qq.com/open/js/jweixin-1.1.0.js', function () {
-                console.log('run wx');
-                that.initjwx();
-            })
-        } else {
-            this.initqn();
-        }
+    
+        // TODO: 目前没有考虑微信内场景上传图片
+        this.qiniu();
     }
     
     render() {
@@ -110,8 +103,11 @@ class Attachment extends React.Component {
     }
     
     qiniu() {
+        var id = getUrlId('information');
+        
         //引入Plupload 、qiniu.js后
         var uploader = Qiniu.uploader({
+            multi_selection: true,
             runtimes: 'html5,flash,html4',    //上传模式,依次退化
             browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
             uptoken_url: '/token',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
@@ -152,6 +148,34 @@ class Attachment extends React.Component {
                     // var domain = up.getOption('domain');
                     // var res = parseJSON(info);
                     // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
+                    
+                    console.log(info);
+    
+                    var domain     = up.getOption('domain');
+                    var fileinfo   = $.parseJSON(info);
+                    var sourceLink = domain + fileinfo.key;  //获取上传成功后的文件的Url
+                    var csrf       = document.getElementById('csrf').value;
+                    $.ajax({
+                        type:    'POST',
+                        url:     '/apiv1/information/' + id + '/attachments',
+                        data:    {
+                            qiniu: sourceLink,
+                            hashId: fileinfo.key
+                        },
+                        error:   function () {
+                            alert("异常");
+                        },
+                        success: function (obj) {
+                            if (obj.err != 0) {
+                                alert(obj.msg);
+                            }
+                            else {
+                                that.state.pics.unshift(obj.data);
+                                that.state.count += 1 ;
+                                that.setState({count: that.state.count, pics: that.state.pics});
+                            }
+                        }
+                    })
                 },
                 'Error': function(up, err, errTip) {
                     //上传出错时,处理相关的事情

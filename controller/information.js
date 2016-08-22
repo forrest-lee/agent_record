@@ -81,9 +81,22 @@ exports.attachments = function(req, res) {
                     msg: err
                 })
             } else {
-                
+                return res.json({
+                    err: 0,
+                    attaches: attaches
+                });
             }
         })
+};
+
+
+/**
+ * 添加附件
+ * @param req
+ * @param res
+ */
+exports.addAttaches = function(req, res) {
+    
 };
 
 

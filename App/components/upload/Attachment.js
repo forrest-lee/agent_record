@@ -121,8 +121,7 @@ class Attachment extends React.Component {
             runtimes: 'html5',    //上传模式,依次退化
             browse_button: 'pickfiles',
             uptoken_url:   '/apiv1/qiniu/uptoken',
-            unique_names:  false,
-            save_key:      false,
+            unique_names:  true,
             domain:        settings.QN_Domain,
             container:     'qncontainer',
             max_file_size: '800kb',

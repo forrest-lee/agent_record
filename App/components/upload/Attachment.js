@@ -59,10 +59,6 @@ class Attachment extends React.Component {
     
         const uploadProps = {
             name: 'file',
-            action: '/apiv1/information/' + id + '/attachments',
-            headers: {
-                authorization: 'files',
-            },
             multiple: true,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
@@ -101,12 +97,6 @@ class Attachment extends React.Component {
                             <Icon type="upload" /> 选择文件
                         </Button>
                     </div>
-    
-                    {/*<Upload {...uploadProps}>*/}
-                        {/*<Button type="ghost">*/}
-                            {/*<Icon type="upload" /> 点击上传*/}
-                        {/*</Button>*/}
-                    {/*</Upload>*/}
                 </Col>
             </Row>
         );
@@ -114,6 +104,7 @@ class Attachment extends React.Component {
     
     qiniu() {
         var id = getUrlId('information');
+        var that = this;
         
         //引入Plupload 、qiniu.js后
         var uploader = Qiniu.uploader({
@@ -121,7 +112,7 @@ class Attachment extends React.Component {
             runtimes: 'html5',    //上传模式,依次退化
             browse_button: 'pickfiles',
             uptoken_url:   '/apiv1/qiniu/uptoken',
-            unique_names:  true,
+            unique_names:  false,
             domain:        settings.QN_Domain,
             container:     'qncontainer',
             max_file_size: '800kb',
@@ -156,9 +147,43 @@ class Attachment extends React.Component {
                     // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
                     
                     console.log(info);
+    
+                    var domain     = up.getOption('domain');
+                    var fileInfo   = $.parseJSON(info);
+                    var sourceLink = domain + fileInfo.key;  //获取上传成功后的文件的Url
+                    $.ajax({
+                        type:    'POST',
+                        url:     '/apiv1/information/' + id + '/attachments',
+                        data:    {
+                            infoId: id,
+                            filename: info.key,
+                            url: sourceLink,
+                            hashId: fileInfo.key
+                        },
+                        error:   function () {
+                            alert("异常");
+                        },
+                        success: function (res) {
+                            if (res.err == 0) {
+                                notification.success({
+                                    message: 'Success',
+                                    description: res.msg
+                                });
+                            } else {
+                                notification.error({
+                                    message: 'Error',
+                                    description: res.msg
+                                });
+                            }
+                        }
+                    })
                 },
                 'Error': function(up, err, errTip) {
                     //上传出错时,处理相关的事情
+                    notification.error({
+                        message: 'Error',
+                        description: errTip
+                    });
                 },
                 'UploadComplete': function() {
                     //队列文件处理完毕后,处理相关的事情
@@ -167,7 +192,7 @@ class Attachment extends React.Component {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                     // 该配置必须要在 unique_names: false , save_key: false 时才生效
                 
-                    var key = "";
+                    var key = Date.now() + '-' + file.name.toString();
                     // do something with key here
                     return key
                 }

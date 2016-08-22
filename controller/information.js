@@ -95,17 +95,29 @@ exports.attachments = function(req, res) {
  * @param res
  */
 exports.addAttaches = function(req, res) {
-    if (req.files && req.files.codecsv != 'undifined') {
-        var temp_path = req.files.codecsv.path;
-        if (temp_path) {
-            fs.readFile(temp_path, 'utf-8', function(err, content) {
-                //文件的内容
-                console.log('content',content);
-                // 删除临时文件
-                fs.unlink(temp_path);
+    var attach = new Attachment({
+        owner:      req.user._id,
+        userAttachId: req.user._id.toString() + req.body.hashId,
+    
+        filename:   req.body.filename,
+        infoId:     req.body.infoId,
+        url:        req.body.url,
+    });
+    
+    attach.save((err, attach) => {
+        if(err) {
+            return res.json({
+                err: 1,
+                msg: err
             });
+        } else {
+            return res.json({
+                err: 0,
+                attach: attach,
+                msg: 'upload success'
+            })
         }
-    }
+    })
 };
 
 

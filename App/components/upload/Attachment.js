@@ -16,6 +16,7 @@ class Attachment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            fileList: []
         }
     }
     
@@ -102,15 +103,24 @@ class Attachment extends React.Component {
                         </Button>
                     </div>
     
-                    {
-                        this.state.fileList.map((row, index) => {
-                            return (
-                                <div>
-                                    <span>{index}.</span>{row.filename}
+                    <div className='ant-upload-list ant-upload-list-picture'>
+                        {
+                            this.state.fileList.map((item, index) => {
+                                return (
+                                    <div className='ant-upload-list-item ant-upload-list-item-done'>
+                                        <div className='ant-upload-list-item-info'>
+                                            <a className='ant-upload-list-item-thumbnail' href={item.url}>
+                                                <img style={{width:48, height:48, display:'block'}} src={item.url} alt=""/>
+                                            </a>
+                                            <a className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
+                                            <i className='anticon anticon-cross'></i>
+                                        </div>
                                     </div>
-                            );
-                        })
-                    }
+                                );
+                            })
+                        }
+                    </div>
+    
                 </Col>
             </Row>
         );
@@ -171,7 +181,7 @@ class Attachment extends React.Component {
                         url:     '/apiv1/information/' + id + '/attachments',
                         data:    {
                             infoId: id,
-                            filename: info.key,
+                            filename: fileInfo.key,
                             url: sourceLink,
                             hashId: fileInfo.hash
                         },

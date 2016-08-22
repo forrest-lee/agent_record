@@ -6,7 +6,7 @@ var AttachmentSchema = new mongoose.Schema({
     owner:        {type: ObjectId, ref: 'User'},    // 用户ID
     userAttachId: {type: String, unique: true},      //  用户ID + 附件hashID
     
-    filename: String,
+    filename:     String,
     infoId:   {type: ObjectId, ref: 'Information'},
     url:      String,        // 七牛返回的url
     status:   {type: Number, default: 0},       // 用于拓展, 默认为0

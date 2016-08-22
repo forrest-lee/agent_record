@@ -30,29 +30,11 @@ const store = createStoreWithMiddleware(homeReducer, window.devToolsExtension ? 
 function checkAuth(nextState, replace) {
     let { user } = store.getState();
     
-    //if(!user.name) {
-    //    replace({
-    //        pathname: '/',
-    //        state: { nextPathname: nextState.location.pathname }
-    //    });
-    //}
-    
-    if (nextState.location.pathname !== '/notification/all') {
-        if (user.name) {
-            if (nextState.location.state && nextState.location.pathname) {
-                replace(nextState.location.pathname);
-            } else {
-                replace('/');
-            }
-        }
-    } else {
-        // If the user is already logged in, forward them to the homepage
-        if (!user.name) {
-            if (nextState.location.state && nextState.location.pathname) {
-                replace(nextState.location.pathname);
-            } else {
-                replace('/');
-            }
+    if (user.name) {
+        if (nextState.location.state && nextState.location.pathname) {
+            replace(nextState.location.pathname);
+        } else {
+            replace('/');
         }
     }
 }

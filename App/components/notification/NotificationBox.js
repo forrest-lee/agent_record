@@ -68,17 +68,23 @@ export default class NotificationBox extends React.Component {
         
         return (
             <div>
-                <Button type="primary" onClick={this.newNotification.bind(this)}>发布</Button>
+                <Button type="primary" onClick={this.newNotification}>发布</Button>
                 
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={this.state.notifications} columns={columns} />
+                    <Table
+                        dataSource={this.state.notifications} columns={columns}
+                        onRowClick={this.handleRowClick.bind(this)}
+                    />
                 </div>
             </div>
         )
     }
     
-    newNotification() {
+    newNotification = () => {
         window.location.hash = 'notification/new';
-    }
+    };
     
+    handleRowClick = (record, index) => {
+        window.location.hash = '/notification/' + record._id;
+    }
 }

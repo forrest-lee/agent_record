@@ -44,6 +44,7 @@ clientApiRouter.get('/all', infoCtrl.allClient);
 // 通知
 var notiApiRouter = express.Router();
 notiApiRouter.get('/all', notiCtrl.notifications);
+notiApiRouter.get('/:id', notiCtrl.detail);
 notiApiRouter.post('/new', notiCtrl.newNotification);
 
 /**

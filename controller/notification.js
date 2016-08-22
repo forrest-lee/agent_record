@@ -53,3 +53,28 @@ exports.notifications = function(req, res) {
             }
         })
 };
+
+
+/**
+ * 公告详情
+ * @param req
+ * @param res
+ */
+exports.detail = function(req, res) {
+    var id = req.params.id;
+    Notification.findOne({_id: id})
+        .exec((err, notification) => {
+            if(err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                })
+            } else {
+                console.log(notification);
+                return res.json({
+                    err: 0,
+                    notification: notification
+                });
+            }
+        });
+};

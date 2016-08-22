@@ -3,12 +3,13 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var MessageSchema = new mongoose.Schema({
+    infoId: {type: ObjectId, ref: 'Information'},
     content: String,
     typeId: {
         type: Number,
         default: -1
-    },
-    transactionId: ObjectId,
+    },  // 0: 通过, 1: 退回, 2: 否决
+    ownerId: {type: ObjectId, ref: 'User'},
 
     createAt: Date,
     updateAt: Date

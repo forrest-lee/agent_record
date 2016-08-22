@@ -3,12 +3,7 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import {
-    Table,
-    Button,
-    Input,
-    Spin
-} from 'antd';
+import { Table, Button, Input, Spin, notification } from 'antd';
 const InputGroup = Input.Group;
 
 const columns = [{
@@ -39,8 +34,31 @@ export default class NotificationBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: true
         }
+    }
+    
+    componentWillMount() {
+        $.ajax({
+            type: 'GET',
+            url:  '/apiv1/notification/all',
+            success: (res) => {
+                if(res.err == 0) {
+                    this.setState({
+                        notifications: res.notifications,
+                        loading: false
+                    });
+                } else {
+                    console.log(res.msg);
+                }
+            },
+            error: (res) => {
+                notification.error({
+                    message: 'Error',
+                    description: res.msg
+                });
+            }
+        })
     }
     
     render() {
@@ -52,7 +70,7 @@ export default class NotificationBox extends React.Component {
             <div>
                 
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={dataSource} columns={columns} />
+                    <Table dataSource={this.state.notifications} columns={columns} />
                 </div>
             </div>
         )

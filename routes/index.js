@@ -4,6 +4,7 @@ var homeCtrl   = require('../controller/home');
 var userCtrl   = require('../controller/user');
 var qiniuCtrl  = require('../controller/qiniu');
 var infoCtrl   = require('../controller/information');
+var notiCtrl   = require('../controller/notification');
 
 /**
  * Home
@@ -31,6 +32,8 @@ var infoApiRouter = express.Router();
 infoApiRouter.get('/:id', infoCtrl.detail);
 infoApiRouter.get('/:id/attachments', infoCtrl.attachments);
 infoApiRouter.post('/:id/attachments', infoCtrl.addAttaches);
+infoApiRouter.get('/:id/messages', infoCtrl.messages);
+infoApiRouter.post('/:id/messages', infoCtrl.newMessage);
 infoApiRouter.post('/new', infoCtrl.newInfo);
 
 
@@ -38,6 +41,10 @@ infoApiRouter.post('/new', infoCtrl.newInfo);
 var clientApiRouter = express.Router();
 clientApiRouter.get('/all', infoCtrl.allClient);
 
+// 通知
+var notiApiRouter = express.Router();
+notiApiRouter.get('/all', notiCtrl.notifications);
+notiApiRouter.post('/new', notiCtrl.newNotification);
 
 /**
  * apiv1
@@ -47,6 +54,7 @@ apiRouter.use('/qiniu', qiniuApiRouter);
 apiRouter.use('/user', userApiRouter);
 apiRouter.use('/information', infoApiRouter);
 apiRouter.use('/client', clientApiRouter);
+apiRouter.use('/notification', notiApiRouter);
 
 
 router.use('/user', userRouter);

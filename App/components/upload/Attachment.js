@@ -15,6 +15,8 @@ import settings from '../../../settings.js';
 class Attachment extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+        }
     }
     
     componentDidMount() {
@@ -31,8 +33,10 @@ class Attachment extends React.Component {
             },
             success: (res) => {
                 if (res.err == 0) {
-                    //console.log('success res:');
-                    //console.log(res);
+                    console.log(res);
+                    this.setState({
+                        fileList: res.attaches
+                    })
                 } else {
                     notification.error({
                         message: 'Error',
@@ -97,6 +101,16 @@ class Attachment extends React.Component {
                             <Icon type="upload" /> 选择文件
                         </Button>
                     </div>
+    
+                    {
+                        this.state.fileList.map((row, index) => {
+                            return (
+                                <div>
+                                    <span>{index}.</span>{row.filename}
+                                    </div>
+                            );
+                        })
+                    }
                 </Col>
             </Row>
         );
@@ -113,6 +127,7 @@ class Attachment extends React.Component {
             browse_button: 'pickfiles',
             uptoken_url:   '/apiv1/qiniu/uptoken',
             unique_names:  false,
+            save_key:      false,
             domain:        settings.QN_Domain,
             container:     'qncontainer',
             max_file_size: '800kb',
@@ -158,7 +173,7 @@ class Attachment extends React.Component {
                             infoId: id,
                             filename: info.key,
                             url: sourceLink,
-                            hashId: fileInfo.key
+                            hashId: fileInfo.hash
                         },
                         error:   function () {
                             alert("异常");
@@ -192,7 +207,7 @@ class Attachment extends React.Component {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                     // 该配置必须要在 unique_names: false , save_key: false 时才生效
                 
-                    var key = Date.now() + '-' + file.name.toString();
+                    var key = file.name.toString();
                     // do something with key here
                     return key
                 }

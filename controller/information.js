@@ -103,6 +103,7 @@ exports.addAttaches = function(req, res) {
         infoId:     req.body.infoId,
         url:        req.body.url,
     });
+    console.log(attach);
     
     attach.save((err, attach) => {
         if(err) {

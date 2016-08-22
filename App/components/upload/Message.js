@@ -79,9 +79,9 @@ class Message extends React.Component {
                                 id="select" size="large" style={{ width: 200 }}
                                 placeholder='请选择'
                             >
-                                <Option value="1">通过</Option>
-                                <Option value="2">退回</Option>
-                                <Option value="3">否决</Option>
+                                <Select.Option value="1">通过</Select.Option>
+                                <Select.Option value="2">退回</Select.Option>
+                                <Select.Option value="3">否决</Select.Option>
                             </Select>
                         </FormItem>
             

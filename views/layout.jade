@@ -3,9 +3,11 @@ html
     head
         title= title
         link(rel='stylesheet', href='/stylesheets/style.css')
+        script(src='/js/utils.js')
+        script(src='/js/jquery.min.js')
+        script(src='/js/moxie.js')
+        script(src='/js/plupload.dev.js')
+        script(src='/js/qiniu.min.js')
     body
         block content
-        script(src='/js/utils.js')
-        script(src='/js/zepto.js')
-        script(src='/js/qiniu/qiniu.min.js')
         script(src='/js/app.bundle.js')

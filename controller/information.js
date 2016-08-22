@@ -57,7 +57,6 @@ exports.detail = function(req, res) {
                     msg: '404 not found'
                 })
             } else {
-                console.log(info);
                 return res.json({
                     err: 0,
                     information: info
@@ -96,7 +95,17 @@ exports.attachments = function(req, res) {
  * @param res
  */
 exports.addAttaches = function(req, res) {
-    
+    if (req.files && req.files.codecsv != 'undifined') {
+        var temp_path = req.files.codecsv.path;
+        if (temp_path) {
+            fs.readFile(temp_path, 'utf-8', function(err, content) {
+                //文件的内容
+                console.log('content',content);
+                // 删除临时文件
+                fs.unlink(temp_path);
+            });
+        }
+    }
 };
 
 

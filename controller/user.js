@@ -115,10 +115,8 @@ exports.logout = function (req, res) {
  */
 exports.isLogined = function (req, res, next) {
     if (req.isAuthenticated()) {
-        console.log('已经登录');
         next();
     } else {
-        console.log('没有登录');
         return res.redirect('/');
     }
 };

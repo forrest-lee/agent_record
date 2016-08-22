@@ -6,7 +6,7 @@ qiniu.conf.ACCESS_KEY = settings.QN_ACCESS_KEY;
 qiniu.conf.SECRET_KEY = settings.QN_SECRET_KEY;
 
 exports.uptoken = function(req, res){
-    var putPolicy = new qiniu.rs.PutPolicy(settings.QN_PIC_Bucket_Name);
+    var putPolicy = new qiniu.rs.PutPolicy(settings.QN_Bucket_Name);
     var token = putPolicy.token();
-    res.json({uptoken:token});
+    return res.json({uptoken:token});
 };

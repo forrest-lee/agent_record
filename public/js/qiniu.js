@@ -1,12 +1,12 @@
 /*!
- * qiniu-js-sdk v1.0.13-beta
+ * qiniu-js-sdk v1.0.16-beta
  *
  * Copyright 2015 by Qiniu
  * Released under GPL V2 License.
  *
  * GitHub: http://github.com/qiniu/js-sdk
  *
- * Date: 2016-1-26
+ * Date: 2016-5-31
 */
 
 /*global plupload ,mOxie*/
@@ -102,18 +102,25 @@ function QiniuJsSDK() {
 
     function log(type, args){
         var header = "[qiniu-js-sdk]["+type+"]";
+        var msg = header;
+        for (var i = 0; i < args.length; i++) {
+            if (typeof args[i] === "string") {
+                msg += " " + args[i];
+            } else {
+                msg += " " + that.stringifyJSON(args[i]);
+            }
+        }
         if (that.detectIEVersion()) {
             // http://stackoverflow.com/questions/5538972/console-log-apply-not-working-in-ie9
             //var log = Function.prototype.bind.call(console.log, console);
             //log.apply(console, args);
-            var msg = header;
-            for (var i = 0; i < args.length; i++) {
-                msg+=that.stringifyJSON(args[i]);
-            }
             console.log(msg);
         }else{
             args.unshift(header);
             console.log.apply(console, args);
+        }
+        if (document.getElementById('qiniu-js-sdk-log')) {
+            document.getElementById('qiniu-js-sdk-log').innerHTML += '<p>'+msg+'</p>';
         }
     }
 
@@ -150,7 +157,7 @@ function QiniuJsSDK() {
      */
     var qiniuUploadUrls = [
         "http://upload.qiniu.com",
-        "http://up.qiniu.com",
+        "http://up.qiniu.com"
     ];
 
     var changeUrlTimes = 0;
@@ -182,21 +189,8 @@ function QiniuJsSDK() {
      * @return {Boolean} file is a image or not
      */
     this.isImage = function(url) {
-        var res, suffix = "";
-        var imageSuffixes = ["png", "jpg", "jpeg", "gif", "bmp"];
-        var suffixMatch = /\.([a-zA-Z0-9]+)(\?|\@|$)/;
-
-        if (!url || !suffixMatch.test(url)) {
-            return false;
-        }
-        res = suffixMatch.exec(url);
-        suffix = res[1].toLowerCase();
-        for (var i = 0, l = imageSuffixes.length; i < l; i++) {
-            if (suffix === imageSuffixes[i]) {
-                return true;
-            }
-        }
-        return false;
+        url = url.split(/[?#]/)[0];
+        return (/\.(png|jpg|jpeg|gif|bmp)$/i).test(url);
     };
 
     /**
@@ -496,8 +490,8 @@ function QiniuJsSDK() {
             var isSpecialSafari = (mOxie.Env.browser === "Safari" && mOxie.Env.version <= 5 && mOxie.Env.os === "Windows" && mOxie.Env.osVersion === "7") || (mOxie.Env.browser === "Safari" && mOxie.Env.os === "iOS" && mOxie.Env.osVersion === "7");
             // case IE 9-，chunk_size is not empty and flash is included in runtimes
             // set op.chunk_size to zero
-            //if (ie && ie <= 9 && op.chunk_size && op.runtimes.indexOf('flash') >= 0) {
-            if (ie && ie <= 9 && op.chunk_size && op.runtimes.indexOf('flash') < 0) {
+            //if (ie && ie < 9 && op.chunk_size && op.runtimes.indexOf('flash') >= 0) {
+            if (ie && ie < 9 && op.chunk_size && op.runtimes.indexOf('flash') >= 0) {
                 //  link: http://www.plupload.com/docs/Frequently-Asked-Questions#when-to-use-chunking-and-when-not
                 //  when plupload chunk_size setting is't null ,it cause bug in ie8/9  which runs  flash runtimes (not support html5) .
                 op.chunk_size = 0;
@@ -520,25 +514,43 @@ function QiniuJsSDK() {
             // if op.chunk_size set 0 will be cause to direct upload
         };
 
-        // if op.uptoken has no value
-        //      get token from 'uptoken_url'
-        // else
-        //      set token to be op.uptoken
-        var getUpToken = function() {
-            if (!op.uptoken) {
+        // getUptoken maybe called at Init Event or BeforeUpload Event
+        // case Init Event, the file param of getUptken will be set a null value
+        // if op.uptoken has value, set uptoken with op.uptoken
+        // else if op.uptoken_url has value, set uptoken from op.uptoken_url
+        // else if op.uptoken_func has value, set uptoken by result of op.uptoken_func
+        var getUpToken = function(file) {
+            if (op.uptoken) {
+                that.token = op.uptoken;
+                return;
+            } else if (op.uptoken_url) {
+                logger.debug("get uptoken from: ", that.uptoken_url);
                 // TODO: use mOxie
                 var ajax = that.createAjax();
-                ajax.open('GET', that.uptoken_url, true);
+                ajax.open('GET', that.uptoken_url, false);
                 ajax.setRequestHeader("If-Modified-Since", "0");
-                ajax.onreadystatechange = function() {
-                    if (ajax.readyState === 4 && ajax.status === 200) {
-                        var res = that.parseJSON(ajax.responseText);
-                        that.token = res.uptoken;
-                    }
-                };
+                // ajax.onreadystatechange = function() {
+                //     if (ajax.readyState === 4 && ajax.status === 200) {
+                //         var res = that.parseJSON(ajax.responseText);
+                //         that.token = res.uptoken;
+                //     }
+                // };
                 ajax.send();
+                if (ajax.status === 200) {
+                    var res = that.parseJSON(ajax.responseText);
+                    that.token = res.uptoken;
+                    logger.debug("get new uptoken: ", res.uptoken);
+                } else {
+                    logger.error("get uptoken error: ", ajax.responseText);
+                }
+                return;
+            } else if (op.uptoken_func) {
+                logger.debug("get uptoken from uptoken_func");
+                that.token = op.uptoken_func(file);
+                logger.debug("get new uptoken: ", that.token);
+                return;
             } else {
-                that.token = op.uptoken;
+                logger.error("one of [uptoken, uptoken_url, uptoken_func] settings in options is required!");
             }
         };
 
@@ -574,6 +586,10 @@ function QiniuJsSDK() {
 
         if (!op.browse_button) {
             throw 'browse_button setting in options is required!';
+        }
+
+        if (!op.uptoken && !op.uptoken_url && !op.uptoken_func) {
+            throw 'one of [uptoken, uptoken_url, uptoken_func] settings in options is required!';
         }
 
         logger.debug("init uploader start");
@@ -630,12 +646,12 @@ function QiniuJsSDK() {
             logger.debug("Init event activated");
             // if op.get_new_uptoken is not true
             //      invoke getUptoken when uploader init
-            // else 
+            // else
             //      getUptoken everytime before a new file upload
             if(!op.get_new_uptoken){
-                getUpToken();
+                getUpToken(null);
             }
-            getUpToken();
+            //getUpToken(null);
         });
 
         logger.debug("bind Init event");
@@ -649,6 +665,25 @@ function QiniuJsSDK() {
             auto_start = auto_start || (up.settings && up.settings.auto_start);
             logger.debug("auto_start: ", auto_start);
             logger.debug("files: ", files);
+
+            // detect is iOS
+            var is_ios = function (){
+                if(mOxie.Env.OS.toLowerCase()==="ios") {
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+            // if current env os is iOS change file name to [time].[ext]
+            if (is_ios()) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var ext = that.getFileExtension(file.name);
+                    file.name = file.id + "." + ext;
+                }
+            }
+
             if (auto_start) {
                 setTimeout(function(){
                     up.start();
@@ -678,7 +713,7 @@ function QiniuJsSDK() {
             ctx = '';
 
             if(op.get_new_uptoken){
-                getUpToken();
+                getUpToken(file);
             }
 
             var directUpload = function(up, file, func) {

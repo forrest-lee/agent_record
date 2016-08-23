@@ -34,7 +34,6 @@ class Attachment extends React.Component {
             },
             success: (res) => {
                 if (res.err == 0) {
-                    console.log(res);
                     this.setState({
                         fileList: res.attaches
                     })
@@ -60,21 +59,6 @@ class Attachment extends React.Component {
             borderBox: cx({
                 'border-container': true
             })
-        };
-    
-        const uploadProps = {
-            name: 'file',
-            multiple: true,
-            onChange(info) {
-                if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
-                }
-                if (info.file.status === 'done') {
-                    message.success(`${info.file.name} 上传成功。`);
-                } else if (info.file.status === 'error') {
-                    message.error(`${info.file.name} 上传失败。`);
-                }
-            },
         };
         
         return (
@@ -171,8 +155,6 @@ class Attachment extends React.Component {
                     // var res = parseJSON(info);
                     // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
                     
-                    console.log(info);
-    
                     var domain     = up.getOption('domain');
                     var fileInfo   = $.parseJSON(info);
                     var sourceLink = domain + fileInfo.key;  //获取上传成功后的文件的Url

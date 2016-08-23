@@ -52,7 +52,7 @@ import ShowClient from './components/client/show';
 import Notification from './components/notification/detail';
 import NotificationBox from './components/notification/NotificationBox';
 import NewNotification from './components/notification/new';
-import InfoForm from './components/upload/new';   // 借款资料上传
+import InfoForm from './components/upload/InfoForm';   // 借款资料上传
 import InfoDetail from './components/upload/index';
 
 import useBasename from 'history/lib/useBasename';

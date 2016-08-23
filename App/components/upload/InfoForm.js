@@ -27,6 +27,7 @@ let cx = classNames.bind(styles);
 class Information extends React.Component {
     constructor(props) {
         super(props);
+        console.log(this.props.information);
         this.state = {
             information: {
                 name:    !this.props.information ? '' : this.props.information.name,
@@ -58,31 +59,35 @@ class Information extends React.Component {
         const nameProps = getFieldProps('name', {
             rules: [
                 {required: true, message: '请填写客户姓名(至少两个字)'},
-            ]
+            ],
+            initialValue: this.state.information.name
         });
         const mobileProps = getFieldProps('mobile', {
             rules: [
                 {required: true, len: 11, message: '手机号必须为11位'},
             ],
-            trigger: ['onBlur', 'onChange']
+            initialValue: this.state.information.mobile
         });
         const qqProps = getFieldProps('qq', {
             rules: [
                 {required: true, message: '请填写QQ号'},
             ],
-            trigger: ['onBlur', 'onChange']
+            initialValue: this.state.information.qq
         });
         const schoolProps = getFieldProps('school', {
             rules: [
                 {required: true, message: '请填写学校名称'}
             ],
-            trigger: ['onBlur', 'onChange']
+            initialValue: this.state.information.school
         });
         
 
         return (
             <div>
-                <h1>新建: 借款资料上传</h1>
+                {
+                    window.location.hash.indexOf('/upload/') == -1 ? '' :
+                        <h1>新建: 借款资料</h1>
+                }
                 <div style={{ marginTop: 10 }}>
                     <Form horizontal>
                         <Row gutter={10}>
@@ -93,7 +98,6 @@ class Information extends React.Component {
                                     hasFeedback
                                 >
                                     <Input
-                                        defaultValue={this.state.information.name}
                                         placeholder="姓名"
                                         {...nameProps}
                                     />
@@ -106,7 +110,6 @@ class Information extends React.Component {
                                     >
                                     <Input
                                         placeholder="学校"
-                                        defaultValue={this.state.information.school}
                                         {...schoolProps}
                                     />
                                 </FormItem>
@@ -131,7 +134,6 @@ class Information extends React.Component {
                                 >
                                     <Input
                                         placeholder='请输入手机号'
-                                        defaultValue={this.state.information.mobile}
                                         {...mobileProps}
                                     />
                                 </FormItem>
@@ -143,7 +145,6 @@ class Information extends React.Component {
                                 >
                                     <Input
                                         placeholder='请输入QQ号'
-                                        defaultValue={this.state.information.qq}
                                         {...qqProps}
                                     />
                                 </FormItem>
@@ -154,7 +155,7 @@ class Information extends React.Component {
                         <Row>
                             <Col span={12} offset={12} style={{ textAlign: 'right' }}>
                                 {
-                                    window.location.hash.indexOf('/upload/information') == -1 ?
+                                    window.location.hash.indexOf('/upload/') == -1 ?
                                         <Button type="primary">更新</Button> :
                                         <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
                                 }

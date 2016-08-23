@@ -4,7 +4,7 @@
 import React from 'react';
 import { Spin, notification } from 'antd';
 
-import InfoForm from './new';
+import InfoForm from './InfoForm';
 import Attachment from './Attachment';
 import Message from './Message';
 

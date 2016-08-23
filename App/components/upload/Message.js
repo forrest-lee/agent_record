@@ -102,7 +102,7 @@ class Message extends React.Component {
                             {...commentFormLayout}
                         >
                             <Select
-                                id="select" size="large" style={{ width: 200 }}
+                                id="status" size="large" style={{ width: 200 }}
                                 placeholder='请选择'
                             >
                                 <Select.Option value="0">通过</Select.Option>
@@ -116,17 +116,32 @@ class Message extends React.Component {
                             label="备注"
                             {...commentFormLayout}
                         >
-                            <Input type="textarea" id="control-textarea" rows="3" />
+                            <Input type="textarea" id="content" rows="3" />
                         </FormItem>
             
                         <FormItem wrapperCol={{ span: 16, offset: 2 }} style={{ marginTop: 0 }}>
-                            <Button type="primary">提交</Button>
+                            <Button type="primary" onClick={this.submitMsg}>提交</Button>
                         </FormItem>
                     </Form>
                 </div>
             </div>
         );
     }
+    
+    submitMsg = () => {
+        $.ajax({
+            type: 'POST',
+            url: '/apiv1/message/new',
+            success: (res) => {
+                if(res.err == 0) {
+                    
+                }
+            }
+        })
+    };
 }
+
+
+Message = Form.create()(Message);
 
 export default Message;

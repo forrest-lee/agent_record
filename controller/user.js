@@ -140,7 +140,7 @@ exports.allAgency = function(req, res) {
             } else {
                 return res.json({
                     err: 0,
-                    users: users
+                    users: users.filter(item => item.username != req.user.username)
                 });
             }
         });

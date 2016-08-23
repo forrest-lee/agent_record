@@ -79,23 +79,23 @@ class SearchInput extends React.Component {
         );
     }
     
-    handleInputChange(e) {
+    handleInputChange = (e) => {
         this.setState({
             value: e.target.value,
         });
-    }
+    };
     
-    handleFocusBlur(e) {
+    handleFocusBlur = (e) => {
         this.setState({
             focus: e.target === document.activeElement,
         });
-    }
+    };
     
-    handleSearch() {
+    handleSearch = () => {
         if (this.props.onSearch) {
             this.props.onSearch(this.state.value);
         }
-    }
+    };
     
 }
 
@@ -104,7 +104,8 @@ class AgentBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true
+            loading: true,
+            agent: []
         }
     }
     
@@ -115,6 +116,10 @@ class AgentBox extends React.Component {
             success: (res) => {
                 if(res.err == 0) {
                     this.props.agentActions.setAgents(res.users);
+                    this.setState({
+                        loading: false,
+                        agent: res.users
+                    })
                 } else {
                     console.error(res.msg);
                 }
@@ -140,12 +145,16 @@ class AgentBox extends React.Component {
                     <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
                     <SearchInput
                         placeholder="输入姓名查询代理"
-                        onSearch={value => console.log(value)}
                         style={{ width: 200, marginLeft: 10 }}
+                        onSearch={value => {
+                            this.setState({
+                                agent: this.state.agent.filter(item => item.username.indexOf(value) >= 0)
+                            });
+                        }}
                     />
                 </div>
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={this.props.agent} columns={columns} />
+                    <Table dataSource={this.state.agent} columns={columns} />
                 </div>
             </div>
         )

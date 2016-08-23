@@ -1,4 +1,5 @@
 import React from 'react';
+import dateformat from 'dateformat';
 import classNames from 'classnames';
 
 import { bindActionCreators } from 'redux';
@@ -13,15 +14,16 @@ const columns = [{
     title: '标题',
     dataIndex: 'title',
     key: 'title',
-    render: (text, record) => <a href={'/#/information/' + record._id}>{text}</a>,
+    render: (value, record) => <a href={'/#/information/' + record._id}>{value}</a>,
 }, {
     title: '手机号',
     dataIndex: 'mobile',
     key: 'mobile'
 }, {
-    title: '更新时间',
+    title:     '更新时间',
     dataIndex: 'updateAt',
-    key: 'updateAt'
+    key:       'updateAt',
+    render:    (value, record) => <span>{dateformat(value, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
     title: '提交人',
     dataIndex: 'agentName',
@@ -30,7 +32,23 @@ const columns = [{
     title: '操作',
     dataIndex: 'status',
     key: 'status',
-    render: (text, record) => {
+    filters: [{
+        text: '待审核',
+        value: '0',
+    }, {
+        text: '已通过',
+        value: '1',
+    }, {
+        text: '已否决',
+        value: '2',
+    }, {
+        text: '已退回',
+        value: '3',
+    }],
+    filterMultiple: true,
+    onFilter: (value, record) => record.status == value,
+    sorter: (a, b) => a.status - b.status,
+    render: (value, record) => {
         let status;
         let menu = (
             <Menu onSelect={(item) => {

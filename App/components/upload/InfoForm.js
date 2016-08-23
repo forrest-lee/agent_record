@@ -2,20 +2,7 @@
  * Created by leo on 8/15/16.
  */
 import React from 'react';
-import {
-    Table,
-    Form,
-    Input,
-    Button,
-    Checkbox,
-    Select,
-    Row,
-    Col,
-    Upload,
-    Icon,
-    message,
-    notification
-} from 'antd';
+import { Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, Icon, message, notification } from 'antd';
 const FormItem = Form.Item;
 const Dragger = Upload.Dragger;
 

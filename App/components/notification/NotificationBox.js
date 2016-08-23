@@ -2,33 +2,27 @@
  * Created by leo on 8/15/16.
  */
 import React from 'react';
+import dateformat from 'dateformat';
 import classNames from 'classnames';
-import { Table, Button, Input, Spin, notification } from 'antd';
+import { Table, Button, Input, Spin, Icon, notification } from 'antd';
 const InputGroup = Input.Group;
 
 const columns = [{
     title: '公告标题',
     dataIndex: 'title',
-    key: 'title'
+    key: 'title',
+    render: (text, record) => <a href={'/#/notification/' + record._id}>{text}</a>
 }, {
     title: '发布时间',
     dataIndex: 'updateAt',
-    key: 'updateAt'
+    key: 'updateAt',
+    render: (text, record) => <span>{dateformat(text, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
     title: '发布人',
     dataIndex: 'owner',
     key: 'owner'
 }];
 
-const dataSource = [{
-    title: '全体请注意',
-    updateAt: '2016-08-11 18:42',
-    owner: '人人花1',
-}, {
-    title: '新手须知',
-    updateAt: '2016-08-11 15:19',
-    owner: '人人花1'
-}];
 
 export default class NotificationBox extends React.Component {
     constructor(props) {
@@ -68,12 +62,13 @@ export default class NotificationBox extends React.Component {
         
         return (
             <div>
-                <Button type="primary" onClick={this.newNotification}>发布</Button>
+                <Button type="primary" onClick={this.newNotification}>
+                    写公告<Icon type="edit" />
+                </Button>
                 
                 <div style={{marginTop: 20}}>
                     <Table
                         dataSource={this.state.notifications} columns={columns}
-                        onRowClick={this.handleRowClick.bind(this)}
                     />
                 </div>
             </div>

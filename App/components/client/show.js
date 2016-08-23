@@ -138,23 +138,23 @@ class SearchInput extends React.Component {
         );
     }
     
-    handleInputChange(e) {
+    handleInputChange = (e) => {
         this.setState({
             value: e.target.value,
         });
-    }
+    };
     
-    handleFocusBlur(e) {
+    handleFocusBlur = (e) => {
         this.setState({
             focus: e.target === document.activeElement,
         });
-    }
+    };
     
-    handleSearch() {
+    handleSearch = () => {
         if (this.props.onSearch) {
             this.props.onSearch(this.state.value);
         }
-    }
+    };
     
 }
 

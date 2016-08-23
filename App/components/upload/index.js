@@ -17,7 +17,14 @@ class UploadBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true
+            loading:     true,
+            information: {
+                name:    '',
+                mobile:  '',
+                school:  '',
+                qq:      '',
+                comment: ''
+            }
         }
     }
     
@@ -25,21 +32,21 @@ class UploadBox extends React.Component {
         var id = getUrlId('information');
         
         $.ajax({
-            type: 'GET',
-            url:  '/apiv1/information/' + id,
+            type:    'GET',
+            url:     '/apiv1/information/' + id,
             success: (res) => {
-                if(res.err == 0) {
+                if (res.err == 0) {
                     this.setState({information: res.information, loading: false});
                 } else {
                     notification.success({
-                        message: 'Error',
+                        message:     'Error',
                         description: res.msg
                     });
                 }
             },
-            error: (res) => {
+            error:   (res) => {
                 notification.error({
-                    message: '网络错误',
+                    message:     '网络错误',
                     description: '如果该问题重复出现请联系客服人员'
                 });
             }
@@ -47,7 +54,7 @@ class UploadBox extends React.Component {
     }
     
     render() {
-        if(this.state.loading) {
+        if (this.state.loading) {
             return <Spin />;
         }
         

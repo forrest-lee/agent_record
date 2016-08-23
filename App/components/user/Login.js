@@ -2,7 +2,7 @@
  * Created by leo on 8/10/16.
  */
 import React from 'react';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, createStore, combineReducers, applyMiddleware } from 'redux';
 import { connect } from 'react-redux';
 
 import { Form, Input, Button, Checkbox, Row, Col, notification } from 'antd';

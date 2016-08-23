@@ -28,7 +28,13 @@ class Information extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            information: {
+                name:    !this.props.information ? '' : this.props.information.name,
+                mobile:  !this.props.information ? '' : this.props.information.mobile,
+                school:  !this.props.information ? '' : this.props.information.school,
+                qq:      !this.props.information ? '' : this.props.information.qq,
+                comment: !this.props.information ? '' : this.props.information.comment
+            }
         }
     }
 
@@ -51,23 +57,26 @@ class Information extends React.Component {
 
         const nameProps = getFieldProps('name', {
             rules: [
-                {required: true, min: 2, message: '请填写客户姓名(至少两个字)'},
+                {required: true, message: '请填写客户姓名(至少两个字)'},
             ]
         });
         const mobileProps = getFieldProps('mobile', {
             rules: [
                 {required: true, len: 11, message: '手机号必须为11位'},
-            ]
+            ],
+            trigger: ['onBlur', 'onChange']
         });
         const qqProps = getFieldProps('qq', {
             rules: [
                 {required: true, message: '请填写QQ号'},
-            ]
+            ],
+            trigger: ['onBlur', 'onChange']
         });
         const schoolProps = getFieldProps('school', {
             rules: [
                 {required: true, message: '请填写学校名称'}
-            ]
+            ],
+            trigger: ['onBlur', 'onChange']
         });
         
 
@@ -83,8 +92,11 @@ class Information extends React.Component {
                                     label="姓名"
                                     hasFeedback
                                 >
-                                    <Input {...nameProps} placeholder="姓名"
-                                           value={!this.props.information ? '' : this.props.information.name}/>
+                                    <Input
+                                        defaultValue={this.state.information.name}
+                                        placeholder="姓名"
+                                        {...nameProps}
+                                    />
                                 </FormItem>
 
                                 <FormItem
@@ -92,8 +104,11 @@ class Information extends React.Component {
                                     label="学校"
                                     hasFeedback
                                     >
-                                    <Input {...schoolProps} placeholder="学校"
-                                           value={!this.props.information ? '' : this.props.information.school}/>
+                                    <Input
+                                        placeholder="学校"
+                                        defaultValue={this.state.information.school}
+                                        {...schoolProps}
+                                    />
                                 </FormItem>
     
                                 <FormItem
@@ -101,8 +116,10 @@ class Information extends React.Component {
                                     label="备注"
                                     hasFeedback
                                 >
-                                    <Input {...getFieldProps('comment')} placeholder="备注"
-                                           value={!this.props.information ? '' : this.props.information.comment}/>
+                                    <Input
+                                        placeholder="备注"
+                                        defaultValue={this.state.information.comment}
+                                    />
                                 </FormItem>
                             </Col>
 
@@ -112,8 +129,11 @@ class Information extends React.Component {
                                     label="手机号"
                                     hasFeedback
                                 >
-                                    <Input {...mobileProps} type="mobile" placeholder='请输入手机号'
-                                           value={!this.props.information ? '' : this.props.information.mobile}/>
+                                    <Input
+                                        placeholder='请输入手机号'
+                                        defaultValue={this.state.information.mobile}
+                                        {...mobileProps}
+                                    />
                                 </FormItem>
 
                                 <FormItem
@@ -121,8 +141,11 @@ class Information extends React.Component {
                                     label="QQ号"
                                     hasFeedback
                                 >
-                                    <Input {...qqProps} type="qq" placeholder='请输入QQ号'
-                                           value={!this.props.information ? '' : this.props.information.qq}/>
+                                    <Input
+                                        placeholder='请输入QQ号'
+                                        defaultValue={this.state.information.qq}
+                                        {...qqProps}
+                                    />
                                 </FormItem>
                             </Col>
                         </Row>
@@ -164,7 +187,6 @@ class Information extends React.Component {
                 return;
             }
             
-            console.log(values);
             
             $.ajax({
                 type: 'POST',

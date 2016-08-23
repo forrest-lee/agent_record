@@ -44,6 +44,8 @@ exports.newInfo = function(req, res) {
         name: req.body.name,
         qq: req.body.qq,
         school: req.body.school,
+        status: req.body.status,
+        
         comment: req.body.comment
     });
     

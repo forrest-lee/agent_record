@@ -27,7 +27,6 @@ let cx = classNames.bind(styles);
 class Information extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props.information);
         this.state = {
             information: {
                 name:    !this.props.information ? '' : this.props.information.name,
@@ -70,7 +69,7 @@ class Information extends React.Component {
         });
         const qqProps = getFieldProps('qq', {
             rules: [
-                {required: true, message: '请填写QQ号'},
+                {required: false, message: '请填写QQ号'},
             ],
             initialValue: this.state.information.qq
         });
@@ -197,7 +196,8 @@ class Information extends React.Component {
                     name: values.name,
                     qq: values.qq,
                     school: values.school,
-                    comment: values.comment
+                    comment: values.comment,
+                    status: 0
                 },
                 success: (res) => {
                     if (res.err == 0) {

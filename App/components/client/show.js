@@ -5,13 +5,28 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as infoActions from '../../action/information';
 
-import { Table, Button, Input, Spin } from 'antd';
+import { Table, Button, Input, Spin, Menu, Dropdown, Icon } from 'antd';
 const InputGroup = Input.Group;
+
+const menu = (
+    <Menu>
+        <Menu.Item key="1">
+            <a href="#">通过</a>
+        </Menu.Item>
+        <Menu.Item key="2">
+            <a href="#">否决</a>
+        </Menu.Item>
+        <Menu.Item key="3">
+            <a href="#">退回</a>
+        </Menu.Item>
+    </Menu>
+);
 
 const columns = [{
     title: '标题',
     dataIndex: 'title',
-    key: 'title'
+    key: 'title',
+    render: (text, record) => <a href={'/#/information/' + record._id}>{text}</a>,
 }, {
     title: '手机号',
     dataIndex: 'mobile',
@@ -25,26 +40,41 @@ const columns = [{
     dataIndex: 'agentName',
     key: 'agentName'
 }, {
-    title: '状态',
+    title: '操作',
     dataIndex: 'status',
-    key: 'status'
-}];
+    key: 'status',
+    render: (text, record) => {
+        let status;
+        switch(record.status) {
+            case 0:
+                status = '已提交';    // 已提交
+                break;
+            case 1:
+                status = '已通过';    // 已通过
+                break;
+            case 2:
+                status = '已否决';    // 已否决
+                break;
+            case 3:
+                status = '已退回';    // 已退回
+                break;
+            default:
+                status = '状态异常';
+        };
+        
+        return (
+            <span>
+                <Dropdown overlay={menu} trigger={['click']}>
+                    <a className="ant-dropdown-link" href="#">
+                        {status} <Icon type="down" />
+                    </a>
+                </Dropdown>
+            </span>
+        )
+    }
+}
+];
 
-const dataSource = [{
-    type: '签约合同上传',
-    title: '魏磊-武汉生物工程学院',
-    mobile: '12345678901',
-    updateAt: '2016-08-11 18:42',
-    owner: '人人花1',
-    status: '已完成'
-}, {
-    type: '借款资料上传审批',
-    title: '黄紫迎-武昌职业学院',
-    mobile: '21345678902',
-    updateAt: '2016-08-11 15:19',
-    owner: '人人花1',
-    status: '待审核'
-}];
 
 class SearchInput extends React.Component {
     constructor(props) {
@@ -146,7 +176,6 @@ class ClientBox extends React.Component {
                 <div style={{marginTop: 20}}>
                     <Table
                         dataSource={this.props.infos} columns={columns}
-                        onRowClick={this.rowClick}
                     />
                 </div>
             </div>

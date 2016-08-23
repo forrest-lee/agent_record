@@ -13,7 +13,7 @@ var NotificationSchema = new mongoose.Schema({
     
     createAt: Date,
     updateAt: Date
-}, {collection: 'notification'});
+}, {collection: 'Notification'});
 
 
 NotificationSchema.pre('save', function(next) {

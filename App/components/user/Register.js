@@ -193,6 +193,7 @@ class Register extends React.Component {
                             message:     'Success',
                             description: res.msg
                         });
+                        window.location.hash = 'login';
                     } else {
                         notification.error({
                             message:     'Error',

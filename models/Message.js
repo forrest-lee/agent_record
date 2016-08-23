@@ -5,15 +5,16 @@ var mongoose = require('mongoose'),
 var MessageSchema = new mongoose.Schema({
     infoId: {type: ObjectId, ref: 'Information'},
     content: String,
-    typeId: {
+    status: {
         type: Number,
         default: -1
-    },  // 0: 通过, 1: 退回, 2: 否决
+    },  // 1: 通过, 2: 否决, 3:退回
     ownerId: {type: ObjectId, ref: 'User'},
+    ownerName: String,
 
     createAt: Date,
     updateAt: Date
-}, {collection: 'message'});
+}, {collection: 'Message'});
 
 
 MessageSchema.pre('save', function(next) {

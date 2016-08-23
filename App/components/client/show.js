@@ -65,6 +65,7 @@ const columns = [{
                                 message: 'Success',
                                 description: '操作成功'
                             });
+                            window.location.reload();
                         } else {
                             console.error(res.msg);
                             notification.error({

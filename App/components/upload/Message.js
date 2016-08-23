@@ -2,6 +2,7 @@
  * Created by leo on 8/22/16.
  */
 import React from 'react';
+import dateformat from 'dateformat';
 import { Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification } from 'antd';
 const FormItem = Form.Item;
 const Dragger  = Upload.Dragger;
@@ -12,37 +13,48 @@ let cx = classNames.bind(styles);
 
 const columns = [{
     title: '提交人',
-    dataIndex: 'owner',
-    key: 'owner'
+    dataIndex: 'ownerName',
+    key: 'ownerName'
 }, {
-    title: '时间',
+    title:     '时间',
     dataIndex: 'updateAt',
-    key: 'updateAt'
+    key:       'updateAt',
+    render:    (value, record) => <span>{dateformat(value, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
-    title: '状态',
+    title: '意见',
     dataIndex: 'status',
-    key: 'status'
+    key: 'status',
+    render: (value, record) => {
+        let status = '';
+        switch(value) {
+            case 1:
+                status = '通过';
+                break;
+            case 2:
+                status = '否决';
+                break;
+            case 3:
+                status = '退回';
+                break;
+            default:
+                status = '异常';
+        }
+        return <span>{status}</span>;
+    }
 }, {
     title: '备注',
-    dataIndex: 'comment',
-    key: 'comment'
+    dataIndex: 'content',
+    key: 'content'
 }];
 
-const dataSource = [{
-    owner: '风控1',
-    updateAt: '2016-08-11 18:42',
-    status: '返回',
-    comment: '客户电话无法接通'
-}, {
-    owner: '人人花1',
-    updateAt: '2016-08-11 18:42',
-    status: '同意',
-    comment: ''
-}];
 
 class Message extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: true,
+            messages: []
+        }
     }
     
     componentWillMount() {
@@ -51,8 +63,10 @@ class Message extends React.Component {
             type: 'GET',
             url: '/apiv1/information/' + id + '/messages',
             success: (res) => {
+                console.log(res.messages);
                 if(res.err == 0) {
                     this.setState({
+                        loading: false,
                         messages: res.messages
                     })
                 } else {
@@ -72,6 +86,8 @@ class Message extends React.Component {
     }
     
     render() {
+        const {getFieldProps} = this.props.form;
+        
         let style = {
             preWrap: cx({
                 'preWrap': true
@@ -90,7 +106,7 @@ class Message extends React.Component {
             <div>
                 <div style={{ marginTop: 36 }}>
                     <h2 style={{marginBottom: 10}}>审核信息记录</h2>
-                    <Table dataSource={dataSource} columns={columns} />
+                    <Table dataSource={this.state.messages} columns={columns} />
                 </div>
     
                 <div style={{padding: '20px 15px 1px', backgroundColor: '#f7f7f7', borderRadius: 15}}>
@@ -104,10 +120,11 @@ class Message extends React.Component {
                             <Select
                                 id="status" size="large" style={{ width: 200 }}
                                 placeholder='请选择'
+                                {...getFieldProps('status', {rules: [{ required: true, message: '请选择' }]})}
                             >
-                                <Select.Option value="0">通过</Select.Option>
-                                <Select.Option value="1">退回</Select.Option>
+                                <Select.Option value="1">通过</Select.Option>
                                 <Select.Option value="2">否决</Select.Option>
+                                <Select.Option value="3">退回</Select.Option>
                             </Select>
                         </FormItem>
             
@@ -116,7 +133,10 @@ class Message extends React.Component {
                             label="备注"
                             {...commentFormLayout}
                         >
-                            <Input type="textarea" id="content" rows="3" />
+                            <Input
+                                type="textarea" id="content" rows="3"
+                                {...getFieldProps('content', {rules: [{ required: true, message: '请填写' }]})}
+                            />
                         </FormItem>
             
                         <FormItem wrapperCol={{ span: 16, offset: 2 }} style={{ marginTop: 0 }}>
@@ -129,15 +149,32 @@ class Message extends React.Component {
     }
     
     submitMsg = () => {
-        $.ajax({
-            type: 'POST',
-            url: '/apiv1/message/new',
-            success: (res) => {
-                if(res.err == 0) {
-                    
-                }
+        let id = getUrlId('information');
+        this.props.form.validateFields((errors, values) => {
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
             }
-        })
+    
+            $.ajax({
+                type: 'POST',
+                url: '/apiv1/information/new_message',
+                data: {
+                    id: id,
+                    status: values.status,
+                    content: values.content,
+                },
+                success: (res) => {
+                    if(res.err == 0) {
+                        notification.success({
+                            message: 'Success',
+                            description: res.msg
+                        });
+                        window.location.reload();
+                    }
+                }
+            })
+        });
     };
 }
 

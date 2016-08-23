@@ -206,11 +206,14 @@ exports.messages = function(req, res) {
  */
 exports.newMessage = function(req, res) {
     var message = new Message({
-        infoId: req.params.id,
-        content: req.params.content,
-        typeId: req.body.typeId,
-        ownerId: req.user._id
+        infoId: req.body.id,
+        content: req.body.content,
+        status: req.body.status,
+        ownerId: req.user._id,
+        ownerName: req.user.username
     });
+    
+    console.log(message);
     
     message.save((err, message) => {
         if(err) {
@@ -222,7 +225,7 @@ exports.newMessage = function(req, res) {
             return res.json({
                 err: 0,
                 message: message,
-                msg: 'upload success'
+                msg: '消息提交成功'
             })
         }
     })

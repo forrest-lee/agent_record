@@ -5,22 +5,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as infoActions from '../../action/information';
 
-import { Table, Button, Input, Spin, Menu, Dropdown, Icon } from 'antd';
+import { Table, Button, Input, Spin, Menu, Dropdown, Icon, notification } from 'antd';
 const InputGroup = Input.Group;
 
-const menu = (
-    <Menu>
-        <Menu.Item key="1">
-            <a href="#">通过</a>
-        </Menu.Item>
-        <Menu.Item key="2">
-            <a href="#">否决</a>
-        </Menu.Item>
-        <Menu.Item key="3">
-            <a href="#">退回</a>
-        </Menu.Item>
-    </Menu>
-);
 
 const columns = [{
     title: '标题',
@@ -45,29 +32,70 @@ const columns = [{
     key: 'status',
     render: (text, record) => {
         let status;
+        let menu = (
+            <Menu onSelect={(item) => {
+                $.ajax({
+                    type: 'POST',
+                    url:  '/apiv1/information/update_status',
+                    data: {
+                        id: record._id,
+                        status: item.key
+                    },
+                    success: (res) => {
+                        if (res.err == 0) {
+                            notification.success({
+                                message: 'Success',
+                                description: '操作成功'
+                            });
+                        } else {
+                            console.error(res.msg);
+                            notification.error({
+                                message: 'Error',
+                                description: '操作失败'
+                            });
+                        }
+                    }
+                })
+            }}>
+                <Menu.Item key='1'> 通过 </Menu.Item>
+                <Menu.Item key='2'> 否决 </Menu.Item>
+                <Menu.Item key='3'> 退回 </Menu.Item>
+            </Menu>
+        );
+        let content;
+        
         switch(record.status) {
             case 0:
-                status = '已提交';    // 已提交
+                status = '待审核';    // 已提交
+                content = (
+                    <a className="ant-dropdown-link">
+                        {status} <Icon type="down" />
+                    </a>
+                );
                 break;
             case 1:
                 status = '已通过';    // 已通过
+                menu = <div></div>;
+                content = <span style={{color: 'green'}}>{status}</span>;
                 break;
             case 2:
                 status = '已否决';    // 已否决
+                menu = <div></div>;
+                content = <span style={{color: 'red'}}>{status}</span>;
                 break;
             case 3:
                 status = '已退回';    // 已退回
+                menu = <div></div>;
+                content = <span style={{color: 'orange'}}>{status}</span>;
                 break;
             default:
                 status = '状态异常';
-        };
+        }
         
         return (
             <span>
                 <Dropdown overlay={menu} trigger={['click']}>
-                    <a className="ant-dropdown-link" href="#">
-                        {status} <Icon type="down" />
-                    </a>
+                    {content}
                 </Dropdown>
             </span>
         )

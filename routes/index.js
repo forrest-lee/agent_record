@@ -27,7 +27,10 @@ var userApiRouter = express.Router();
 userApiRouter.get('/all', userCtrl.allAgency);
 
 
-// 借款资料
+/**
+ * Name: 借款资料
+ * Path: /apiv1/information
+ */
 var infoApiRouter = express.Router();
 infoApiRouter.get('/:id', infoCtrl.detail);
 infoApiRouter.get('/:id/attachments', infoCtrl.attachments);
@@ -35,6 +38,7 @@ infoApiRouter.post('/:id/attachments', infoCtrl.addAttaches);
 infoApiRouter.get('/:id/messages', infoCtrl.messages);
 infoApiRouter.post('/:id/messages', infoCtrl.newMessage);
 infoApiRouter.post('/new', infoCtrl.newInfo);
+infoApiRouter.post('/update_status', infoCtrl.updateInfoStatus);
 
 
 // 客户信息

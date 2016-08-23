@@ -64,6 +64,32 @@ exports.newInfo = function(req, res) {
     })
 };
 
+
+/**
+ * 更新借款资料状态
+ * @param req
+ * @param res
+ */
+exports.updateInfoStatus = function(req, res) {
+    var id = req.body.id;
+    var query = {_id: id};
+    
+    // TODO: 需要加权限判断
+    Information.update(query, {$set: {status: req.body.status}}, err => {
+        if(err) {
+            return res.json({
+                err: 1,
+                msg: err
+            })
+        } else {
+            return res.json({
+                err: 0
+            })
+        }
+    })
+};
+
+
 /**
  * 借款资料详情
  * @param req

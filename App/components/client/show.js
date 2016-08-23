@@ -162,7 +162,8 @@ class ClientBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: true,
+            infos: this.props.infos
         }
     }
     
@@ -173,6 +174,7 @@ class ClientBox extends React.Component {
             success: (res) => {
                 if(res.err == 0) {
                     this.props.infoActions.setInfos(res.infos);
+                    this.setState({loading: false, infos: this.props.infos})
                 } else {
                     console.error(res.msg);
                 }
@@ -197,13 +199,17 @@ class ClientBox extends React.Component {
                 <div>
                     <SearchInput
                         placeholder="查询客户资料"
-                        onSearch={value => console.log(value)}
+                        onSearch={value => {
+                            this.setState({
+                                infos: this.state.infos.filter(item => item.title.indexOf(value) >= 0)
+                            });
+                        }}
                         style={{ width: 200, marginLeft: 10 }}
                     />
                 </div>
                 <div style={{marginTop: 20}}>
                     <Table
-                        dataSource={this.props.infos} columns={columns}
+                        dataSource={this.state.infos} columns={columns}
                     />
                 </div>
             </div>

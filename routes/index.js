@@ -12,11 +12,6 @@ var notiCtrl   = require('../controller/notification');
 router.get('/', homeCtrl.index);
 
 
-var userRouter = express.Router();
-userRouter.post('/signup', userCtrl.signup);
-userRouter.post('/login', userCtrl.login);
-userRouter.post('/logout', userCtrl.logout);
-
 
 // 七牛云存储
 var qiniuApiRouter = express.Router();
@@ -25,6 +20,9 @@ qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 // 用户信息
 var userApiRouter = express.Router();
 userApiRouter.get('/all', userCtrl.allAgency);
+userApiRouter.post('/signup', userCtrl.signup);
+userApiRouter.post('/login', userCtrl.login);
+userApiRouter.post('/logout', userCtrl.logout);
 
 
 /**
@@ -61,8 +59,6 @@ apiRouter.use('/information', infoApiRouter);
 apiRouter.use('/client', clientApiRouter);
 apiRouter.use('/notification', notiApiRouter);
 
-
-router.use('/user', userRouter);
 router.use('/apiv1', userCtrl.isLogined, apiRouter);
 
 module.exports = router;

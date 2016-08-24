@@ -179,7 +179,7 @@ class Register extends React.Component {
 
             $.ajax({
                 type: 'POST',
-                url: '/user/signup',
+                url: '/apiv1/user/signup',
                 data: {
                     username: values.username,
                     mobile: values.mobile,

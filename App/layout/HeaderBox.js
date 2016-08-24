@@ -50,7 +50,7 @@ class HeaderBox extends React.Component {
     logout() {
         $.ajax({
             type: 'POST',
-            url: '/user/logout',
+            url: '/apiv1/user/logout',
             success: function (res) {
                 if (res.err == 0) {
                     window.location.hash = 'login';

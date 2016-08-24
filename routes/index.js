@@ -37,7 +37,8 @@ infoApiRouter.get('/:id/attachments', infoCtrl.attachments);
 infoApiRouter.post('/:id/attachments', infoCtrl.addAttaches);
 infoApiRouter.get('/:id/messages', infoCtrl.messages);
 infoApiRouter.post('/:id/messages', infoCtrl.newMessage);
-infoApiRouter.post('/new_message', infoCtrl.newInfo);
+infoApiRouter.post('/new_message', infoCtrl.newMessage);
+infoApiRouter.post('/new', infoCtrl.newInfo);
 infoApiRouter.post('/update_status', infoCtrl.updateInfoStatus);
 
 

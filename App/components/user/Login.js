@@ -94,7 +94,7 @@ class Login extends React.Component {
             
             $.ajax({
                 type: 'POST',
-                url:  '/apiv1/user/login',
+                url:  '/user/login',
                 data: {
                     username: values.username,
                     password: values.password

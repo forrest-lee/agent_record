@@ -59,6 +59,23 @@ class Login extends React.Component {
                                        {...getFieldProps('password')}
                                 />
                             </FormItem>
+    
+                            <FormItem
+                                label="验证码"
+                                labelCol={{ span: 4 }}
+                                wrapperCol={{ span: 20 }}
+                            >
+                                <Input type="captcha" placeholder="请输入验证码"
+                                       {...getFieldProps('captcha')}
+                                       style={{width: '60%'}}
+                                />
+    
+                                <img style={{marginLeft: 15, marginTop: 5, width: '30%'}}
+                                     src="/user/captcha" alt="captcha"
+                                     ref='captcha'
+                                     onClick={this.refreshCode.bind(this, this.captcha)}
+                                />
+                            </FormItem>
 
                             <Row>
                                 <Col span={10}>
@@ -82,6 +99,10 @@ class Login extends React.Component {
                 </div>
             </div>
         );
+    }
+    
+    refreshCode() {
+        this.refs.captcha.src = this.refs.captcha.src + "?code=" + Math.random();
     }
 
 

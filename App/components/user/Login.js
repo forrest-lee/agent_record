@@ -47,7 +47,11 @@ class Login extends React.Component {
                                 wrapperCol={{ span: 20 }}
                             >
                                 <Input placeholder="请输入账户名"
-                                       {...getFieldProps('username')}
+                                       {...getFieldProps('username', {
+                                           rules:   [
+                                               {required: true, min: 5, message: '帐号至少为5个字符'},
+                                           ],
+                                       })}
                                 />
                             </FormItem>
                             <FormItem
@@ -56,7 +60,11 @@ class Login extends React.Component {
                                 wrapperCol={{ span: 20 }}
                             >
                                 <Input type="password" placeholder="请输入密码"
-                                       {...getFieldProps('password')}
+                                       {...getFieldProps('password', {
+                                           rules:   [
+                                               {required: true, message: '请输入密码'},
+                                           ],
+                                       })}
                                 />
                             </FormItem>
     
@@ -66,15 +74,21 @@ class Login extends React.Component {
                                 wrapperCol={{ span: 20 }}
                             >
                                 <Input type="captcha" placeholder="请输入验证码"
-                                       {...getFieldProps('captcha')}
-                                       style={{width: '70%'}}
+                                       {...getFieldProps('captcha', {
+                                           rules:   [
+                                               {required: true, len: 4, message: '验证码长度为4位'},
+                                           ],
+                                       })}
+                                       style={{width: '45%'}}
                                 />
     
                                 <img style={{marginLeft: 15, width: 70}}
                                      src="/user/captcha" alt="captcha"
                                      ref='captcha'
-                                     onClick={this.refreshCode.bind(this, this.captcha)}
+                                     onClick={this.refreshCode}
                                 />
+    
+                                <a style={{marginLeft: 15}} onClick={this.refreshCode}>换一张</a>
                             </FormItem>
                             
                             <Row>
@@ -101,9 +115,9 @@ class Login extends React.Component {
         );
     }
     
-    refreshCode() {
+    refreshCode = () => {
         this.refs.captcha.src = this.refs.captcha.src + "?code=" + Math.random();
-    }
+    };
 
 
     handleSubmit = () => {
@@ -136,6 +150,7 @@ class Login extends React.Component {
                             message: 'Error',
                             description: res.msg
                         });
+                        this.refreshCode();
                     }
                 },
                 error: function (err) {

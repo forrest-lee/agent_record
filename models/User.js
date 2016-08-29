@@ -12,7 +12,8 @@ var UserSchema = new mongoose.Schema({
         type:    Number,
         default: -1
     }, // 角色: 0: 管理员, 1: 一级代理, 2: 二级代理, 3: 三级代理, -1: 角色异常
-    parent:   {type: String, default: ''},  // 上级代理id
+    parentId: {type: ObjectId},  // 上级代理id
+    parent:   {type: String, default: ''},
     username: {type: String, unique: true}, // 帐号
     name:     {type: String},
     password: {type: String},

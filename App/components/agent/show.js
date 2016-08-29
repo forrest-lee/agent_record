@@ -9,8 +9,8 @@ import * as agentActions from '../../action/agent';
 
 const columns = [{
     title: '姓名',
-    dataIndex: 'username',
-    key: 'username'
+    dataIndex: 'name',
+    key: 'name'
 }, {
     title: '手机号',
     dataIndex: 'mobile',
@@ -22,7 +22,11 @@ const columns = [{
 }, {
     title: '上级代理',
     dataIndex: 'parent',
-    key: 'parent'
+    key: 'parent',
+    render: (value, record) => {
+        console.log(record);
+        return <span></span>
+    }
 }, {
     title: '备注',
     dataIndex: 'comment',

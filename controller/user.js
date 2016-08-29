@@ -23,6 +23,7 @@ exports.signup = function (req, res) {
     var repassword = req.body.repassword ? req.body.repassword : '123456';
     var role       = req.body.role;
     var parent     = req.body.parent;
+    var parentId   = '';
     var gender     = req.body.gender;
     var mobile     = req.body.mobile;
     var qq         = req.body.qq ? req.body.qq : '';
@@ -33,6 +34,16 @@ exports.signup = function (req, res) {
             err: 1,
             msg: '重复密码不相等'
         });
+    }
+    
+    
+    if(parent != '') {
+        User.find({username: parent})
+            .exec((err, p) => {
+                
+            })
+    } else {
+        
     }
     
     
@@ -72,9 +83,14 @@ exports.signup = function (req, res) {
 };
 
 
-// create login
+/**
+ * 用户登陆
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
 exports.login = function (req, res, next) {
-    console.log(req.session.captcha);
     if(req.body.captcha != req.session.captcha) {
         return res.json({
             err: 1,

@@ -67,16 +67,16 @@ class Login extends React.Component {
                             >
                                 <Input type="captcha" placeholder="请输入验证码"
                                        {...getFieldProps('captcha')}
-                                       style={{width: '60%'}}
+                                       style={{width: '70%'}}
                                 />
     
-                                <img style={{marginLeft: 15, marginTop: 5, width: '30%'}}
+                                <img style={{marginLeft: 15, width: 70}}
                                      src="/user/captcha" alt="captcha"
                                      ref='captcha'
                                      onClick={this.refreshCode.bind(this, this.captcha)}
                                 />
                             </FormItem>
-
+                            
                             <Row>
                                 <Col span={10}>
                                     <FormItem style={{marginLeft: 18}}>
@@ -118,7 +118,8 @@ class Login extends React.Component {
                 url:  '/user/login',
                 data: {
                     username: values.username,
-                    password: values.password
+                    password: values.password,
+                    captcha:  values.captcha
                 },
                 success: (res) => {
                     if (res.err == 0) {

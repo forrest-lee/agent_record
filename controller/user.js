@@ -72,6 +72,14 @@ exports.signup = function (req, res) {
 
 // create login
 exports.login = function (req, res, next) {
+    console.log(req.session.captcha);
+    if(req.body.captcha != req.session.captcha) {
+        return res.json({
+            err: 1,
+            msg: '验证码不正确'
+        })
+    }
+    
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             return next(err);

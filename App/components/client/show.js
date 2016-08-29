@@ -29,6 +29,14 @@ const columns = [{
     dataIndex: 'agentName',
     key: 'agentName'
 }, {
+    title: '上级代理',
+    dataIndex: 'parent',
+    key: 'parent',
+    render:    (value, record) => {
+        console.log(record);
+        return <div></div>
+    }
+}, {
     title: '操作',
     dataIndex: 'status',
     key: 'status',

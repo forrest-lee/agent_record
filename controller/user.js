@@ -18,14 +18,15 @@ function is_wechat(req) {
  */
 exports.signup = function (req, res) {
     var username   = req.body.username;
+    var name       = req.body.name;
     var password   = req.body.password ? req.body.password : '123456';
     var repassword = req.body.repassword ? req.body.repassword : '123456';
     var role       = req.body.role;
     var parent     = req.body.parent;
     var gender     = req.body.gender;
     var mobile     = req.body.mobile;
-    var qq         = req.body.qq;
-    var comment    = req.body.comment;
+    var qq         = req.body.qq ? req.body.qq : '';
+    var comment    = req.body.comment ? req.body.comment : '';
     
     if (password != repassword) {
         return res.json({
@@ -37,6 +38,7 @@ exports.signup = function (req, res) {
     
     var user = new User({
         username: username,
+        name:     name,
         password: password,
         role:     role,
         parent:   parent,
@@ -98,7 +100,7 @@ exports.login = function (req, res, next) {
             } else {
                 return res.json({
                     err:  0,
-                    msg:  '登录成功',
+                    msg:  req.user.name + ' 登录成功',
                     user: user
                 });
             }

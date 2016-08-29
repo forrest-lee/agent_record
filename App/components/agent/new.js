@@ -27,6 +27,13 @@ class NewClient extends React.Component {
             trigger: ['onBlur', 'onChange']
         });
         
+        const nameProps = getFieldProps('name', {
+            rules:   [
+                {required: true, min: 2, message: '姓名名至少为 2 个字符'},
+            ],
+            trigger: ['onBlur', 'onChange']
+        });
+        
         const roleProps = getFieldProps('role', {
             rules:   [
                 {required: true, message: '请选择代理类别'}
@@ -66,6 +73,15 @@ class NewClient extends React.Component {
                         help={isFieldValidating('username') ? '校验中...' : (getFieldError('username') || []).join(', ')}
                     >
                         <Input {...usernameProps} id='username' placeholder='请输入帐号'/>
+                    </FormItem>
+    
+                    <FormItem
+                        label='真实姓名'
+                        hasFeedback
+                        {...formItemLayout}
+                        help={isFieldValidating('name') ? '校验中...' : (getFieldError('name') || []).join(', ')}
+                    >
+                        <Input {...nameProps} id='name' placeholder='请输入真实姓名'/>
                     </FormItem>
                     
                     <FormItem
@@ -168,6 +184,7 @@ class NewClient extends React.Component {
                 url:     '/user/signup',
                 data:    {
                     username: values.username,
+                    name:     values.name,
                     role:     values.role,
                     parent:   values.parent,
                     gender:   values.gender,

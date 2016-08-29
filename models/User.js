@@ -12,12 +12,13 @@ var UserSchema = new mongoose.Schema({
         type:    Number,
         default: -1
     }, // 角色: 0: 管理员, 1: 一级代理, 2: 二级代理, 3: 三级代理, -1: 角色异常
-    parent:   {type: String, default: ''}, // 上级代理id
-    username: {type: String, unique: true},
+    parent:   {type: String, default: ''},  // 上级代理id
+    username: {type: String, unique: true}, // 帐号
+    name:     {type: String},
     password: {type: String},
     gender:   {type: Number, default: -1},  // 男:0, 女:1
     mobile:   {type: String, unique: true },  // 手机号(限定11位)
-    qq:       {type: String, unique: true },
+    qq:       {type: String},
     comment:  String  // 备注
 });
 

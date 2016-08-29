@@ -14,6 +14,8 @@ exports.allClient = function(req, res) {
     // TODO: 权限验证, 只有父级代理有权(中间件也需要加)
     
     Information.find({})
+        .populate('agentId')
+        .populate('parent')
         .exec((err, infos) => {
             if(err) {
                 return res.json({

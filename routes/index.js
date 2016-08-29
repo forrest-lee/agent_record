@@ -15,7 +15,7 @@ router.get('/', homeCtrl.index);
 var userRouter = express.Router();
 userRouter.post('/signup', userCtrl.signup);
 userRouter.post('/login', userCtrl.login);
-userRouter.post('/logout', userCtrl.isLogined, userCtrl.logout);
+userRouter.post('/logout', userCtrl.logout);
 userRouter.get('/captcha', userCtrl.getCaptcha);  // 验证码
 
 

@@ -17,62 +17,69 @@ class Register extends React.Component {
     constructor(props) {
         super(props);
     }
-
+    
     render() {
-        const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
-
+        const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
+        
         let styles = {
             loginContainer: cx({
                 loginContainer: true
             })
         };
-
-        const nameProps = getFieldProps('username', {
-            rules: [
-                { required: true, min: 5, message: '用户名至少为 5 个字符' },
-                { validator: this.userExists },
+        
+        const usernameProps = getFieldProps('username', {
+            rules:   [
+                {required: true, min: 5, message: '用户名至少为 5 个字符'},
+                {validator: this.userExists},
             ],
             trigger: ['onBlur', 'onChange']
         });
-
+        
+        const nameProps = getFieldProps('name', {
+            rules:   [
+                {required: true, min: 2, message: '姓名名至少为 2 个字符'},
+            ],
+            trigger: ['onBlur', 'onChange']
+        });
+        
         const mobileProps = getFieldProps('mobile', {
             rules: [
-                { required: true, len: 11, message: '手机号必须为11位' },
+                {required: true, len: 11, message: '手机号必须为11位'},
             ],
         });
-
-        const passwdProps = getFieldProps('password', {
+        
+        const passwdProps    = getFieldProps('password', {
             rules: [
-                { required: true, whitespace: true, message: '请填写密码' },
-                { validator: this.checkPass },
+                {required: true, whitespace: true, message: '请填写密码'},
+                {validator: this.checkPass},
             ],
         });
-        const rePasswdProps = getFieldProps('repassword', {
+        const rePasswdProps  = getFieldProps('repassword', {
             rules: [{
-                required: true,
+                required:   true,
                 whitespace: true,
-                message: '请再次输入密码',
+                message:    '请再次输入密码',
             }, {
                 validator: this.checkPass2,
             }],
         });
-        const textareaProps = getFieldProps('comment', {
+        const textareaProps  = getFieldProps('comment', {
             rules: [
-                { required: false, message: '' },
+                {required: false, message: ''},
             ],
         });
         const formItemLayout = {
-            labelCol: { span: 7 },
-            wrapperCol: { span: 12 },
+            labelCol:   {span: 7},
+            wrapperCol: {span: 12},
         };
-
+        
         return (
             <div>
                 <div className={styles.loginContainer}>
                     <div style={{textAlign: 'center'}}>
                         <h1>用户注册</h1>
                     </div>
-
+                    
                     <div style={{marginTop: 20}}>
                         <Form horizontal>
                             <FormItem
@@ -81,18 +88,27 @@ class Register extends React.Component {
                                 hasFeedback
                                 help={isFieldValidating('username') ? '校验中...' : (getFieldError('username') || []).join(', ')}
                             >
-                                <Input {...nameProps} placeholder="帐号/用户名" />
+                                <Input {...usernameProps} placeholder="帐号/用户名"/>
                             </FormItem>
-
+                            
+                            <FormItem
+                                label='真实姓名'
+                                hasFeedback
+                                {...formItemLayout}
+                                help={isFieldValidating('name') ? '校验中...' : (getFieldError('name') || []).join(', ')}
+                            >
+                                <Input {...nameProps} id='name' placeholder='请输入真实姓名'/>
+                            </FormItem>
+                            
                             <FormItem
                                 {...formItemLayout}
                                 label="手机号"
                                 hasFeedback
                                 help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
                             >
-                                <Input {...mobileProps} placeholder="手机号" />
+                                <Input {...mobileProps} placeholder="手机号"/>
                             </FormItem>
-
+                            
                             <FormItem
                                 {...formItemLayout}
                                 label="密码"
@@ -102,7 +118,7 @@ class Register extends React.Component {
                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                                 />
                             </FormItem>
-
+                            
                             <FormItem
                                 {...formItemLayout}
                                 label="确认密码"
@@ -112,15 +128,16 @@ class Register extends React.Component {
                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
                                 />
                             </FormItem>
-
+                            
                             <FormItem
                                 {...formItemLayout}
                                 label="备注"
                             >
-                                <Input {...textareaProps} type="textarea" placeholder="随便写" id="comment" name="comment" />
+                                <Input {...textareaProps} type="textarea" placeholder="随便写" id="comment"
+                                       name="comment"/>
                             </FormItem>
-
-                            <FormItem wrapperCol={{ span: 12, offset: 7 }}>
+                            
+                            <FormItem wrapperCol={{span: 12, offset: 7}}>
                                 <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
                                 &nbsp;&nbsp;&nbsp;
                                 <Button type="ghost" onClick={this.handleReset.bind(this)}>重置</Button>
@@ -131,7 +148,7 @@ class Register extends React.Component {
             </div>
         );
     }
-
+    
     userExists = (rule, value, callback) => {
         if (!value) {
             callback();
@@ -145,25 +162,25 @@ class Register extends React.Component {
             }, 800);
         }
     };
-
+    
     checkPass = (rule, value, callback) => {
-        const { validateFields } = this.props.form;
+        const {validateFields} = this.props.form;
         if (value) {
-            validateFields(['repassword'], { force: true });
+            validateFields(['repassword'], {force: true});
         }
         callback();
     };
-
+    
     checkPass2 = (rule, value, callback) => {
-        const { getFieldValue } = this.props.form;
+        const {getFieldValue} = this.props.form;
         if (value && value !== getFieldValue('password')) {
             callback('两次输入密码不一致！');
         } else {
             callback();
         }
     };
-
-
+    
+    
     /**
      * 提交表单
      * @param e
@@ -176,19 +193,20 @@ class Register extends React.Component {
                 return;
             }
             console.log(values);
-
+            
             $.ajax({
-                type: 'POST',
-                url: '/user/signup',
-                data: {
-                    username: values.username,
-                    mobile: values.mobile,
-                    password: values.password,
+                type:    'POST',
+                url:     '/user/signup',
+                data:    {
+                    username:   values.username,
+                    name:       values.name,
+                    mobile:     values.mobile,
+                    password:   values.password,
                     repassword: values.repassword,
-                    comment: values.comment
+                    comment:    values.comment
                 },
                 success: function (res) {
-                    if(res.err == 0) {
+                    if (res.err == 0) {
                         notification.success({
                             message:     'Success',
                             description: res.msg
@@ -210,7 +228,7 @@ class Register extends React.Component {
             });
         });
     }
-
+    
     /**
      * 重置所有表单
      * @param e

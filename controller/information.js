@@ -220,21 +220,29 @@ exports.newMessage = function(req, res) {
         ownerName: req.user.username
     });
     
-    message.save((err, message) => {
-        if(err) {
-            return res.json({err: 1, msg: err});
-        } else {
-            Information.findByIdAndUpdate(infoId, {$set: {status: status}}, (err, info) => {
-                if(err) {
-                    return res.json({err: 1, msg: err});
+    Information.findById(infoId)
+        .exec((err, info) => {
+            if(err) {
+                return res.json({err: 1, msg: err});
+            } else {
+                if(info.status == -1) {
+                    return res.json({err: 1, msg: '不可更改'});
+                } else if(info.status > 0 && info.status < 3) {
+                    return res.json({err: 1, msg: '不可更改'});
                 } else {
-                    return res.json({
-                        err: 0,
-                        message: message,
-                        msg: '消息提交成功'
-                    })
+                    // status: 0 或 3
+                    message.save((err, message) => {
+                        if(err) {
+                            return res.json({err: 1, msg: err});
+                        } else {
+                            return res.json({
+                                err: 0,
+                                message: message,
+                                msg: '消息提交成功'
+                            })
+                        }
+                    });
                 }
-            });
-        }
-    })
+            }
+        });
 };

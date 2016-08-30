@@ -41,6 +41,9 @@ class Information extends React.Component {
             labelCol: { span: 4 },
             wrapperCol: { span: 20 }
         };
+    
+        var status = this.props.information.status;
+        var editable = status == -1 || status == 3;
 
         const nameProps = getFieldProps('name', {
             rules: [
@@ -83,21 +86,27 @@ class Information extends React.Component {
                                     label="姓名"
                                     hasFeedback
                                 >
-                                    <Input
-                                        placeholder="姓名"
-                                        {...nameProps}
-                                    />
+                                    {
+                                        !editable ? <span>{this.state.information.name}</span> :
+                                            <Input
+                                                placeholder="姓名"
+                                                {...nameProps}
+                                            />
+                                    }
                                 </FormItem>
 
                                 <FormItem
                                     {...infoFormLayout}
                                     label="学校"
                                     hasFeedback
-                                    >
-                                    <Input
-                                        placeholder="学校"
-                                        {...schoolProps}
-                                    />
+                                >
+                                    {
+                                        !editable ? <span>{this.state.information.school}</span> :
+                                            <Input
+                                                placeholder="学校"
+                                                {...schoolProps}
+                                            />
+                                    }
                                 </FormItem>
     
                                 <FormItem
@@ -105,10 +114,13 @@ class Information extends React.Component {
                                     label="备注"
                                     hasFeedback
                                 >
-                                    <Input
-                                        placeholder="备注"
-                                        defaultValue={this.state.information.comment}
-                                    />
+                                    {
+                                        !editable ? <span>{this.state.information.comment}</span> :
+                                            <Input
+                                                placeholder="备注"
+                                                defaultValue={this.state.information.comment}
+                                            />
+                                    }
                                 </FormItem>
                             </Col>
 
@@ -118,10 +130,13 @@ class Information extends React.Component {
                                     label="手机号"
                                     hasFeedback
                                 >
-                                    <Input
-                                        placeholder='请输入手机号'
-                                        {...mobileProps}
-                                    />
+                                    {
+                                        !editable ? <span>{this.state.information.mobile}</span> :
+                                            <Input
+                                                placeholder='请输入手机号'
+                                                {...mobileProps}
+                                            />
+                                    }
                                 </FormItem>
 
                                 <FormItem
@@ -129,10 +144,13 @@ class Information extends React.Component {
                                     label="QQ号"
                                     hasFeedback
                                 >
-                                    <Input
-                                        placeholder='请输入QQ号'
-                                        {...qqProps}
-                                    />
+                                    {
+                                        !editable ? <span>{this.state.information.qq}</span> :
+                                            <Input
+                                                placeholder='请输入QQ号'
+                                                {...qqProps}
+                                            />
+                                    }
                                 </FormItem>
                             </Col>
                         </Row>

@@ -28,7 +28,7 @@ class Attachment extends React.Component {
             url:     '/apiv1/information/' + id + '/attachments',
             error:   (res) => {
                 notification.error({
-                    message: '网络错误',
+                    message:     '网络错误',
                     description: '如果该问题重复出现请联系客服人员'
                 });
             },
@@ -39,21 +39,21 @@ class Attachment extends React.Component {
                     })
                 } else {
                     notification.error({
-                        message: 'Error',
+                        message:     'Error',
                         description: res.msg
                     });
                 }
             }
         });
-    
+        
         // TODO: 目前没有考虑微信内场景上传图片
         this.qiniu();
     }
     
     render() {
-        var id = getUrlId('information');
+        var id    = getUrlId('information');
         let style = {
-            preWrap: cx({
+            preWrap:   cx({
                 'preWrap': true
             }),
             borderBox: cx({
@@ -62,8 +62,8 @@ class Attachment extends React.Component {
         };
         
         return (
-            <Row gutter={10} style={{ marginTop: 20 }} className={style.borderBox}>
-                <Col sm={6} style={{ borderRight: '2px dotted #ddd' }}>
+            <Row gutter={10} style={{marginTop: 20}} className={style.borderBox}>
+                <Col sm={6} style={{borderRight: '2px dotted #ddd'}}>
                     <pre className={style.preWrap}>
                         <strong>附件: </strong><br/>
                         1. 身份证正面<br/>
@@ -83,20 +83,27 @@ class Attachment extends React.Component {
                 <Col sm={18}>
                     <div id="qncontainer" style={{marginTop: 20}}>
                         <Button type="ghost" id="pickfiles">
-                            <Icon type="upload" /> 选择文件
+                            <Icon type="upload"/> 选择文件
                         </Button>
                     </div>
-    
+                    
                     <div className='ant-upload-list ant-upload-list-picture'>
                         {
                             this.state.fileList.map((item, index) => {
+                                var iconUrl = item.url;
+                                if(iconUrl.indexOf('xls') > 0) {
+                                    iconUrl ='/public/images/excel.png'
+                                } else if(iconUrl.indexOf('doc') > 0) {
+                                    iconUrl ='/public/images/word.png'
+                                }
                                 return (
                                     <div className='ant-upload-list-item ant-upload-list-item-done'>
                                         <div className='ant-upload-list-item-info'>
                                             <a className='ant-upload-list-item-thumbnail' href={item.url}>
-                                                <img style={{width:48, height:48, display:'block'}} src={item.url} alt=""/>
+                                                <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl}
+                                                     alt=""/>
                                             </a>
-                                            <a className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
+                                            <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
                                             <i className='anticon anticon-cross'></i>
                                         </div>
                                     </div>
@@ -104,45 +111,48 @@ class Attachment extends React.Component {
                             })
                         }
                     </div>
-    
+                
                 </Col>
             </Row>
         );
     }
     
+    saveImageAs(imgURL) {
+    }
+    
     qiniu() {
-        var id = getUrlId('information');
+        var id   = getUrlId('information');
         var that = this;
         
         //引入Plupload 、qiniu.js后
         var uploader = Qiniu.uploader({
             multi_selection: true,
-            runtimes: 'html5',    //上传模式,依次退化
-            browse_button: 'pickfiles',
-            uptoken_url:   '/apiv1/qiniu/uptoken',
-            unique_names:  false,
-            save_key:      false,
-            domain:        settings.QN_Domain,
-            container:     'qncontainer',
-            max_file_size: '800kb',
-            max_retries:   3,
-            dragdrop:      true,
-            drop_element:  'container',
-            chunk_size:    '800kb',
-            auto_start:    true,
-            init: {
-                'FilesAdded': function(up, files) {
-                    plupload.each(files, function(file) {
+            runtimes:        'html5',    //上传模式,依次退化
+            browse_button:   'pickfiles',
+            uptoken_url:     '/apiv1/qiniu/uptoken',
+            unique_names:    false,
+            save_key:        false,
+            domain:          settings.QN_Domain,
+            container:       'qncontainer',
+            max_file_size:   '800kb',
+            max_retries:     3,
+            dragdrop:        true,
+            drop_element:    'container',
+            chunk_size:      '800kb',
+            auto_start:      true,
+            init:            {
+                'FilesAdded':     function (up, files) {
+                    plupload.each(files, function (file) {
                         // 文件添加进队列后,处理相关的事情
                     });
                 },
-                'BeforeUpload': function(up, file) {
+                'BeforeUpload':   function (up, file) {
                     // 每个文件上传前,处理相关的事情
                 },
-                'UploadProgress': function(up, file) {
+                'UploadProgress': function (up, file) {
                     // 每个文件上传时,处理相关的事情
                 },
-                'FileUploaded': function(up, file, info) {
+                'FileUploaded':   function (up, file, info) {
                     // 每个文件上传成功后,处理相关的事情
                     // 其中 info 是文件上传成功后，服务端返回的json，形式如
                     // {
@@ -150,7 +160,7 @@ class Attachment extends React.Component {
                     //    "key": "gogopher.jpg"
                     //  }
                     // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
-                
+                    
                     // var domain = up.getOption('domain');
                     // var res = parseJSON(info);
                     // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
@@ -162,10 +172,10 @@ class Attachment extends React.Component {
                         type:    'POST',
                         url:     '/apiv1/information/' + id + '/attachments',
                         data:    {
-                            infoId: id,
+                            infoId:   id,
                             filename: fileInfo.key,
-                            url: sourceLink,
-                            hashId: fileInfo.hash
+                            url:      sourceLink,
+                            hashId:   fileInfo.hash
                         },
                         error:   function () {
                             alert("异常");
@@ -173,41 +183,41 @@ class Attachment extends React.Component {
                         success: function (res) {
                             if (res.err == 0) {
                                 notification.success({
-                                    message: 'Success',
+                                    message:     'Success',
                                     description: res.msg
                                 });
                             } else {
                                 notification.error({
-                                    message: 'Error',
+                                    message:     'Error',
                                     description: res.msg
                                 });
                             }
                         }
                     })
                 },
-                'Error': function(up, err, errTip) {
+                'Error':          function (up, err, errTip) {
                     //上传出错时,处理相关的事情
                     notification.error({
-                        message: 'Error',
+                        message:     'Error',
                         description: errTip
                     });
                 },
-                'UploadComplete': function() {
+                'UploadComplete': function () {
                     //队列文件处理完毕后,处理相关的事情
                 },
-                'Key': function(up, file) {
+                'Key':            function (up, file) {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                     // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                
+                    
                     var key = file.name.toString();
                     // do something with key here
                     return key
                 }
             }
         });
-    
+        
         // domain 为七牛空间（bucket)对应的域名，选择某个空间后，可通过"空间设置->基本设置->域名设置"查看获取
-    
+        
         // uploader 为一个plupload对象，继承了所有plupload的方法，参考http://plupload.com/docs
     }
 }

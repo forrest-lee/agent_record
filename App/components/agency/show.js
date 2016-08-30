@@ -10,10 +10,7 @@ import * as agentActions from '../../action/agent';
 const columns = [{
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
-    render: (value, record) => {
-        return <a href={'/#/agency/' + record._id + '/child'}>{value}</a>
-    }
+    key: 'name'
 }, {
     title: '手机号',
     dataIndex: 'mobile',
@@ -31,6 +28,11 @@ const columns = [{
     title: '备注',
     dataIndex: 'comment',
     key: 'comment'
+}, {
+    title: '子代理',
+    render: (value, record) => {
+        return <a href={'/#/agency/' + record._id + '/child'}>查看</a>
+    }
 }];
 
 

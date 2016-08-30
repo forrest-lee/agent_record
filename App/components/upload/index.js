@@ -2,7 +2,7 @@
  * Created by leo on 8/22/16.
  */
 import React from 'react';
-import { Spin, notification } from 'antd';
+import { Spin, notification, Button } from 'antd';
 
 import InfoForm from './InfoForm';
 import Attachment from './Attachment';
@@ -57,15 +57,68 @@ class UploadBox extends React.Component {
         if (this.state.loading) {
             return <Spin />;
         }
-        
+    
+        var status = '';
+        switch(this.state.information.status) {
+            case -1:
+                status = '正在编辑';
+                break;
+            case 0:
+                status = '待审核';    // 已提交
+                break;
+            case 1:
+                status = '已通过';    // 已通过
+                break;
+            case 2:
+                status = '已否决';    // 已否决
+                break;
+            case 3:
+                status = '已退回';    // 已退回
+                break;
+            default:
+                status = '状态异常';
+        }
         
         return (
             <div>
+                <h2>当前状态: {status}</h2>
                 <InfoForm information={this.state.information}/>
                 <Attachment information={this.state.information}/>
-                <Message information={this.state.information}/>
+                {
+                    this.state.information.status >= 0 ? <Message information={this.state.information}/> :
+                        <div style={{marginTop: 20, float: 'right'}}>
+                            <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
+                        </div>
+                        
+                }
             </div>
         );
+    }
+    
+    handlePublish() {
+        $.ajax({
+            type: 'POST',
+            url:  '/apiv1/information/update_status',
+            data: {
+                id: this.state.information._id,
+                status: 0
+            },
+            success: (res) => {
+                if (res.err == 0) {
+                    notification.success({
+                        message: 'Success',
+                        description: '操作成功'
+                    });
+                    window.location.reload();
+                } else {
+                    console.error(res.msg);
+                    notification.error({
+                        message: 'Error',
+                        description: '操作失败'
+                    });
+                }
+            }
+        })
     }
 }
 

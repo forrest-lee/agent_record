@@ -77,10 +77,11 @@ exports.newInfo = function(req, res) {
  */
 exports.updateInfoStatus = function(req, res) {
     var id = req.body.id;
+    var status = req.body.status;
     var query = {_id: id};
     
     // TODO: 需要加权限判断
-    Information.update(query, {$set: {status: req.body.status}}, err => {
+    Information.update(query, {$set: {status: status}}, err => {
         if(err) {
             return res.json({
                 err: 1,
@@ -130,16 +131,23 @@ exports.detail = function(req, res) {
  * @param res
  */
 exports.attachments = function(req, res) {
+    var userId = req.user._id;
     Attachment.find({infoId: req.params.id})
         .exec((err, attaches) => {
             if(err) {
                 return res.json({err: 1, msg: err});
-            } else {
-                if(attaches.owner)
+            } if(attaches.length == 0) {
                 return res.json({
                     err: 0,
-                    attaches: attaches
+                    attaches: []
                 });
+            } else {
+                if(attaches[0].owner.toString() == userId.toString()) {
+                    return res.json({
+                        err: 0,
+                        attaches: attaches
+                    });
+                }
             }
         })
 };

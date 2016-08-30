@@ -87,7 +87,7 @@ class Attachment extends React.Component {
                         </Button>
                     </div>
                     
-                    <Button type="ghost" style={{marginTop: 10}} icon="download" onClick={this.downloadAll.bind(this)}>
+                    <Button type="default" style={{marginTop: 10}} icon="download" onClick={this.downloadAll.bind(this)}>
                         全部下载
                     </Button>
                     
@@ -109,7 +109,6 @@ class Attachment extends React.Component {
                                             </a>
                                             <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
                                             <i className='anticon anticon-cross'></i>
-                                            <button onClick={this.saveFile.bind(this, item.url, item.key)}>下载</button>
                                         </div>
                                     </div>
                                 );

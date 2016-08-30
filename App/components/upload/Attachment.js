@@ -81,13 +81,17 @@ class Attachment extends React.Component {
                     </pre>
                 </Col>
                 <Col sm={18}>
-                    <div id="qncontainer" style={{marginTop: 20}}>
+                    <div id="qncontainer" style={{marginTop: 10}}>
                         <Button type="ghost" id="pickfiles">
                             <Icon type="upload"/> 选择文件
                         </Button>
                     </div>
                     
-                    <div className='ant-upload-list ant-upload-list-picture'>
+                    <Button type="ghost" style={{marginTop: 10}} icon="download" onClick={this.downloadAll.bind(this)}>
+                        全部下载
+                    </Button>
+                    
+                    <div className='ant-upload-list ant-upload-list-picture' style={{marginTop: 10}}>
                         {
                             this.state.fileList.map((item, index) => {
                                 var iconUrl = item.url;
@@ -105,6 +109,7 @@ class Attachment extends React.Component {
                                             </a>
                                             <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
                                             <i className='anticon anticon-cross'></i>
+                                            <button onClick={this.saveFile.bind(this, item.url, item.key)}>下载</button>
                                         </div>
                                     </div>
                                 );
@@ -117,8 +122,25 @@ class Attachment extends React.Component {
         );
     }
     
-    saveImageAs(imgURL) {
+    saveFile(url, name) {
+        fetch(url).then(res => res.blob().then(blob => {
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(blob);
+            var filename = name;
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }))
     }
+    
+    
+    downloadAll() {
+        this.state.fileList.map(file => {
+            this.saveFile(file.url, file.key);
+        });
+    }
+    
     
     qiniu() {
         var id   = getUrlId('information');

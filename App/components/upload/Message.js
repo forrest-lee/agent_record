@@ -116,7 +116,7 @@ class Message extends React.Component {
                 </div>
     
                 {
-                    this.props.user.role != 0 ? '' :
+                    sessionStorage.userRole != 0 ? '' :
                         <div style={{padding: '20px 15px 1px', backgroundColor: '#f7f7f7', borderRadius: 15}}>
                             <h2 style={{marginBottom: 10}}>发布审核信息</h2>
                             <Form horizontal>

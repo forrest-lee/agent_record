@@ -16,11 +16,12 @@ class Information extends React.Component {
         super(props);
         this.state = {
             information: {
+                status:  !this.props.information ? -1 : !this.props.information.status,
                 name:    !this.props.information ? '' : this.props.information.name,
                 mobile:  !this.props.information ? '' : this.props.information.mobile,
                 school:  !this.props.information ? '' : this.props.information.school,
                 qq:      !this.props.information ? '' : this.props.information.qq,
-                comment: !this.props.information ? '' : this.props.information.comment
+                comment: !this.props.information ? '' : this.props.information.comment,
             }
         }
     }
@@ -42,7 +43,7 @@ class Information extends React.Component {
             wrapperCol: { span: 20 }
         };
     
-        var status = this.props.information.status;
+        var status = this.state.information.status;
         var editable = status == -1 || status == 3;
 
         const nameProps = getFieldProps('name', {

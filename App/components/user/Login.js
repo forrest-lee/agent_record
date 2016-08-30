@@ -137,6 +137,10 @@ class Login extends React.Component {
                 },
                 success: (res) => {
                     if (res.err == 0) {
+                        sessionStorage.userId = res.user._id;
+                        sessionStorage.username = res.user.username;
+                        sessionStorage.userRole = res.user.role;
+                        
                         this.props.userActions.login(res.user);
                         
                         notification.success({

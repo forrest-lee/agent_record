@@ -30,7 +30,7 @@ const store = createStoreWithMiddleware(homeReducer, window.devToolsExtension ? 
 function checkAuth(nextState, replace) {
     let { user } = store.getState();
     
-    if (user.name) {
+    if (sessionStorage.userId) {
         if (nextState.location.state && nextState.location.pathname) {
             replace(nextState.location.pathname);
         } else {

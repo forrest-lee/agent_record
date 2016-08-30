@@ -43,7 +43,7 @@ export default class NotificationBox extends React.Component {
                         loading: false
                     });
                 } else {
-                    console.log(res.msg);
+                    //console.log(res.msg);
                 }
             },
             error: (res) => {

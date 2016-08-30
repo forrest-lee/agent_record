@@ -53,6 +53,10 @@ class HeaderBox extends React.Component {
             url: '/user/logout',
             success: function (res) {
                 if (res.err == 0) {
+                    sessionStorage.userId = '';
+                    sessionStorage.userRole = '';
+                    sessionStorage.username = '';
+                    
                     window.location.hash = 'login';
                 }
             },

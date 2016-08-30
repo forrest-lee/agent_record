@@ -33,8 +33,7 @@ const columns = [{
     dataIndex: 'parent',
     key: 'parent',
     render:    (value, record) => {
-        console.log(record);
-        return <div></div>
+        return <span>{record.agentId.role == 0 ? '无' : record.agentId.parentId}</span>
     }
 }, {
     title: '操作',
@@ -194,27 +193,6 @@ class ClientBox extends React.Component {
         }
     }
     
-    componentWillMount() {
-        $.ajax({
-            type: 'GET',
-            url: '/apiv1/client/all',
-            success: (res) => {
-                if(res.err == 0) {
-                    this.props.infoActions.setInfos(res.infos);
-                    this.setState({loading: false, infos: this.props.infos})
-                } else {
-                    console.error(res.msg);
-                }
-            },
-            error: (res) => {
-                console.error(res);
-            },
-            complete: () => {
-                this.setState({loading: false});
-            }
-            
-        })
-    }
     
     render() {
         if(this.state.loading) {
@@ -246,8 +224,49 @@ class ClientBox extends React.Component {
     
     rowClick = (record, index) => {
         window.location.hash = '/information/' + record._id;
+    };
+    
+    
+    componentDidUpdate (prevProps) {
+        // 通过参数更新数据
+        let oldId = prevProps.params.id;
+        let newId = this.props.params.id;
+        
+        if (newId !== oldId) {
+            this.fetchClients();
+        }
     }
     
+    fetchClients() {
+        var status = getUrlId('status');
+        var url = !status ? '/apiv1/client/all' : '/apiv1/client/all?status=' + status;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            beforeSend: () => {
+                this.setState({loading: true});
+            },
+            success: (res) => {
+                if(res.err == 0) {
+                    this.props.infoActions.setInfos(res.infos);
+                    this.setState({loading: false, infos: this.props.infos});
+                } else {
+                    console.error(res.msg);
+                }
+            },
+            error: (res) => {
+                console.error(res);
+            },
+            complete: () => {
+                this.setState({loading: false});
+            }
+        
+        })
+    }
+    
+    componentWillMount() {
+        this.fetchClients();
+    }
 }
 
 function mapStateToProps(state) {

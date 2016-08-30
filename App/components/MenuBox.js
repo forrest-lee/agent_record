@@ -60,16 +60,16 @@ class MenuBox extends Component {
                         <Link to='/client/all'>客户信息</Link>
                     </Menu.Item>
                     <Menu.Item key='2-1'>
-                        <Link to='/client/all?status=0'>待审核列表</Link>
+                        <Link to='/client/status/0'>待审核列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-2'>
-                        <Link to='/client/all?status=1'>成功列表</Link>
+                        <Link to='/client/status/1'>成功列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-3'>
-                        <Link to='/client/all?status=2'>拒绝列表</Link>
+                        <Link to='/client/status/2'>拒绝列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-4'>
-                        <Link to='/client/all?status=3'>退回列表</Link>
+                        <Link to='/client/status/3'>退回列表</Link>
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub3" title={<span> <Icon type="user"/> <span> 代理 </span></span>}>

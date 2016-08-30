@@ -93,6 +93,7 @@ ReactDOM.render(
                         <Route path='client'>
                             <Route path='all' component={ShowClient} />
                         </Route>
+                        <Route path='client/status/:id' component={ShowClient} />
     
                         <Redirect from="agency" to="/agent/all"/>
                         <Route path='agency'>

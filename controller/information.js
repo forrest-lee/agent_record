@@ -133,11 +133,9 @@ exports.attachments = function(req, res) {
     Attachment.find({infoId: req.params.id})
         .exec((err, attaches) => {
             if(err) {
-                return res.json({
-                    err: 1,
-                    msg: err
-                })
+                return res.json({err: 1, msg: err});
             } else {
+                if(attaches.owner)
                 return res.json({
                     err: 0,
                     attaches: attaches

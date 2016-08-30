@@ -142,8 +142,7 @@ class Information extends React.Component {
                             <Col span={12} offset={12} style={{ textAlign: 'right' }}>
                                 {
                                     window.location.hash.indexOf('/upload/') == -1 ?
-                                        <Button type="primary">更新</Button> :
-                                        <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
+                                        '' : <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
                                 }
                             </Col>
                         </Row>

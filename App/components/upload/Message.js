@@ -102,6 +102,12 @@ class Message extends React.Component {
             wrapperCol: { span: 22 }
         };
         
+        var status = this.props.information.status;
+        var editable = status == -1 || status == 3;
+        if(!editable) {
+            return <div></div>
+        }
+        
         return (
             <div>
                 <div style={{ marginTop: 36 }}>

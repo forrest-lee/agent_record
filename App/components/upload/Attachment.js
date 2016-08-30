@@ -60,6 +60,9 @@ class Attachment extends React.Component {
                 'border-container': true
             })
         };
+    
+        var status = this.props.information.status;
+        var editable = status == -1 || status == 3;
         
         return (
             <Row gutter={10} style={{marginTop: 20}} className={style.borderBox}>
@@ -82,37 +85,44 @@ class Attachment extends React.Component {
                 </Col>
                 <Col sm={18}>
                     <div id="qncontainer" style={{marginTop: 10}}>
-                        <Button type="ghost" id="pickfiles">
-                            <Icon type="upload"/> 选择文件
-                        </Button>
+                        {
+                            !editable ? '' :
+                                <Button type="ghost" id="pickfiles">
+                                    <Icon type="upload"/> 选择文件
+                                </Button>
+                        }
                     </div>
                     
-                    <Button type="default" style={{marginTop: 10}} icon="download" onClick={this.downloadAll.bind(this)}>
+                    <Button type="default" style={{marginTop: 10}} icon="download"
+                            disabled={this.state.fileList.length == 0}
+                            onClick={this.downloadAll.bind(this)}
+                    >
                         全部下载
                     </Button>
                     
                     <div className='ant-upload-list ant-upload-list-picture' style={{marginTop: 10}}>
                         {
-                            this.state.fileList.map((item, index) => {
-                                var iconUrl = item.url;
-                                if(iconUrl.indexOf('xls') > 0) {
-                                    iconUrl ='/public/images/excel.png'
-                                } else if(iconUrl.indexOf('doc') > 0) {
-                                    iconUrl ='/public/images/word.png'
-                                }
-                                return (
-                                    <div className='ant-upload-list-item ant-upload-list-item-done'>
-                                        <div className='ant-upload-list-item-info'>
-                                            <a className='ant-upload-list-item-thumbnail' href={item.url}>
-                                                <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl}
-                                                     alt=""/>
-                                            </a>
-                                            <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
-                                            <i className='anticon anticon-cross'></i>
+                            this.state.fileList.length == 0 ? <h2>暂无文件</h2> :
+                                this.state.fileList.map((item, index) => {
+                                    var iconUrl = item.url;
+                                    if(iconUrl.indexOf('xls') > 0) {
+                                        iconUrl ='/public/images/excel.png'
+                                    } else if(iconUrl.indexOf('doc') > 0) {
+                                        iconUrl ='/public/images/word.png'
+                                    }
+                                    return (
+                                        <div className='ant-upload-list-item ant-upload-list-item-done'>
+                                            <div className='ant-upload-list-item-info'>
+                                                <a className='ant-upload-list-item-thumbnail' href={item.url}>
+                                                    <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl}
+                                                         alt=""/>
+                                                </a>
+                                                <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
+                                                <i className='anticon anticon-cross'></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })
+                                    );
+                                })
                         }
                     </div>
                 

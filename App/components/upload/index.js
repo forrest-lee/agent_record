@@ -62,8 +62,8 @@ class UploadBox extends React.Component {
         return (
             <div>
                 <InfoForm information={this.state.information}/>
-                <Attachment/>
-                <Message/>
+                <Attachment information={this.state.information}/>
+                <Message information={this.state.information}/>
             </div>
         );
     }

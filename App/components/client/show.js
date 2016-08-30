@@ -40,6 +40,9 @@ const columns = [{
     dataIndex: 'status',
     key: 'status',
     filters: [{
+        text: '正在编辑',
+        value: '-1',
+    }, {
         text: '待审核',
         value: '0',
     }, {
@@ -91,6 +94,11 @@ const columns = [{
         let content;
         
         switch(record.status) {
+            case -1:
+                status = '正在编辑';
+                menu = <div></div>;
+                content = <span style={{color: 'gray'}}>{status}</span>;
+                break;
             case 0:
                 status = '待审核';    // 已提交
                 content = (

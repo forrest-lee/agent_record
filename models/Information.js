@@ -12,7 +12,7 @@ var InformationSchema = new mongoose.Schema({
     qq:      String,
     school:  String,
     comment: String,
-    status:  {type: Number, default: -1},   // 0:已提交，1:已通过 ，2:已否决，3:已退回
+    status:  {type: Number, default: -1},   // -1:正在编辑, 0:已提交(待审核)，1:已通过 ，2:已否决，3:已退回
     
     
     createAt: Date,

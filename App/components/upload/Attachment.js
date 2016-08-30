@@ -204,6 +204,7 @@ class Attachment extends React.Component {
                 },
                 'UploadComplete': function () {
                     //队列文件处理完毕后,处理相关的事情
+                    window.location.reload();
                 },
                 'Key':            function (up, file) {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数

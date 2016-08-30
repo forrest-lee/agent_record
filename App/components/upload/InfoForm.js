@@ -184,11 +184,10 @@ class Information extends React.Component {
                     qq: values.qq,
                     school: values.school,
                     comment: values.comment,
-                    status: 0
+                    status: -1  // 正在编辑
                 },
                 success: (res) => {
                     if (res.err == 0) {
-
                         notification.success({
                             message: 'Success',
                             description: res.msg

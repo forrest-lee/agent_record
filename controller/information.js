@@ -130,7 +130,7 @@ exports.detail = function(req, res) {
  * @param res
  */
 exports.attachments = function(req, res) {
-    Attachment.find({})
+    Attachment.find({infoId: req.params.id})
         .exec((err, attaches) => {
             if(err) {
                 return res.json({

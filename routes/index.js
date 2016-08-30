@@ -13,7 +13,7 @@ router.get('/', homeCtrl.index);
 
 
 var userRouter = express.Router();
-userRouter.post('/signup', userCtrl.signup);
+userRouter.post('/signUp', userCtrl.signUp);
 userRouter.post('/login', userCtrl.login);
 userRouter.post('/logout', userCtrl.logout);
 userRouter.get('/captcha', userCtrl.getCaptcha);  // 验证码
@@ -26,6 +26,7 @@ qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 // 用户信息
 var userApiRouter = express.Router();
 userApiRouter.get('/all', userCtrl.allAgency);
+userApiRouter.get('/:id/child', userCtrl.childAgency);
 
 
 /**

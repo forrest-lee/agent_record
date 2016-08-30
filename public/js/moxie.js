@@ -4710,7 +4710,7 @@ define("moxie/xhr/XMLHttpRequest", [
 			@param {String|Number} value
 			*/
 			setRequestHeader: function(header, value) {
-				var uaHeaders = [ // these headers are controlled by the user agent
+				var uaHeaders = [ // these headers are controlled by the user agency
 						"accept-charset",
 						"accept-encoding",
 						"access-control-request-headers",

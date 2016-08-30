@@ -196,10 +196,11 @@ class Register extends React.Component {
             
             $.ajax({
                 type:    'POST',
-                url:     '/user/signup',
+                url:     '/user/signUp',
                 data:    {
                     username:   values.username,
                     name:       values.name,
+                    role:       0,
                     mobile:     values.mobile,
                     password:   values.password,
                     repassword: values.repassword,

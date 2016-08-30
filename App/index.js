@@ -42,12 +42,12 @@ function checkAuth(nextState, replace) {
 
 import AppBox from './components/AppBox';
 import MainBox from './components/MainBox';
-
 import IndexPage from './components/index';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
-import ShowAgency from './components/agent/show';
-import NewAgency from './components/agent/new';
+import ShowAgency from './components/agency/show';
+import NewAgency from './components/agency/new';
+import ChildAgency from './components/agency/child';
 import ShowClient from './components/client/show';
 import Notification from './components/notification/detail';
 import NotificationBox from './components/notification/NotificationBox';
@@ -83,23 +83,25 @@ ReactDOM.render(
     
                     <Route component={MainBox} >
                         <Route path='information/:id' component={InfoDetail} />
+    
+                        <Route path='notification'>
+                            <Route path='all' component={NotificationBox} />
+                            <Route path='new' component={NewNotification} />
+                            <Route path=':id' component={Notification} />
+                        </Route>
+    
+                        <Route path='client'>
+                            <Route path='all' component={ShowClient} />
+                        </Route>
+    
+                        <Redirect from="agency" to="/agent/all"/>
+                        <Route path='agency'>
+                            <Route path='all' component={ShowAgency} />
+                            <Route path='new' component={NewAgency} />
+                        </Route>
+                        <Route path='agency/:id/child' component={ChildAgency} />
                     </Route>
-            
-                    <Route path='notification' component={MainBox} >
-                        <Route path='all' component={NotificationBox} />
-                        <Route path='new' component={NewNotification} />
-                        <Route path=':id' component={Notification} />
-                    </Route>
-            
-                    <Route path='client' component={MainBox} >
-                        <Route path='all' component={ShowClient} />
-                    </Route>
-            
-                    <Redirect from="agent" to="/agent/all"/>
-                    <Route path='agent' component={MainBox} >
-                        <Route path='all' component={ShowAgency} />
-                        <Route path='new' component={NewAgency} />
-                    </Route>
+                    
                 </Route>
             </Router>
         </Router>

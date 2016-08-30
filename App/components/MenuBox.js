@@ -74,10 +74,10 @@ class MenuBox extends Component {
                 </SubMenu>
                 <SubMenu key="sub3" title={<span> <Icon type="user"/> <span> 代理 </span></span>}>
                     <Menu.Item key="3-0">
-                        <Link to='/agent/new'>新增代理</Link>
+                        <Link to='/agency/new'>新增代理</Link>
                     </Menu.Item>
                     <Menu.Item key="3-1">
-                        <Link to='/agent/all'>代理列表</Link>
+                        <Link to='/agency/all'>代理列表</Link>
                     </Menu.Item>
                 </SubMenu>
             </Menu>

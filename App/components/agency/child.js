@@ -1,3 +1,6 @@
+/**
+ * Created by leo on 8/30/16.
+ */
 import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Input, Spin } from 'antd';
@@ -22,32 +25,13 @@ const columns = [{
 }, {
     title: '上级代理',
     dataIndex: 'parent',
-    key: 'parent',
-    render: (value, record) => {
-        console.log(record);
-        return <span></span>
-    }
+    key: 'parent'
 }, {
     title: '备注',
     dataIndex: 'comment',
     key: 'comment'
 }];
 
-const dataSource = [{
-    key: '1',
-    username: '胡彦斌',
-    role: 1,
-    parent: '123',
-    mobile: '123456',
-    comment: '无'
-}, {
-    key: '2',
-    username: '吴彦祖',
-    role: 2,
-    parent: '123',
-    mobile: '654321',
-    comment: '无'
-}];
 
 class SearchInput extends React.Component {
     constructor(props) {
@@ -116,8 +100,9 @@ class AgentBox extends React.Component {
     componentWillMount() {
         $.ajax({
             type: 'GET',
-            url: '/apiv1/user/all',
+            url: '/apiv1/user/' + getUrlId('agency') + '/child',
             success: (res) => {
+                console.log(res);
                 if(res.err == 0) {
                     this.props.agentActions.setAgents(res.users);
                     this.setState({
@@ -134,7 +119,7 @@ class AgentBox extends React.Component {
             complete: () => {
                 this.setState({loading: false});
             }
-            
+        
         })
     }
     
@@ -146,7 +131,7 @@ class AgentBox extends React.Component {
         return (
             <div>
                 <div>
-                    <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
+                    <Button type="primary" onClick={this.back}>返回</Button>
                     <SearchInput
                         placeholder="输入姓名查询代理"
                         style={{ width: 200, marginLeft: 10 }}
@@ -164,12 +149,10 @@ class AgentBox extends React.Component {
         )
     }
     
-    newClient() {
-        window.location.hash = '/agent/new';
-        this.setState({
-            loading: true
-        })
+    back = () => {
+        history.back();
     }
+    
 }
 
 function mapStateToProps(state) {

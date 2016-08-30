@@ -95,9 +95,9 @@ class NewClient extends React.Component {
                             id='role' size='large' style={{width: 200}}
                             placeholder='请选择代理类型'
                         >
-                            <Option value='0'>一级代理</Option>
-                            <Option value='1'>二级代理</Option>
-                            <Option value='2'>三级代理</Option>
+                            <Option value='1'>一级代理</Option>
+                            <Option value='2'>二级代理</Option>
+                            <Option value='3'>三级代理</Option>
                         </Select>
                     </FormItem>
                     
@@ -181,7 +181,7 @@ class NewClient extends React.Component {
             
             $.ajax({
                 type:    'POST',
-                url:     '/user/signup',
+                url:     '/user/signUp',
                 data:    {
                     username: values.username,
                     name:     values.name,
@@ -198,7 +198,7 @@ class NewClient extends React.Component {
                             message:     'Success',
                             description: res.msg
                         });
-                        window.location.hash = 'agent/all';
+                        window.location.hash = 'agency/all';
                     } else {
                         notification.error({
                             message:     'Error',

@@ -16,14 +16,13 @@ function is_wechat(req) {
 /**
  * 注册
  */
-exports.signup = function (req, res) {
+exports.signUp = function (req, res) {
     var username   = req.body.username;
     var name       = req.body.name;
     var password   = req.body.password ? req.body.password : '123456';
     var repassword = req.body.repassword ? req.body.repassword : '123456';
     var role       = req.body.role;
     var parent     = req.body.parent;
-    var parentId   = '';
     var gender     = req.body.gender;
     var mobile     = req.body.mobile;
     var qq         = req.body.qq ? req.body.qq : '';
@@ -35,17 +34,6 @@ exports.signup = function (req, res) {
             msg: '重复密码不相等'
         });
     }
-    
-    
-    if(parent != '') {
-        User.find({username: parent})
-            .exec((err, p) => {
-                
-            })
-    } else {
-        
-    }
-    
     
     var user = new User({
         username: username,
@@ -59,27 +47,43 @@ exports.signup = function (req, res) {
         comment:  comment
     });
     
-    
-    user.save(function (err) {
-        if (err) {
-            if (err.code === 11000) {
-                return res.json({
-                    err: 1,
-                    msg: '此账户已被注册'
-                });
-            } else {
-                return res.json({
-                    err: 1,
-                    msg: err
-                });
-            }
-        } else {
-            return res.json({
-                err: 0,
-                msg: '注册成功'
+    User.find({username: parent})
+        .exec((err, p) => {
+            if(err) {return res.json({err:1, msg:err});}
+            user = new User({
+                username: username,
+                name:     name,
+                password: password,
+                role:     role,
+                parent:   parent,
+                parentId: !p ? '' : p._id,
+                gender:   gender,
+                mobile:   mobile,
+                qq:       qq,
+                comment:  comment
             });
-        }
-    });
+
+            user.save(function (err) {
+                if (err) {
+                    if (err.code === 11000) {
+                        return res.json({
+                            err: 1,
+                            msg: '此账户已被注册'
+                        });
+                    } else {
+                        return res.json({
+                            err: 1,
+                            msg: err
+                        });
+                    }
+                } else {
+                    return res.json({
+                        err: 0,
+                        msg: '注册成功'
+                    });
+                }
+            });
+        })
 };
 
 
@@ -153,9 +157,14 @@ exports.isLogined = function (req, res, next) {
  * @param res
  */
 exports.allAgency = function (req, res) {
-    // TODO: 权限验证, 只有管理员有权(中间件也需要加)
+    var query = {role: 1};
+    if(req.user.role == 0) {
+        query = req.query.role ? {role: req.query.role} : {};
+    } else {
+        query = {parent: req.user.username};
+    }
     
-    User.find({})
+    User.find(query)
         .exec((err, users) => {
             if (err) {
                 return res.json({
@@ -170,6 +179,31 @@ exports.allAgency = function (req, res) {
             }
         });
 };
+
+
+/**
+ * 查找子代理
+ * @param req
+ * @param res
+ */
+exports.childAgency = function (req, res) {
+    User.find({parentId: req.params.id})
+        .exec((err, users) => {
+            if (err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                });
+            } else {
+                console.log(users);
+                return res.json({
+                    err:   0,
+                    users: users.filter(item => item.username != req.user.username)
+                });
+            }
+        });
+};
+
 
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!

@@ -4,6 +4,8 @@
 var Information = require('../models/Information');
 var Attachment = require('../models/Attatchment');
 var Message = require('../models/Message');
+var settings = require('../settings');
+var admins = settings.admins;
 
 /**
  * 查询所有客户信息
@@ -132,7 +134,7 @@ exports.detail = function(req, res) {
  */
 exports.attachments = function(req, res) {
     var userId = req.user._id;
-    Attachment.find({infoId: req.params.id})
+    Attachment.find({infoId: req.params.id}).populate('owner')
         .exec((err, attaches) => {
             if(err) {
                 return res.json({err: 1, msg: err});
@@ -142,11 +144,18 @@ exports.attachments = function(req, res) {
                     attaches: []
                 });
             } else {
-                if(attaches[0].owner.toString() == userId.toString()) {
+                if(attaches[0].owner._id.toString() == userId.toString() ||
+                    attaches[0].owner.parentId.toString() == userId.toString() ||
+                        admins.indexOf(userId.toString()) ) {
                     return res.json({
                         err: 0,
                         attaches: attaches
                     });
+                } else {
+                    return res.json({
+                        err: 1,
+                        msg: '权限不够'
+                    })
                 }
             }
         })

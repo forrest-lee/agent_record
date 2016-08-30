@@ -79,13 +79,16 @@ class UploadBox extends React.Component {
                 status = '状态异常';
         }
         
+        let {user} = this.props;
+        
         return (
             <div>
                 <h2>当前状态: {status}</h2>
                 <InfoForm information={this.state.information}/>
                 <Attachment information={this.state.information}/>
                 {
-                    this.state.information.status >= 0 ? <Message information={this.state.information}/> :
+                    this.state.information.status >= 0 ?
+                        <Message information={this.state.information} user={user}/> :
                         <div style={{marginTop: 20, float: 'right'}}>
                             <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
                         </div>

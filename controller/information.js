@@ -205,33 +205,36 @@ exports.messages = function(req, res) {
 
 
 /**
- * 新增留言
+ * 发布审核信息
  * @param req
  * @param res
  */
 exports.newMessage = function(req, res) {
+    var infoId = req.body.id;
+    var status = req.body.status;
     var message = new Message({
-        infoId: req.body.id,
+        infoId: infoId,
         content: req.body.content,
-        status: req.body.status,
+        status: status,
         ownerId: req.user._id,
         ownerName: req.user.username
     });
     
-    console.log(message);
-    
     message.save((err, message) => {
         if(err) {
-            return res.json({
-                err: 1,
-                msg: err
-            });
+            return res.json({err: 1, msg: err});
         } else {
-            return res.json({
-                err: 0,
-                message: message,
-                msg: '消息提交成功'
-            })
+            Information.findByIdAndUpdate(infoId, {$set: {status: status}}, (err, info) => {
+                if(err) {
+                    return res.json({err: 1, msg: err});
+                } else {
+                    return res.json({
+                        err: 0,
+                        message: message,
+                        msg: '消息提交成功'
+                    })
+                }
+            });
         }
     })
 };

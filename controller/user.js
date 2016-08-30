@@ -164,7 +164,7 @@ exports.allAgency = function (req, res) {
         query = {parent: req.user.username};
     }
     
-    User.find(query)
+    User.find(query).populate('parentId')
         .exec((err, users) => {
             if (err) {
                 return res.json({
@@ -187,7 +187,7 @@ exports.allAgency = function (req, res) {
  * @param res
  */
 exports.childAgency = function (req, res) {
-    User.find({parentId: req.params.id})
+    User.find({parentId: req.params.id}).populate('parentId')
         .exec((err, users) => {
             if (err) {
                 return res.json({

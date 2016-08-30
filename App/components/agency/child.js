@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import { Table, Button, Input, Spin } from 'antd';
+import { Table, Button, Input, Spin, Icon } from 'antd';
 const InputGroup = Input.Group;
 
 import { bindActionCreators } from 'redux';
@@ -25,7 +25,8 @@ const columns = [{
 }, {
     title: '上级代理',
     dataIndex: 'parent',
-    key: 'parent'
+    key: 'parent',
+    render: (value, record) => <span>{record.parentId.name}</span>
 }, {
     title: '备注',
     dataIndex: 'comment',
@@ -131,7 +132,7 @@ class AgentBox extends React.Component {
         return (
             <div>
                 <div>
-                    <Button type="primary" onClick={this.back}>返回</Button>
+                    <Button type="default" onClick={this.back} icon="rollback">返回</Button>
                     <SearchInput
                         placeholder="输入姓名查询代理"
                         style={{ width: 200, marginLeft: 10 }}

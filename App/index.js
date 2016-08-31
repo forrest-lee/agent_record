@@ -31,11 +31,11 @@ function checkAuth(nextState, replace) {
     let { user } = store.getState();
     
     if (sessionStorage.userId) {
-        if (nextState.location.state && nextState.location.pathname) {
-            replace(nextState.location.pathname);
-        } else {
-            replace('/');
-        }
+        console.log('已登陆: ');
+        // TODO: CheckUserExist
+        return;
+    } else {
+        window.location.href = '/#/login';
     }
 }
 

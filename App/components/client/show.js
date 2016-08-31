@@ -11,6 +11,11 @@ const InputGroup = Input.Group;
 
 
 const columns = [{
+    title: '类型',
+    dataIndex: 'type',
+    key: 'type',
+    render: (v, r) => <span>{v == 0 ? '资料上传' : '合同上传'}</span>
+}, {
     title: '标题',
     dataIndex: 'title',
     key: 'title',

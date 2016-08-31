@@ -54,10 +54,13 @@ class MenuBox extends Component {
                     <Menu.Item key='1-0'>
                         <Link to='/upload/information'>借款资料上传</Link>
                     </Menu.Item>
+                    <Menu.Item key='1-1'>
+                        <Link to='/upload/contract'>借款合同上传</Link>
+                    </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="team"/> <span> 客户 </span></span>}>
                     <Menu.Item key='2-0'>
-                        <Link to='/client/all'>客户信息</Link>
+                        <Link to='/client/all'>全部列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-1'>
                         <Link to='/client/status/0'>待审核列表</Link>

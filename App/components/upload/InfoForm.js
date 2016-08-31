@@ -71,17 +71,36 @@ class Information extends React.Component {
             initialValue: this.state.information.school
         });
         
+        
+        let type = window.location.hash.indexOf('/contract') == -1 ? 0 : 1;
 
         return (
             <div>
                 {
                     window.location.hash.indexOf('/upload/') == -1 ? '' :
-                        <h1>新建: 借款资料</h1>
+                        <h1>新建: {type == 0 ? '资料上传' : '合同上传'}</h1>
                 }
                 <div style={{ marginTop: 10 }}>
                     <Form horizontal>
                         <Row gutter={10}>
                             <Col sm={12}>
+    
+                                <FormItem
+                                    {...infoFormLayout}
+                                    label="类型"
+                                    hasFeedback
+                                >
+                                    <Select defaultValue="0" {...getFieldProps('name', {
+                                        rules: [
+                                            {required: true, message: '请选着类型'},
+                                        ]
+                                    })}>
+                                        <Option value="0">资料上传</Option>
+                                        <Option value="1">合同上传</Option>
+                                    </Select>
+                                </FormItem>
+    
+                                
                                 <FormItem
                                     {...infoFormLayout}
                                     label="姓名"
@@ -109,26 +128,12 @@ class Information extends React.Component {
                                             />
                                     }
                                 </FormItem>
-    
-                                <FormItem
-                                    {...infoFormLayout}
-                                    label="备注"
-                                    hasFeedback
-                                >
-                                    {
-                                        !editable ? <span>{this.state.information.comment}</span> :
-                                            <Input
-                                                placeholder="备注"
-                                                defaultValue={this.state.information.comment}
-                                            />
-                                    }
-                                </FormItem>
                             </Col>
 
                             <Col sm={12}>
                                 <FormItem
                                     {...infoFormLayout}
-                                    label="手机号"
+                                    label="手机"
                                     hasFeedback
                                 >
                                     {
@@ -142,7 +147,7 @@ class Information extends React.Component {
 
                                 <FormItem
                                     {...infoFormLayout}
-                                    label="QQ号"
+                                    label="QQ"
                                     hasFeedback
                                 >
                                     {
@@ -150,6 +155,20 @@ class Information extends React.Component {
                                             <Input
                                                 placeholder='请输入QQ号'
                                                 {...qqProps}
+                                            />
+                                    }
+                                </FormItem>
+    
+                                <FormItem
+                                    {...infoFormLayout}
+                                    label="备注"
+                                    hasFeedback
+                                >
+                                    {
+                                        !editable ? <span>{this.state.information.comment}</span> :
+                                            <Input
+                                                placeholder="备注"
+                                                defaultValue={this.state.information.comment}
                                             />
                                     }
                                 </FormItem>

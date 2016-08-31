@@ -78,6 +78,7 @@ ReactDOM.render(
             
                     <Route path='upload' component={MainBox} >
                         <Route path='information' component={InfoForm} />
+                        <Route path='contract'    component={InfoForm} />
                     </Route>
     
                     <Route component={MainBox} >

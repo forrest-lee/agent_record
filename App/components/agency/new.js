@@ -24,21 +24,18 @@ class NewClient extends React.Component {
                 {required: true, min: 5, message: '用户名至少为 5 个字符'},
                 {validator: this.userExists},
             ],
-            trigger: ['onBlur', 'onChange']
         });
         
         const nameProps = getFieldProps('name', {
             rules:   [
                 {required: true, min: 2, message: '姓名名至少为 2 个字符'},
             ],
-            trigger: ['onBlur', 'onChange']
         });
         
         const roleProps = getFieldProps('role', {
             rules:   [
                 {required: true, message: '请选择代理类别'}
             ],
-            trigger: ['onBlur', 'onChange']
         });
         
         const parentProps = getFieldProps('parent', {
@@ -46,14 +43,12 @@ class NewClient extends React.Component {
                 {required: true, min: 5, message: '用户名至少为 5 个字符'},
                 {validator: this.userExists},
             ],
-            trigger: ['onBlur', 'onChange']
         });
         
         const genderProps = getFieldProps('gender', {
             rules:   [
                 {required: true}
             ],
-            trigger: ['onBlur', 'onChange']
         });
         
         const mobileProps = getFieldProps('mobile', {
@@ -83,6 +78,15 @@ class NewClient extends React.Component {
                     >
                         <Input {...nameProps} id='name' placeholder='请输入真实姓名'/>
                     </FormItem>
+    
+                    <FormItem
+                        label='手机号'
+                        hasFeedback
+                        {...formItemLayout}
+                        help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
+                    >
+                        <Input {...mobileProps} id='mobile' placeholder='手机号'/>
+                    </FormItem>
                     
                     <FormItem
                         label='代理类型'
@@ -95,9 +99,9 @@ class NewClient extends React.Component {
                             id='role' size='large' style={{width: 200}}
                             placeholder='请选择代理类型'
                         >
-                            <Option value='1'>一级代理</Option>
-                            <Option value='2'>二级代理</Option>
-                            <Option value='3'>三级代理</Option>
+                            <Select.Option value={1}>一级代理</Select.Option>
+                            <Select.Option value={2}>二级代理</Select.Option>
+                            <Select.Option value={3}>三级代理</Select.Option>
                         </Select>
                     </FormItem>
                     
@@ -117,18 +121,9 @@ class NewClient extends React.Component {
                         help={isFieldValidating('gender') ? '校验中...' : (getFieldError('gender') || []).join(', ')}
                     >
                         <RadioGroup {...genderProps}>
-                            <Radio value='0'>男</Radio>
-                            <Radio value='1'>女</Radio>
+                            <Radio value={0}>男</Radio>
+                            <Radio value={1}>女</Radio>
                         </RadioGroup>
-                    </FormItem>
-                    
-                    <FormItem
-                        label='手机号'
-                        hasFeedback
-                        {...formItemLayout}
-                        help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
-                    >
-                        <Input {...mobileProps} id='mobile' placeholder='手机号'/>
                     </FormItem>
                     
                     <FormItem

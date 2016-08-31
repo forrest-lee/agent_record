@@ -27,6 +27,7 @@ qiniuApiRouter.get('/uptoken', qiniuCtrl.uptoken);
 var userApiRouter = express.Router();
 userApiRouter.get('/all', userCtrl.allAgency);
 userApiRouter.get('/:id/child', userCtrl.childAgency);
+userApiRouter.get('/:id', userCtrl.userDetail);
 
 
 /**

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Table, Button, Input, Spin } from 'antd';
+import { Table, Button, Input, Spin, Select } from 'antd';
 const InputGroup = Input.Group;
 
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,8 @@ import * as agentActions from '../../action/agent';
 const columns = [{
     title: '姓名',
     dataIndex: 'name',
-    key: 'name'
+    key: 'name',
+    render: (value, record) => <a href={'/#/user/' + record._id}>{value}</a>,
 }, {
     title: '帐号',
     dataIndex: 'username',
@@ -111,6 +112,41 @@ class AgentBox extends React.Component {
         }
     }
     
+    render() {
+        if(this.state.loading) {
+            return <Spin />;
+        }
+        
+        return (
+            <div>
+                <div>
+                    {
+                        sessionStorage.userRole != 0 ? '' :
+                            <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
+                    }
+                    <SearchInput
+                        placeholder="输入姓名查询代理"
+                        style={{ width: 200, marginLeft: 10 }}
+                        onSearch={value => {
+                            this.setState({
+                                agent: this.state.agent.filter(item => item.username.indexOf(value) >= 0)
+                            });
+                        }}
+                    />
+                    <Select defaultValue="1" style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value="1">一级代理</Select.Option>
+                        <Select.Option value="2">二级代理</Select.Option>
+                        <Select.Option value="3">三级代理</Select.Option>
+                        <Select.Option value="0">管理员</Select.Option>
+                    </Select>
+                </div>
+                <div style={{marginTop: 20}}>
+                    <Table dataSource={this.state.agent} columns={columns} />
+                </div>
+            </div>
+        )
+    }
+    
     componentWillMount() {
         $.ajax({
             type: 'GET',
@@ -136,38 +172,37 @@ class AgentBox extends React.Component {
         })
     }
     
-    render() {
-        if(this.state.loading) {
-            return <Spin />;
-        }
-        
-        return (
-            <div>
-                <div>
-                    <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
-                    <SearchInput
-                        placeholder="输入姓名查询代理"
-                        style={{ width: 200, marginLeft: 10 }}
-                        onSearch={value => {
-                            this.setState({
-                                agent: this.state.agent.filter(item => item.username.indexOf(value) >= 0)
-                            });
-                        }}
-                    />
-                </div>
-                <div style={{marginTop: 20}}>
-                    <Table dataSource={this.state.agent} columns={columns} />
-                </div>
-            </div>
-        )
-    }
-    
     newClient() {
         window.location.hash = '/agency/new';
         this.setState({
             loading: true
         })
     }
+    
+    chooseAgency = (value) => {
+        $.ajax({
+            type: 'GET',
+            url: '/apiv1/user/all?role=' + value,
+            success: (res) => {
+                if(res.err == 0) {
+                    this.props.agentActions.setAgents(res.users);
+                    this.setState({
+                        loading: false,
+                        agent: res.users
+                    })
+                } else {
+                    console.error(res.msg);
+                }
+            },
+            error: (res) => {
+                console.error(res);
+            },
+            complete: () => {
+                this.setState({loading: false});
+            }
+        
+        })
+    };
 }
 
 function mapStateToProps(state) {

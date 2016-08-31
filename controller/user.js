@@ -28,7 +28,9 @@ exports.signUp = function (req, res) {
     var qq         = req.body.qq ? req.body.qq : '';
     var comment    = req.body.comment ? req.body.comment : '';
     
-    if (password != repassword) {
+    if(req.user.role != 0) {
+        return res.json({err: 1, msg: '权限不够'})
+    } else if (password != repassword) {
         return res.json({
             err: 1,
             msg: '重复密码不相等'
@@ -261,4 +263,25 @@ exports.getCaptcha = function (req, res) {
     req.session.captcha = txt;
     
     return res.end(buf);
+};
+
+
+
+exports.userDetail = function(req, res) {
+    var uid = req.params.id;
+    
+    User.findById(uid)
+        .exec((err, user) => {
+            if (err) {
+                return res.json({err: 1, msg: err});
+            } else if(!user) {
+                return res.json({err: 1, msg: '该用户不存在'})
+            }
+            
+            return res.json({
+                err: 0,
+                user: user,
+                msg: '用户信息加载成功'
+            })
+        })
 };

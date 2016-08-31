@@ -245,17 +245,19 @@ exports.newMessage = function(req, res) {
                 } else if(info.status > 0 && info.status < 3) {
                     return res.json({err: 1, msg: '不可更改'});
                 } else {
-                    // status: 0 或 3
-                    message.save((err, message) => {
-                        if(err) {
-                            return res.json({err: 1, msg: err});
-                        } else {
+                    // status: 0 或 3 才能进行编辑
+                    info.status = status == 3 ? -1 : status;  // 3退回到可编辑状态
+                    
+                    info.save((err, obj) => {
+                        if(err) {return res.json({err: 1, msg: err});}
+                        message.save((err, obj) => {
+                            if(err) {return res.json({err: 1, msg: err});}
                             return res.json({
                                 err: 0,
-                                message: message,
+                                message: obj,
                                 msg: '消息提交成功'
                             })
-                        }
+                        });
                     });
                 }
             }

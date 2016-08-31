@@ -31,7 +31,6 @@ function checkAuth(nextState, replace) {
     let { user } = store.getState();
     
     if (sessionStorage.userId) {
-        console.log('已登陆: ');
         // TODO: CheckUserExist
         return;
     } else {

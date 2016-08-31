@@ -69,18 +69,20 @@ const columns = [{
             <Menu onSelect={(item) => {
                 $.ajax({
                     type: 'POST',
-                    url:  '/apiv1/information/update_status',
+                    url: '/apiv1/information/new_message',
                     data: {
                         id: record._id,
-                        status: item.key
+                        status: item.key,
+                        content: '',
                     },
                     success: (res) => {
-                        if (res.err == 0) {
+                        if(res.err == 0) {
                             notification.success({
                                 message: 'Success',
-                                description: '操作成功'
+                                description: res.msg
                             });
-                            window.location.reload();
+                            //window.location.hash = '/client/all';
+                            this.props.history.pushState(null, '/client/all');
                         } else {
                             console.error(res.msg);
                             notification.error({
@@ -89,7 +91,7 @@ const columns = [{
                             });
                         }
                     }
-                })
+                });
             }}>
                 <Menu.Item key='1'> 通过 </Menu.Item>
                 <Menu.Item key='2'> 否决 </Menu.Item>

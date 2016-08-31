@@ -30,6 +30,7 @@ class ContainerBox extends React.Component {
                         <MenuBox />
                     </Col>
                     <Col className={'main-container ant-col-sm-16 ant-col-md-18'}>
+                        <span style={{float: 'right'}}>当前用户: {sessionStorage.username}({sessionStorage.nameStr})</span>
                         {this.props.children}
                     </Col>
                 </Row>

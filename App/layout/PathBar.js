@@ -24,22 +24,24 @@ class HeaderBox extends React.Component {
     }
     
     render() {
-        return (
-            <div style={{marginBottom: 20}}>
-                <Breadcrumb>
-                    <Breadcrumb.Item href="">
-                        <Icon type="home" />
-                        <span>Home</span>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item href="">
-                        <span>xx</span>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item>
-                        xxxx
-                    </Breadcrumb.Item>
-                </Breadcrumb>
-            </div>
-        );
+        return <span></span>;
+        
+        //return (
+        //    <div style={{marginBottom: 20}}>
+        //        <Breadcrumb>
+        //            <Breadcrumb.Item href="">
+        //                <Icon type="home" />
+        //                <span>Home</span>
+        //            </Breadcrumb.Item>
+        //            <Breadcrumb.Item href="">
+        //                <span>xx</span>
+        //            </Breadcrumb.Item>
+        //            <Breadcrumb.Item>
+        //                xxxx
+        //            </Breadcrumb.Item>
+        //        </Breadcrumb>
+        //    </div>
+        //);
     }
 }
 

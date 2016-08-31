@@ -12,22 +12,33 @@ const columns = [{
     dataIndex: 'name',
     key: 'name'
 }, {
+    title: '帐号',
+    dataIndex: 'username',
+    key: 'username'
+}, {
     title: '手机号',
     dataIndex: 'mobile',
     key: 'mobile'
 }, {
     title: '代理级别',
     dataIndex: 'role',
-    key: 'role'
+    key: 'role',
+    render: (v, r) => {
+        var roleType = '';
+        switch(r.role) {
+            case 0: roleType='总代理'; break;
+            case 1: roleType='一级代理'; break;
+            case 2: roleType='二级代理'; break;
+            case 3: roleType='三级代理'; break;
+            default: break;
+        }
+        return <span>{roleType}</span>;
+    }
 }, {
     title: '上级代理',
     dataIndex: 'parent',
     key: 'parent',
     render: (value, record) => <span>{record.parentId.name}</span>
-}, {
-    title: '备注',
-    dataIndex: 'comment',
-    key: 'comment'
 }, {
     title: '子代理',
     render: (value, record) => {

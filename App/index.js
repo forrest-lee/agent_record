@@ -74,7 +74,7 @@ ReactDOM.render(
                     <IndexRoute component={Login} />
             
                     <Route path='login' component={Login} />
-                    <Route path='register' component={Register} />
+                    {/*<Route path='register' component={Register} />*/}
             
                     <Route path='upload' component={MainBox} >
                         <Route path='information' component={InfoForm} />

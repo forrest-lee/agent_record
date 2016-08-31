@@ -14,7 +14,7 @@ function is_wechat(req) {
 }
 
 /**
- * 注册
+ * 注册,新增代理
  */
 exports.signUp = function (req, res) {
     var username   = req.body.username;
@@ -47,9 +47,22 @@ exports.signUp = function (req, res) {
         comment:  comment
     });
     
-    User.find({username: parent})
+    User.findOne({username: parent})
         .exec((err, p) => {
-            if(err) {return res.json({err:1, msg:err});}
+            if(err) {
+                return res.json({err:1, msg:err});
+            } else if(!p) {
+                return res.json({
+                    err: 1,
+                    msg: '该父级代理不存在'
+                })
+            }
+            if(p.role != role + 1) {
+                return res.json({
+                    err: 1,
+                    msg: '父代理级别不匹配'
+                })
+            }
             user = new User({
                 username: username,
                 name:     name,
@@ -129,6 +142,12 @@ exports.login = function (req, res, next) {
     
 };
 
+/**
+ * 登出
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 exports.logout = function (req, res) {
     req.logout();
     return res.json({

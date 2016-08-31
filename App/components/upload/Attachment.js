@@ -151,7 +151,7 @@ class Attachment extends React.Component {
     }
     
     
-    qiniu() {
+    qiniu = () => {
         var id   = getUrlId('information');
         var that = this;
         
@@ -183,7 +183,7 @@ class Attachment extends React.Component {
                 'UploadProgress': function (up, file) {
                     // 每个文件上传时,处理相关的事情
                 },
-                'FileUploaded':   function (up, file, info) {
+                'FileUploaded':   (up, file, info) => {
                     // 每个文件上传成功后,处理相关的事情
                     // 其中 info 是文件上传成功后，服务端返回的json，形式如
                     // {
@@ -208,11 +208,15 @@ class Attachment extends React.Component {
                             url:      sourceLink,
                             hashId:   fileInfo.hash
                         },
-                        error:   function () {
+                        error:   () => {
                             alert("异常");
                         },
-                        success: function (res) {
+                        success: (res) => {
                             if (res.err == 0) {
+                                var fileList = this.state.fileList;
+                                fileList.push(res.attach);
+                                this.setState({fileList: fileList});
+                                
                                 notification.success({
                                     message:     'Success',
                                     description: res.msg
@@ -235,7 +239,6 @@ class Attachment extends React.Component {
                 },
                 'UploadComplete': function () {
                     //队列文件处理完毕后,处理相关的事情
-                    window.location.reload();
                 },
                 'Key':            function (up, file) {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
@@ -251,7 +254,7 @@ class Attachment extends React.Component {
         // domain 为七牛空间（bucket)对应的域名，选择某个空间后，可通过"空间设置->基本设置->域名设置"查看获取
         
         // uploader 为一个plupload对象，继承了所有plupload的方法，参考http://plupload.com/docs
-    }
+    };
 }
 
 export default Attachment;

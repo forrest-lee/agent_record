@@ -90,14 +90,18 @@ class Information extends React.Component {
                                     label="类型"
                                     hasFeedback
                                 >
-                                    <Select defaultValue="0" {...getFieldProps('type', {
-                                        rules: [
-                                            {required: true, message: '请选着类型'},
-                                        ]
-                                    })}>
-                                        <Option value="0">资料上传</Option>
-                                        <Option value="1">合同上传</Option>
-                                    </Select>
+                                    {
+                                        !editable ? <span>{this.state.information.type == 0 ? '资料上传' : '合同上传'}</span> :
+                                            <Select defaultValue={0} {...getFieldProps('type', {
+                                                rules: [
+                                                    {type: 'number', required: true, message: '请选择类型'},
+                                                ],
+                                                initialValue: this.state.information.type
+                                            })}>
+                                                <Option value={0}>资料上传</Option>
+                                                <Option value={1}>合同上传</Option>
+                                            </Select>
+                                    }
                                 </FormItem>
     
                                 

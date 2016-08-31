@@ -34,7 +34,7 @@ class NewClient extends React.Component {
         
         const roleProps = getFieldProps('role', {
             rules:   [
-                {required: true, message: '请选择代理类别'}
+                {type: 'number', required: true, message: '请选择代理类别'}
             ],
         });
         
@@ -47,7 +47,7 @@ class NewClient extends React.Component {
         
         const genderProps = getFieldProps('gender', {
             rules:   [
-                {required: true}
+                {type: 'number', required: true}
             ],
         });
         
@@ -98,9 +98,9 @@ class NewClient extends React.Component {
                             {...roleProps}
                             placeholder='请选择代理类型'
                         >
-                            <Select.Option value='1'>一级代理</Select.Option>
-                            <Select.Option value='2'>二级代理</Select.Option>
-                            <Select.Option value='3'>三级代理</Select.Option>
+                            <Select.Option value={1}>一级代理</Select.Option>
+                            <Select.Option value={2}>二级代理</Select.Option>
+                            <Select.Option value={3}>三级代理</Select.Option>
                         </Select>
                     </FormItem>
                     
@@ -120,8 +120,8 @@ class NewClient extends React.Component {
                         help={isFieldValidating('gender') ? '校验中...' : (getFieldError('gender') || []).join(', ')}
                     >
                         <RadioGroup {...genderProps}>
-                            <Radio value='0'>男</Radio>
-                            <Radio value='1'>女</Radio>
+                            <Radio value={0}>男</Radio>
+                            <Radio value={1}>女</Radio>
                         </RadioGroup>
                     </FormItem>
                     

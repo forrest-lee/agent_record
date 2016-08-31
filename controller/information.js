@@ -246,7 +246,6 @@ exports.newMessage = function(req, res) {
                     return res.json({err: 1, msg: '不可更改'});
                 } else {
                     // status: 0 或 3 才能进行编辑
-                    info.status = status == 3 ? -1 : status;  // 3退回到可编辑状态
                     
                     info.save((err, obj) => {
                         if(err) {return res.json({err: 1, msg: err});}

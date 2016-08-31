@@ -179,7 +179,8 @@ class Message extends React.Component {
                             message: 'Success',
                             description: res.msg
                         });
-                        window.location.reload();
+                        //window.location.hash = '/client/all';
+                        this.props.history.pushState(null, '/client/all');
                     }
                 }
             })

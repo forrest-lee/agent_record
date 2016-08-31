@@ -90,7 +90,7 @@ class Information extends React.Component {
                                     label="类型"
                                     hasFeedback
                                 >
-                                    <Select defaultValue="0" {...getFieldProps('name', {
+                                    <Select defaultValue="0" {...getFieldProps('type', {
                                         rules: [
                                             {required: true, message: '请选着类型'},
                                         ]
@@ -211,11 +211,11 @@ class Information extends React.Component {
                 return;
             }
             
-            
             $.ajax({
                 type: 'POST',
                 url:  '/apiv1/information/new',
                 data: {
+                    type: values.type,
                     mobile: values.mobile,
                     name: values.name,
                     qq: values.qq,

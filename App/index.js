@@ -54,6 +54,7 @@ import NewNotification from './components/notification/new';
 import InfoForm from './components/upload/InfoForm';   // 借款资料上传
 import InfoDetail from './components/upload/index';
 import UserDetail from './components/user/UserDetail';
+import UserSetting from './components/user/Setting';
 
 import useBasename from 'history/lib/useBasename';
 
@@ -103,7 +104,11 @@ ReactDOM.render(
                         </Route>
                         <Route path='agency/:id/child' component={ChildAgency} />
     
-                        <Route path='user/:id' component={UserDetail} />
+                        <Route path='user'>
+                            <Route path='setting' component={UserSetting} />
+                            <Route path=':id' component={UserDetail} />
+                        </Route>
+                        
                     </Route>
                     
                 </Route>

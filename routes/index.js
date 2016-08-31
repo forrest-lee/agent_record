@@ -28,6 +28,8 @@ var userApiRouter = express.Router();
 userApiRouter.get('/all', userCtrl.allAgency);
 userApiRouter.get('/:id/child', userCtrl.childAgency);
 userApiRouter.get('/:id', userCtrl.userDetail);
+userApiRouter.post('/reset_password', userCtrl.resetPassword);
+userApiRouter.post('/exists', userCtrl.isUserExists);
 
 
 /**

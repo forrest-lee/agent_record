@@ -30,22 +30,22 @@ UserSchema.pre('save', function (next) {
         if (!user.mobile) {
             user.mobile = "null" + Date.now() + "" + Math.floor(Math.random() * 10000);
         }
-        bcrypt.genSalt(5, function (err, salt) {
+    } else {
+        this.updateAt = Date.now();
+    }
+    
+    bcrypt.genSalt(5, function (err, salt) {
+        if (err) {
+            return next(err);
+        }
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
             if (err) {
                 return next(err);
             }
-            bcrypt.hash(user.password, salt, null, function (err, hash) {
-                if (err) {
-                    return next(err);
-                }
-                user.password = hash;
-                next();
-            });
+            user.password = hash;
+            next();
         });
-    } else {
-        this.updateAt = Date.now();
-        next();
-    }
+    });
 });
 
 UserSchema.methods = {

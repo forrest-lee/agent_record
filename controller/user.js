@@ -266,7 +266,11 @@ exports.getCaptcha = function (req, res) {
 };
 
 
-
+/**
+ * 查看用户详细信息
+ * @param req
+ * @param res
+ */
 exports.userDetail = function(req, res) {
     var uid = req.params.id;
     
@@ -283,5 +287,61 @@ exports.userDetail = function(req, res) {
                 user: user,
                 msg: '用户信息加载成功'
             })
+        })
+};
+
+
+/**
+ * 重置密码
+ * @param req
+ * @param res
+ */
+exports.resetPassword = function(req, res) {
+    var uid = req.user.id;
+    var password = req.body.password;
+    var repassword = req.body.repassword;
+    
+    User.findById(uid)
+        .exec((err, user) => {
+            if (err) {
+                return res.json({err: 1, msg: err});
+            } else if(!user) {
+                return res.json({err: 1, msg: '用户不存在'})
+            } else if (password != repassword) {
+                return res.json({
+                    err: 1,
+                    msg: '重复密码不相等'
+                });
+            }
+            
+            user.password = password;
+            user.save(function (err) {
+                if (err) {
+                    return res.json({err: 1,msg: err});
+                } else {
+                    return res.json({err: 0,msg: '密码修改成功'});
+                }
+            });
+        })
+};
+
+
+/**
+ * 检查用户名是否被占用
+ * @param req
+ * @param res
+ */
+exports.isUserExists = function(req, res) {
+    var username = req.body.username;
+    
+    User.findOne({username: username})
+        .exec((err, user) => {
+            if (err) {
+                return res.json({err: 1, msg: err});
+            } else if(user) {
+                return res.json({err: 2, msg: '用户名已存在'})
+            } else {
+                return res.json({err: 0, msg: '用户名未被占用'})
+            }
         })
 };

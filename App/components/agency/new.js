@@ -153,13 +153,20 @@ class NewClient extends React.Component {
         if (!value) {
             callback();
         } else {
-            setTimeout(() => {
-                if (value === '123456') {
-                    callback([new Error('抱歉，该用户名已被占用。')]);
-                } else {
-                    callback();
+            $.ajax({
+                type: 'POST',
+                url: '/apiv1/user/exists',
+                data: {
+                    username: value
+                },
+                success: (res) => {
+                    if(res.err == 2) {
+                        callback([new Error('抱歉，该用户名已被占用。')]);
+                    } else {
+                        callback();
+                    }
                 }
-            }, 800);
+            });
         }
     };
     

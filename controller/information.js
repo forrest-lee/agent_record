@@ -19,7 +19,14 @@ exports.allClient = function(req, res) {
         query = {status: req.query.status};
     }
     Information.find(query)
-        .populate('agentId')
+        .populate({
+            path: 'agentId',
+            model: 'User',
+            populate: {
+                path: 'parentId',
+                model: 'User'
+            }
+        })
         .populate('parent')
         .exec((err, infos) => {
             if(err) {

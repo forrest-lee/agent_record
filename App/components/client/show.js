@@ -34,14 +34,29 @@ const columns = [{
     dataIndex: 'agentId',
     key: 'agentId',
     render: (v, r) => {
-        return <span>{r.agentId.parent} - {r.agentId.name}</span>
+        return <span>{r.agentId.name}</span>
+    }
+}, {
+    title: '代理级别',
+    dataIndex: 'role',
+    key: 'role',
+    render: (v, r) => {
+        var roleType = '';
+        switch(r.agentId.role) {
+            case 0: roleType='管理员'; break;
+            case 1: roleType='一级代理'; break;
+            case 2: roleType='二级代理'; break;
+            case 3: roleType='三级代理'; break;
+            default: break;
+        }
+        return <span>{roleType}</span>;
     }
 }, {
     title: '上级代理',
     dataIndex: 'parent',
     key: 'parent',
     render:    (value, record) => {
-        return <span>{record.agentId.role == 0 ? '无' : record.agentId.parentId}</span>
+        return <span>{record.agentId.role == 0 ? '无' : record.agentId.parentId.name}</span>
     }
 }, {
     title: '操作',
@@ -265,6 +280,7 @@ class ClientBox extends React.Component {
                 this.setState({loading: true});
             },
             success: (res) => {
+                console.log(res);
                 if(res.err == 0) {
                     this.props.infoActions.setInfos(res.infos);
                     this.setState({loading: false, infos: this.props.infos});

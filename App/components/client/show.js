@@ -31,8 +31,11 @@ const columns = [{
     render:    (value, record) => <span>{dateformat(value, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
     title: '提交人',
-    dataIndex: 'agentName',
-    key: 'agentName'
+    dataIndex: 'agentId',
+    key: 'agentId',
+    render: (v, r) => {
+        return <span>{r.agentId.parent} - {r.agentId.name}</span>
+    }
 }, {
     title: '上级代理',
     dataIndex: 'parent',

@@ -76,19 +76,11 @@ class MenuBox extends Component {
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub3" title={<span> <Icon type="user"/> <span> 代理 </span></span>}>
-                    {
-                        (() => {
-                            if(sessionStorage.userRole == 0) {
-                                return (
-                                    <Menu.Item key="3-0">
-                                        <Link to='/agency/new'>新增代理</Link>
-                                    </Menu.Item>
-                                )
-                            }
-                        })()
-                    }
-                    <Menu.Item key="3-1">
+                    <Menu.Item key="3-0">
                         <Link to='/agency/all'>代理列表</Link>
+                    </Menu.Item>
+                    <Menu.Item key="3-1" style={{display: sessionStorage.userRole != 0 ? 'none' : '' }}>
+                        <Link to='/agency/new'>新增代理</Link>
                     </Menu.Item>
                 </SubMenu>
     

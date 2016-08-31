@@ -3,6 +3,7 @@
 var User     = require('../models/User');
 var passport = require('passport');
 var ccap     = require('ccap');
+var async    = require('async');
 
 function is_wechat(req) {
     if (req.headers['user-agent']) {
@@ -188,10 +189,7 @@ exports.allAgency = function (req, res) {
     User.find(query).populate('parentId')
         .exec((err, users) => {
             if (err) {
-                return res.json({
-                    err: 1,
-                    msg: err
-                });
+                return res.json({err: 1, msg: err});
             } else {
                 return res.json({
                     err:   0,

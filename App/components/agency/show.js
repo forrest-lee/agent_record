@@ -5,8 +5,9 @@ const InputGroup = Input.Group;
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as agentActions from '../../action/agent';
+import * as agencyActions from '../../action/agent';
 
+var that;
 const columns = [{
     title: '姓名',
     dataIndex: 'name',
@@ -108,8 +109,9 @@ class AgentBox extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            agent: []
-        }
+            agency: []
+        };
+        that = this;
     }
     
     render() {
@@ -121,7 +123,7 @@ class AgentBox extends React.Component {
             <div>
                 <div>
                     {
-                        sessionStorage.userRole != 0 ? '' :
+                        sessionStorage.userRole != 0 ? <span></span> :
                             <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
                     }
                     <SearchInput
@@ -129,7 +131,7 @@ class AgentBox extends React.Component {
                         style={{ width: 200, marginLeft: 10 }}
                         onSearch={value => {
                             this.setState({
-                                agent: this.state.agent.filter(item => item.username.indexOf(value) >= 0)
+                                agency: this.state.agency.filter(item => item.username.indexOf(value) >= 0)
                             });
                         }}
                     />
@@ -141,7 +143,7 @@ class AgentBox extends React.Component {
                     </Select>
                 </div>
                 <div style={{marginTop: 20}}>
-                    <Table dataSource={this.state.agent} columns={columns} />
+                    <Table dataSource={this.state.agency} columns={columns} />
                 </div>
             </div>
         )
@@ -153,10 +155,10 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all?role=1',
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agentActions.setAgents(res.users);
+                    this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
-                        agent: res.users
+                        agency: res.users
                     })
                 } else {
                     console.error(res.msg);
@@ -185,10 +187,10 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all?role=' + value,
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agentActions.setAgents(res.users);
+                    this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
-                        agent: res.users
+                        agency: res.users
                     })
                 } else {
                     console.error(res.msg);
@@ -208,13 +210,13 @@ class AgentBox extends React.Component {
 function mapStateToProps(state) {
     return {
         user:  state.user,
-        agent: state.agent
+        agency: state.agency
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        agentActions: bindActionCreators(agentActions, dispatch),
+        agencyActions: bindActionCreators(agencyActions, dispatch),
     }
 }
 

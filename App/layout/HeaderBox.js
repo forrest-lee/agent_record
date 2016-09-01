@@ -4,7 +4,7 @@ import { Select, Menu, Row, Col, Icon, Button } from 'antd';
 
 import styles from './styles.scss';
 let cx = classNames.bind(styles);
-import configs from '../../../configs';
+import configs from '../../configs';
 
 class HeaderBox extends React.Component {
     constructor(props) {

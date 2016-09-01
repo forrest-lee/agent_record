@@ -17,6 +17,8 @@ let cx = classNames.bind(styles);
 
 import * as userActions from '../../action/user';
 
+import configs from '../../../configs';
+
 
 class Login extends React.Component {
     constructor(props) {
@@ -36,7 +38,7 @@ class Login extends React.Component {
             <div>
                 <div className={styles.loginContainer}>
                     <div style={{textAlign: 'center'}}>
-                        <h1>金钱袋录件系统</h1>
+                        <h1>{configs.sitename}</h1>
                     </div>
 
                     <div style={{marginTop: 20}}>

@@ -16,6 +16,75 @@ function is_wechat(req) {
 
 /**
  * 注册,新增代理
+ * 管理员只能开一级, 一级代理只能开二级, 二级只能开三级, 三级没有权限
+ * 只能给自己开代理
+ */
+exports.addAgency = function(req, res) {
+    var uid = req.user._id;
+    if(req.user.role == 3) {
+        return res.json({err: 1, msg: '权限不够(Auth Failed)'});
+    }
+    
+    var username   = req.body.username;
+    var name       = req.body.name;
+    var password   = req.body.password ? req.body.password : '123456';
+    var repassword = req.body.repassword ? req.body.repassword : '123456';
+    var role       = req.user.role + 1;
+    var parent     = req.user.username;
+    var parentId   = uid;
+    var gender     = req.body.gender;
+    var mobile     = req.body.mobile;
+    var qq         = req.body.qq ? req.body.qq : '';
+    var comment    = req.body.comment ? req.body.comment : '';
+    
+    if (password != repassword) {
+        return res.json({
+            err: 1,
+            msg: '重复密码不相等'
+        });
+    }
+
+    var user = new User({
+        username: username,
+        name:     name,
+        password: password,
+        role:     role,
+        parent:   parent,
+        parentId: parentId,
+        gender:   gender,
+        mobile:   mobile,
+        qq:       qq,
+        comment:  comment
+    });
+    
+    user.save(function (err) {
+        if (err) {
+            if (err.code === 11000) {
+                return res.json({
+                    err: 1,
+                    msg: '此账户已被注册'
+                });
+            } else {
+                return res.json({
+                    err: 1,
+                    msg: err
+                });
+            }
+        } else {
+            return res.json({
+                err: 0,
+                msg: '注册成功'
+            });
+        }
+    });
+};
+
+
+/**
+ * 注册(deprecate)
+ * @param req
+ * @param res
+ * @returns {*}
  */
 exports.signUp = function (req, res) {
     var username   = req.body.username;
@@ -29,9 +98,7 @@ exports.signUp = function (req, res) {
     var qq         = req.body.qq ? req.body.qq : '';
     var comment    = req.body.comment ? req.body.comment : '';
     
-    if(req.user.role != 0) {
-        return res.json({err: 1, msg: '权限不够'})
-    } else if (password != repassword) {
+    if (password != repassword) {
         return res.json({
             err: 1,
             msg: '重复密码不相等'
@@ -50,56 +117,26 @@ exports.signUp = function (req, res) {
         comment:  comment
     });
     
-    User.findOne({username: parent})
-        .exec((err, p) => {
-            if(err) {
-                return res.json({err:1, msg:err});
-            } else if(!p) {
+    user.save(function (err) {
+        if (err) {
+            if (err.code === 11000) {
                 return res.json({
                     err: 1,
-                    msg: '该父级代理不存在'
-                })
-            }
-            if(p.role != role + 1) {
+                    msg: '此账户已被注册'
+                });
+            } else {
                 return res.json({
                     err: 1,
-                    msg: '父代理级别不匹配'
-                })
+                    msg: err
+                });
             }
-            user = new User({
-                username: username,
-                name:     name,
-                password: password,
-                role:     role,
-                parent:   parent,
-                parentId: !p ? '' : p._id,
-                gender:   gender,
-                mobile:   mobile,
-                qq:       qq,
-                comment:  comment
+        } else {
+            return res.json({
+                err: 0,
+                msg: '注册成功'
             });
-
-            user.save(function (err) {
-                if (err) {
-                    if (err.code === 11000) {
-                        return res.json({
-                            err: 1,
-                            msg: '此账户已被注册'
-                        });
-                    } else {
-                        return res.json({
-                            err: 1,
-                            msg: err
-                        });
-                    }
-                } else {
-                    return res.json({
-                        err: 0,
-                        msg: '注册成功'
-                    });
-                }
-            });
-        })
+        }
+    });
 };
 
 

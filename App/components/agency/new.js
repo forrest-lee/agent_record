@@ -88,30 +88,6 @@ class NewClient extends React.Component {
                         <Input {...mobileProps} id='mobile' placeholder='手机号'/>
                     </FormItem>
                     
-                    <FormItem
-                        label='代理类型'
-                        hasFeedback
-                        {...formItemLayout}
-                        help={isFieldValidating('role') ? '校验中...' : (getFieldError('role') || []).join(', ')}
-                    >
-                        <Select
-                            {...roleProps}
-                            placeholder='请选择代理类型'
-                        >
-                            <Select.Option value={1}>一级代理</Select.Option>
-                            <Select.Option value={2}>二级代理</Select.Option>
-                            <Select.Option value={3}>三级代理</Select.Option>
-                        </Select>
-                    </FormItem>
-                    
-                    <FormItem
-                        label='父级代理'
-                        hasFeedback
-                        {...formItemLayout}
-                        help={isFieldValidating('parent') ? '校验中...' : (getFieldError('parent') || []).join(', ')}
-                    >
-                        <Input {...parentProps} id='parent' placeholder='请输入父级代理帐号'/>
-                    </FormItem>
                     
                     <FormItem
                         label='性别'
@@ -182,12 +158,10 @@ class NewClient extends React.Component {
             
             $.ajax({
                 type:    'POST',
-                url:     '/user/signUp',
+                url:     '/apiv1/user/add',
                 data:    {
                     username: values.username,
                     name:     values.name,
-                    role:     values.role,
-                    parent:   values.parent,
                     gender:   values.gender,
                     mobile:   values.mobile,
                     qq:       values.qq,

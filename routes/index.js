@@ -13,7 +13,7 @@ router.get('/', homeCtrl.index);
 
 
 var userRouter = express.Router();
-userRouter.post('/signUp', userCtrl.signUp);      // 注册用户
+//userRouter.post('/signUp', userCtrl.signUp);      // 注册用户
 userRouter.post('/login', userCtrl.login);        // 登陆
 userRouter.post('/logout', userCtrl.logout);      // 登出
 userRouter.get('/captcha', userCtrl.getCaptcha);  // 验证码
@@ -30,6 +30,7 @@ userApiRouter.get('/:id/child', userCtrl.childAgency);          // 获取用户�
 userApiRouter.get('/:id', userCtrl.userDetail);                 // 获取用户信息
 userApiRouter.post('/reset_password', userCtrl.resetPassword);  // 重置密码
 userApiRouter.post('/exists', userCtrl.isUserExists);           // 检查用户名是否存在
+userApiRouter.post('/add', userCtrl.addAgency);                 // 新增代理
 
 
 /**

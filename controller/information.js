@@ -175,21 +175,18 @@ exports.attachments = function(req, res) {
  * @param res
  */
 exports.addAttaches = function(req, res) {
+    var id = req.body.infoId;
     var attach = new Attachment({
         owner:      req.user._id,
         userAttachId: req.user._id.toString() + req.body.hashId,
-    
         filename:   req.body.filename,
-        infoId:     req.body.infoId,
+        infoId:     id,
         url:        req.body.url,
     });
     
     attach.save((err, attach) => {
         if(err) {
-            return res.json({
-                err: 1,
-                msg: err
-            });
+            return res.json({err: 1, msg: err});
         } else {
             return res.json({
                 err: 0,

@@ -38,8 +38,8 @@ userApiRouter.post('/exists', userCtrl.isUserExists);
  */
 var infoApiRouter = express.Router();
 infoApiRouter.get('/:id', infoCtrl.detail);
-infoApiRouter.get('/:id/attachments', infoCtrl.attachments);
-infoApiRouter.post('/:id/attachments', infoCtrl.addAttaches);
+infoApiRouter.get('/:id/attachments', infoCtrl.attachments);   // 获取资料
+infoApiRouter.post('/add_attachments', infoCtrl.addAttaches);  // 上传资料
 infoApiRouter.get('/:id/messages', infoCtrl.messages);
 infoApiRouter.post('/new_message', infoCtrl.newMessage);
 infoApiRouter.post('/new', infoCtrl.newInfo);

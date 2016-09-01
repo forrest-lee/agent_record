@@ -201,7 +201,7 @@ class Attachment extends React.Component {
                     var sourceLink = domain + fileInfo.key;  //获取上传成功后的文件的Url
                     $.ajax({
                         type:    'POST',
-                        url:     '/apiv1/information/' + id + '/attachments',
+                        url:     '/apiv1/information/add_attachments',
                         data:    {
                             infoId:   id,
                             filename: fileInfo.key,

@@ -50,28 +50,34 @@ class MenuBox extends Component {
                         <Link to='/notification/all'>系统公告</Link>
                     </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub1" title={<span><Icon type="upload"/> <span> 上传 </span></span>}>
-                    <Menu.Item key='1-0'>
-                        <Link to='/upload/information'>借款资料上传</Link>
-                    </Menu.Item>
-                    <Menu.Item key='1-1'>
-                        <Link to='/upload/contract'>借款合同上传</Link>
-                    </Menu.Item>
-                </SubMenu>
+                {
+                    sessionStorage.userRole == 0 ? null :
+                        <SubMenu key="sub1" title={<span><Icon type="upload"/> <span> 上传 </span></span>}>
+                            <Menu.Item key='1-0'>
+                                <Link to='/upload/information'>借款资料上传</Link>
+                            </Menu.Item>
+                            <Menu.Item key='1-1'>
+                                <Link to='/upload/contract'>借款合同上传</Link>
+                            </Menu.Item>
+                        </SubMenu>
+                }
                 <SubMenu key="sub2" title={<span><Icon type="team"/> <span> 客户 </span></span>}>
                     <Menu.Item key='2-0'>
                         <Link to='/client/all'>全部列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-1'>
-                        <Link to='/client/status/0'>待审核列表</Link>
+                        <Link to='/client/status/-1'>正在编辑列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-2'>
-                        <Link to='/client/status/1'>成功列表</Link>
+                        <Link to='/client/status/0'>待审核列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-3'>
-                        <Link to='/client/status/2'>拒绝列表</Link>
+                        <Link to='/client/status/1'>通过列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-4'>
+                        <Link to='/client/status/2'>否决列表</Link>
+                    </Menu.Item>
+                    <Menu.Item key='2-5'>
                         <Link to='/client/status/3'>退回列表</Link>
                     </Menu.Item>
                 </SubMenu>

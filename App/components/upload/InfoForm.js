@@ -143,7 +143,6 @@ class Information extends React.Component {
                                 <FormItem
                                     {...infoFormLayout}
                                     label="QQ"
-                                    hasFeedback
                                 >
                                     {
                                         !editable ? <span>{this.state.information.qq}</span> :

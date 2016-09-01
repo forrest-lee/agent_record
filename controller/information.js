@@ -44,6 +44,7 @@ exports.allClient = function(req, res) {
                 }
             });
     } else if(req.user.role == 1) {
+        // 一级代理
         var userList = [];
         User.find({parentId: uid})
             .exec((err, users2) => {
@@ -51,15 +52,17 @@ exports.allClient = function(req, res) {
                     return res.json({err: 1, msg: err});
                 }
                 userList = users2.map(u => u._id.toString());
+                var userList2 = [];
                 
                 User.find({role: 3})
                     .exec((err, users3) => {
                         if(err) {return res.json({err: 1, msg: err});}
                         users3.map(obj => {
-                            if(userList.indexOf(obj.parentId)) {
-                                userList.push(obj._id.toString());
+                            if(userList.indexOf(obj.parentId.toString()) >= 0) {
+                                userList2.push(obj._id.toString());
                             }
                         });
+                        userList = userList.concat(userList2);
                         
                         Information.find(query)
                             .populate({
@@ -85,6 +88,7 @@ exports.allClient = function(req, res) {
                     });
             });
     } else if(req.user.role == 2) {
+        // 二级代理
         User.find({parentId: uid})
             .exec((err, users) => {
                 if(err) {
@@ -116,6 +120,7 @@ exports.allClient = function(req, res) {
                     });
             });
     } else {
+        // 三级代理只能看自己发的
         Information.find({agentId: req.user._id})
             .populate({
                 path: 'agentId',

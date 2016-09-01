@@ -24,7 +24,7 @@ class ContainerBox extends React.Component {
             })
         };
     
-        var roleType = sessionStorage.userRole == 0 ? '总代理' :
+        var roleType = sessionStorage.userRole == 0 ? '管理员' :
             sessionStorage.userRole == 1 ? '一级代理' :
                 sessionStorage.userRole == 2 ? '二级代理' :
                     sessionStorage.userRole == 3 ? '三级代理' : '无';

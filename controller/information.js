@@ -1,6 +1,8 @@
 /**
  * Created by leo on 8/22/16.
  */
+var async = require('async');
+var co = require('co');
 var User = require('../models/User');
 var Information = require('../models/Information');
 var Attachment = require('../models/Attatchment');
@@ -41,7 +43,48 @@ exports.allClient = function(req, res) {
                     });
                 }
             });
-    } else {
+    } else if(req.user.role == 1) {
+        var userList = [];
+        User.find({parentId: uid})
+            .exec((err, users2) => {
+                if(err) {
+                    return res.json({err: 1, msg: err});
+                }
+                userList = users2.map(u => u._id.toString());
+                
+                User.find({role: 3})
+                    .exec((err, users3) => {
+                        if(err) {return res.json({err: 1, msg: err});}
+                        users3.map(obj => {
+                            if(userList.indexOf(obj.parentId)) {
+                                userList.push(obj._id.toString());
+                            }
+                        });
+                        
+                        Information.find(query)
+                            .populate({
+                                path: 'agentId',
+                                model: 'User',
+                                populate: {
+                                    path: 'parentId',
+                                    model: 'User'
+                                }
+                            })
+                            .populate('parent')
+                            .where('agentId').in(userList)
+                            .exec((err, infos) => {
+                                if(err) {
+                                    return res.json({err: 1, msg: err});
+                                } else {
+                                    return res.json({
+                                        err: 0,
+                                        infos: infos
+                                    });
+                                }
+                            });
+                    });
+            });
+    } else if(req.user.role == 2) {
         User.find({parentId: uid})
             .exec((err, users) => {
                 if(err) {
@@ -71,6 +114,27 @@ exports.allClient = function(req, res) {
                             });
                         }
                     });
+            });
+    } else {
+        Information.find({agentId: req.user._id})
+            .populate({
+                path: 'agentId',
+                model: 'User',
+                populate: {
+                    path: 'parentId',
+                    model: 'User'
+                }
+            })
+            .populate('parent')
+            .exec((err, infos) => {
+                if(err) {
+                    return res.json({err: 1, msg: err});
+                } else {
+                    return res.json({
+                        err: 0,
+                        infos: infos
+                    });
+                }
             });
     }
 };

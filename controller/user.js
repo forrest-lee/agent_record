@@ -251,7 +251,6 @@ exports.childAgency = function (req, res) {
                     msg: err
                 });
             } else {
-                console.log(users);
                 return res.json({
                     err:   0,
                     users: users.filter(item => item.username != req.user.username)

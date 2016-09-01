@@ -14,34 +14,65 @@ var admins = settings.admins;
  * @param res
  */
 exports.allClient = function(req, res) {
-    // TODO: 权限验证, 只有父级代理有权(中间件也需要加)
+    var uid = req.user._id;
     var query = {};
     if(req.query.status) {
-        query = {status: req.query.status};
+        query.status = req.query.status;
     }
-    Information.find(query)
-        .populate({
-            path: 'agentId',
-            model: 'User',
-            populate: {
-                path: 'parentId',
-                model: 'User'
-            }
-        })
-        .populate('parent')
-        .exec((err, infos) => {
-            if(err) {
-                return res.json({
-                    err: 1,
-                    msg: err
-                });
-            } else {
-                return res.json({
-                    err: 0,
-                    infos: infos
-                });
-            }
-        });
+    
+    if(req.user.role == 0) {
+        Information.find(query)
+            .populate({
+                path: 'agentId',
+                model: 'User',
+                populate: {
+                    path: 'parentId',
+                    model: 'User'
+                }
+            })
+            .populate('parent')
+            .exec((err, infos) => {
+                if(err) {
+                    return res.json({err: 1, msg: err});
+                } else {
+                    return res.json({
+                        err: 0,
+                        infos: infos
+                    });
+                }
+            });
+    } else {
+        User.find({parentId: uid})
+            .exec((err, users) => {
+                if(err) {
+                    return res.json({err: 1, msg: err});
+                }
+                var userList = users.map(u => u._id);
+                userList.push(uid);
+                
+                Information.find(query)
+                    .populate({
+                        path: 'agentId',
+                        model: 'User',
+                        populate: {
+                            path: 'parentId',
+                            model: 'User'
+                        }
+                    })
+                    .populate('parent')
+                    .where('agentId').in(userList)
+                    .exec((err, infos) => {
+                        if(err) {
+                            return res.json({err: 1, msg: err});
+                        } else {
+                            return res.json({
+                                err: 0,
+                                infos: infos
+                            });
+                        }
+                    });
+            });
+    }
 };
 
 /**

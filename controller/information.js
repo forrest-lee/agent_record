@@ -1,6 +1,7 @@
 /**
  * Created by leo on 8/22/16.
  */
+var User = require('../models/User');
 var Information = require('../models/Information');
 var Attachment = require('../models/Attatchment');
 var Message = require('../models/Message');
@@ -176,25 +177,35 @@ exports.attachments = function(req, res) {
  */
 exports.addAttaches = function(req, res) {
     var id = req.body.infoId;
-    var attach = new Attachment({
-        owner:      req.user._id,
-        userAttachId: req.user._id.toString() + req.body.hashId,
-        filename:   req.body.filename,
-        infoId:     id,
-        url:        req.body.url,
-    });
+    var uid = req.user._id;
+    User.findById(uid)
+        .exec((err, user) => {
+            if(err) {return res.json({err: 1, msg: err})}
+            else if(!user) {return res.json({err:1, msg: '用户状态异常(User Not Found)'})}
+            else if(user.role == 0) {
+                return res.json({err: 1, msg: '权限限制(管理员不能上传)'})
+            } else {
+                var attach = new Attachment({
+                    owner:        uid,
+                    userAttachId: uid.toString() + req.body.hashId,
+                    filename:   req.body.filename,
+                    infoId:     id,
+                    url:        req.body.url,
+                });
     
-    attach.save((err, attach) => {
-        if(err) {
-            return res.json({err: 1, msg: err});
-        } else {
-            return res.json({
-                err: 0,
-                attach: attach,
-                msg: 'upload success'
-            })
-        }
-    })
+                attach.save((err, attach) => {
+                    if(err) {
+                        return res.json({err: 1, msg: err});
+                    } else {
+                        return res.json({
+                            err: 0,
+                            attach: attach,
+                            msg: 'upload success'
+                        })
+                    }
+                })
+            }
+        });
 };
 
 

@@ -172,8 +172,9 @@ exports.detail = function(req, res) {
  * @param res
  */
 exports.attachments = function(req, res) {
-    var userId = req.user._id;
-    Attachment.find({infoId: req.params.id}).populate('owner')
+    var uid = req.user._id;
+    Attachment.find({infoId: req.params.id})
+        .populate('ownerId')
         .exec((err, attaches) => {
             if(err) {
                 return res.json({err: 1, msg: err});
@@ -183,9 +184,9 @@ exports.attachments = function(req, res) {
                     attaches: []
                 });
             } else {
-                if(attaches[0].owner._id.toString() == userId.toString() ||
-                    attaches[0].owner.parentId.toString() == userId.toString() ||
-                        admins.indexOf(userId.toString()) ) {
+                if(attaches[0].ownerId._id.toString() == uid.toString() ||
+                    attaches[0].ownerId.parentId.toString() == uid.toString() ||
+                        req.user.role == 0 ) {
                     return res.json({
                         err: 0,
                         attaches: attaches
@@ -217,7 +218,7 @@ exports.addAttaches = function(req, res) {
                 return res.json({err: 1, msg: '权限限制(管理员不能上传)'})
             } else {
                 var attach = new Attachment({
-                    owner:        uid,
+                    ownerId:        uid,
                     userAttachId: uid.toString() + req.body.hashId,
                     filename:   req.body.filename,
                     infoId:     id,
@@ -270,6 +271,7 @@ exports.messages = function(req, res) {
  * @param res
  */
 exports.newMessage = function(req, res) {
+    var uid = req.user._id;
     var infoId = req.body.id;
     var status = req.body.status;
     var message = new Message({
@@ -281,6 +283,7 @@ exports.newMessage = function(req, res) {
     });
     
     Information.findById(infoId)
+        .populate('agentId')
         .exec((err, info) => {
             if(err) {
                 return res.json({err: 1, msg: err});
@@ -292,17 +295,23 @@ exports.newMessage = function(req, res) {
                 } else {
                     // status: 0 或 3 才能进行编辑
                     
-                    info.save((err, obj) => {
-                        if(err) {return res.json({err: 1, msg: err});}
-                        message.save((err, obj) => {
+                    if(req.user.role == 0 || info.agentId.parentId.toString() == uid.toString()) {
+                        // 只有风控(管理员)和直属上级代理可以发布审核信息
+                        info.save((err, obj) => {
                             if(err) {return res.json({err: 1, msg: err});}
-                            return res.json({
-                                err: 0,
-                                message: obj,
-                                msg: '消息提交成功'
-                            })
+                            message.save((err, obj) => {
+                                if(err) {return res.json({err: 1, msg: err});}
+                                return res.json({
+                                    err: 0,
+                                    message: obj,
+                                    msg: '消息提交成功'
+                                })
+                            });
                         });
-                    });
+                    } else {
+                        return res.json({err: 1, msg: '权限不够'})
+                    }
+                    
                 }
             }
         });

@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var AttachmentSchema = new mongoose.Schema({
-    owner:        {type: ObjectId, ref: 'User'},    // 用户ID
+    ownerId:        {type: ObjectId, ref: 'User'},    // 用户ID
     userAttachId: {type: String, unique: true},      //  用户ID + 附件hashID
     
     filename:     String,

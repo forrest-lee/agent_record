@@ -16,6 +16,7 @@ class Information extends React.Component {
         super(props);
         this.state = {
             information: {
+                type:    window.location.hash.indexOf('/contract') == -1 ? 0 : 1,
                 status:  !this.props.information ? -1 : !this.props.information.status,
                 name:    !this.props.information ? '' : this.props.information.name,
                 mobile:  !this.props.information ? '' : this.props.information.mobile,
@@ -72,7 +73,8 @@ class Information extends React.Component {
         });
         
         
-        let type = window.location.hash.indexOf('/contract') == -1 ? 0 : 1;
+        let type = this.state.type;
+        
 
         return (
             <div>
@@ -195,7 +197,7 @@ class Information extends React.Component {
                 type: 'POST',
                 url:  '/apiv1/information/new',
                 data: {
-                    type: type,
+                    type: this.state.type,
                     mobile: values.mobile,
                     name: values.name,
                     qq: values.qq,

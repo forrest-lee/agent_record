@@ -2142,7 +2142,7 @@ plupload.File = (function() {
 			type: file.type || '',
 
 			/**
-			 * File size in bytes (may change after client-side manupilation).
+			 * File size in bytes (may change after information-side manupilation).
 			 *
 			 * @property size
 			 * @type Number

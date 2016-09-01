@@ -2368,7 +2368,7 @@ define('moxie/runtime/Runtime', [
 			type: type,
 
 			/**
-			Runtime (not native one) may operate in browser or client mode.
+			Runtime (not native one) may operate in browser or information mode.
 
 			@property mode
 			@private
@@ -2879,10 +2879,10 @@ define('moxie/runtime/RuntimeClient', [
 			},
 
 			/**
-			Returns the runtime to which the client is currently connected.
+			Returns the runtime to which the information is currently connected.
 
 			@method getRuntime
-			@return {Runtime} Runtime or null if client is not connected
+			@return {Runtime} Runtime or null if information is not connected
 			*/
 			getRuntime: function() {
 				if (runtime && runtime.uid) {

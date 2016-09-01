@@ -47,7 +47,7 @@ import Register from './components/user/Register';
 import ShowAgency from './components/agency/show';
 import NewAgency from './components/agency/new';
 import ChildAgency from './components/agency/child';
-import ShowClient from './components/client/show';
+import ShowClient from './components/information/show';
 import Notification from './components/notification/detail';
 import NotificationBox from './components/notification/NotificationBox';
 import NewNotification from './components/notification/new';

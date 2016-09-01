@@ -272,7 +272,7 @@ class ClientBox extends React.Component {
     
     fetchClients() {
         var status = getUrlId('status');
-        var url = !status ? '/apiv1/client/all' : '/apiv1/client/all?status=' + status;
+        var url = !status ? '/apiv1/information/all' : '/apiv1/information/all?status=' + status;
         $.ajax({
             type: 'GET',
             url: url,

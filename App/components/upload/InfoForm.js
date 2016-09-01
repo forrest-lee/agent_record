@@ -15,8 +15,8 @@ class Information extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            type:    window.location.hash.indexOf('/information') > 0 ? 0 : 1,
             information: {
-                type:    window.location.hash.indexOf('/contract') == -1 ? 0 : 1,
                 status:  !this.props.information ? -1 : !this.props.information.status,
                 name:    !this.props.information ? '' : this.props.information.name,
                 mobile:  !this.props.information ? '' : this.props.information.mobile,
@@ -74,7 +74,6 @@ class Information extends React.Component {
         
         
         let type = this.state.type;
-        
 
         return (
             <div>

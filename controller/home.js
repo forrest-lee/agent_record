@@ -2,7 +2,7 @@
 
 exports.index = function (req, res) {
     res.render('index', {
-        title: '金钱贷'
+        title: '金钱袋'
     });
 };
 

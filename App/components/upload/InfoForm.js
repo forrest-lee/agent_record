@@ -84,27 +84,6 @@ class Information extends React.Component {
                     <Form horizontal>
                         <Row gutter={10}>
                             <Col sm={12}>
-    
-                                <FormItem
-                                    {...infoFormLayout}
-                                    label="类型"
-                                    hasFeedback
-                                >
-                                    {
-                                        !editable ? <span>{this.state.information.type == 0 ? '资料上传' : '合同上传'}</span> :
-                                            <Select defaultValue={0} {...getFieldProps('type', {
-                                                rules: [
-                                                    {type: 'number', required: true, message: '请选择类型'},
-                                                ],
-                                                initialValue: this.state.information.type
-                                            })}>
-                                                <Option value={0}>资料上传</Option>
-                                                <Option value={1}>合同上传</Option>
-                                            </Select>
-                                    }
-                                </FormItem>
-    
-                                
                                 <FormItem
                                     {...infoFormLayout}
                                     label="姓名"
@@ -118,7 +97,6 @@ class Information extends React.Component {
                                             />
                                     }
                                 </FormItem>
-
                                 <FormItem
                                     {...infoFormLayout}
                                     label="学校"
@@ -129,6 +107,19 @@ class Information extends React.Component {
                                             <Input
                                                 placeholder="学校"
                                                 {...schoolProps}
+                                            />
+                                    }
+                                </FormItem>
+                                <FormItem
+                                    {...infoFormLayout}
+                                    label="备注"
+                                    hasFeedback
+                                >
+                                    {
+                                        !editable ? <span>{this.state.information.comment}</span> :
+                                            <Input
+                                                placeholder="备注"
+                                                defaultValue={this.state.information.comment}
                                             />
                                     }
                                 </FormItem>
@@ -148,7 +139,6 @@ class Information extends React.Component {
                                             />
                                     }
                                 </FormItem>
-
                                 <FormItem
                                     {...infoFormLayout}
                                     label="QQ"
@@ -162,20 +152,6 @@ class Information extends React.Component {
                                             />
                                     }
                                 </FormItem>
-    
-                                <FormItem
-                                    {...infoFormLayout}
-                                    label="备注"
-                                    hasFeedback
-                                >
-                                    {
-                                        !editable ? <span>{this.state.information.comment}</span> :
-                                            <Input
-                                                placeholder="备注"
-                                                defaultValue={this.state.information.comment}
-                                            />
-                                    }
-                                </FormItem>
                             </Col>
                         </Row>
 
@@ -184,7 +160,7 @@ class Information extends React.Component {
                             <Col span={12} offset={12} style={{ textAlign: 'right' }}>
                                 {
                                     window.location.hash.indexOf('/upload/') == -1 ?
-                                        '' : <Button type="primary" onClick={this.handleSubmit.bind(this) }>确定</Button>
+                                        '' : <Button type="primary" onClick={this.handleSubmit.bind(this) }>新建</Button>
                                 }
                             </Col>
                         </Row>
@@ -219,7 +195,7 @@ class Information extends React.Component {
                 type: 'POST',
                 url:  '/apiv1/information/new',
                 data: {
-                    type: values.type,
+                    type: type,
                     mobile: values.mobile,
                     name: values.name,
                     qq: values.qq,

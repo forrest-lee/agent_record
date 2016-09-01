@@ -216,24 +216,69 @@ exports.isLogined = function (req, res, next) {
  * @param res
  */
 exports.allAgency = function (req, res) {
-    var query = {role: 1};
-    if(req.user.role == 0) {
-        query = req.query.role ? {role: req.query.role} : {};
-    } else {
-        query = {parent: req.user.username};
+    if(req.query.role) {
+        if(req.query.role <= req.user.role) {
+            // 不能越级查看
+            return res.json({err:1, msg:'权限不够'});
+        }
     }
     
-    User.find(query).populate('parentId')
-        .exec((err, users) => {
-            if (err) {
-                return res.json({err: 1, msg: err});
-            } else {
-                return res.json({
-                    err:   0,
-                    users: users.filter(item => item.username != req.user.username)
-                });
-            }
-        });
+    if(req.user.role == 3) {
+        return res.json({err: 1, msg: '权限不够'})
+    }
+    
+    if(req.user.role == 1) {
+        User.find({role: 2, parentId: req.user._id})
+            .populate('parentId')
+            .exec((err, users2) => {
+                if (err) {return res.json({err: 1, msg: err});}
+                var userList = users2.map(u => u._id.toString());
+                console.log(userList);
+            
+                User.find({role: 3})
+                    .populate('parentId')
+                    .where('parentId').in(userList)
+                    .exec((err, users3) => {
+                        if (err) {return res.json({err: 1, msg: err});}
+                        if(!req.query.role) {
+                            return res.json({
+                                err:   0,
+                                users: users2.concat(users3).filter(item => item.username != req.user.username)
+                            });
+                        } else if(req.query.role == 2) {
+                            return res.json({
+                                err:   0,
+                                users: users2.filter(item => item.username != req.user.username)
+                            });
+                        } else if(req.query.role == 3) {
+                            return res.json({
+                                err:   0,
+                                users: users3.filter(item => item.username != req.user.username)
+                            });
+                        }
+                    })
+            });
+    } else {
+        var query = {};
+        if(req.user.role == 0) {
+            query = req.query.role ? {role: req.query.role} : {};
+        } else if(req.user.role == 2) {
+            query = {parentId: req.user._id, role: 3};
+        }
+    
+        console.log('ed');
+        User.find(query).populate('parentId')
+            .exec((err, users) => {
+                if (err) {
+                    return res.json({err: 1, msg: err});
+                } else {
+                    return res.json({
+                        err:   0,
+                        users: users.filter(item => item.username != req.user.username)
+                    });
+                }
+            });
+    }
 };
 
 

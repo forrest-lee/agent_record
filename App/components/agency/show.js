@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Table, Button, Input, Spin, Select } from 'antd';
+import { Table, Button, Input, Spin, Select, notification } from 'antd';
 const InputGroup = Input.Group;
 
 import { bindActionCreators } from 'redux';
@@ -119,6 +119,36 @@ class AgentBox extends React.Component {
             return <Spin />;
         }
         
+        var userRole = parseInt(sessionStorage.userRole);
+        var select;
+        switch(userRole) {
+            case 0:
+                select = (
+                    <Select defaultValue={1} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value={1}>一级代理</Select.Option>
+                        <Select.Option value={2}>二级代理</Select.Option>
+                        <Select.Option value={3}>三级代理</Select.Option>
+                        <Select.Option value={0}>管理员</Select.Option>
+                    </Select>
+                );
+                break;
+            case 1:
+                select = (
+                    <Select defaultValue={2} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value={2}>二级代理</Select.Option>
+                        <Select.Option value={3}>三级代理</Select.Option>
+                    </Select>
+                );
+                break;
+            case 2:
+                select = (
+                    <Select defaultValue={3} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value={3}>三级代理</Select.Option>
+                    </Select>
+                );
+                break;
+        }
+        
         return (
             <div>
                 <div>
@@ -135,12 +165,8 @@ class AgentBox extends React.Component {
                             });
                         }}
                     />
-                    <Select defaultValue="1" style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
-                        <Select.Option value="1">一级代理</Select.Option>
-                        <Select.Option value="2">二级代理</Select.Option>
-                        <Select.Option value="3">三级代理</Select.Option>
-                        <Select.Option value="0">管理员</Select.Option>
-                    </Select>
+                    {select}
+                    <Button style={{marginLeft: 10}} onClick={this.fetchAll}>查看全部</Button>
                 </div>
                 <div style={{marginTop: 20}}>
                     <Table dataSource={this.state.agency} columns={columns} />
@@ -150,9 +176,11 @@ class AgentBox extends React.Component {
     }
     
     componentWillMount() {
+        var userRole = parseInt(sessionStorage.userRole);
+        var queryRole =  userRole == 3 ? 3 : userRole + 1;
         $.ajax({
             type: 'GET',
-            url: '/apiv1/user/all?role=1',
+            url: '/apiv1/user/all?role=' + queryRole,
             success: (res) => {
                 if(res.err == 0) {
                     this.props.agencyActions.setAgents(res.users);
@@ -181,6 +209,34 @@ class AgentBox extends React.Component {
         })
     }
     
+    fetchAll = () => {
+        $.ajax({
+            type: 'GET',
+            url: '/apiv1/user/all',
+            success: (res) => {
+                if(res.err == 0) {
+                    this.props.agencyActions.setAgents(res.users);
+                    this.setState({
+                        loading: false,
+                        agency: res.users
+                    })
+                } else {
+                    notification.error({
+                        message: 'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error: (res) => {
+                console.error(res);
+            },
+            complete: () => {
+                this.setState({loading: false});
+            }
+        
+        })
+    };
+    
     chooseAgency = (value) => {
         $.ajax({
             type: 'GET',
@@ -193,7 +249,10 @@ class AgentBox extends React.Component {
                         agency: res.users
                     })
                 } else {
-                    console.error(res.msg);
+                    notification.error({
+                        message: 'Error',
+                        description: res.msg
+                    });
                 }
             },
             error: (res) => {

@@ -18,10 +18,12 @@ const columns = [{
     key: 'updateAt',
     render: (text, record) => <span>{dateformat(text, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
-    title: '发布人',
+    title:     '发布人',
     dataIndex: 'owner',
-    key: 'owner'
-}];
+    key:       'owner',
+    render:    (v, r) => <span>{r.ownerId.name}({v})</span>
+}
+];
 
 
 export default class NotificationBox extends React.Component {

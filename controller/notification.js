@@ -39,6 +39,7 @@ exports.newNotification = function(req, res) {
  */
 exports.notifications = function(req, res) {
     Notification.find({})
+        .populate('ownerId')
         .exec((err, notifications) => {
             if(err) {
                 return res.json({
@@ -63,6 +64,7 @@ exports.notifications = function(req, res) {
 exports.detail = function(req, res) {
     var id = req.params.id;
     Notification.findOne({_id: id})
+        .populate('ownerId')
         .exec((err, notification) => {
             if(err) {
                 return res.json({

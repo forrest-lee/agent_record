@@ -44,7 +44,7 @@ class NotificationDetail extends React.Component {
         return (
             <div>
                 <h1>{this.state.notification.title}</h1>
-                <span>作者: {this.state.notification.owner}</span>
+                <span>作者: {this.state.notification.ownerId.name}</span>
                 <span style={{marginLeft: 20}}>更新时间: {dateformat(this.state.notification.updateAt, 'yyyy-mm-dd HH:MM:ss')}</span>
                 <div style={{marginTop: 15, whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>
                     {this.state.notification.content}

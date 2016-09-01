@@ -28,31 +28,6 @@ class UploadBox extends React.Component {
         }
     }
     
-    componentWillMount() {
-        var id = getUrlId('information');
-        
-        $.ajax({
-            type:    'GET',
-            url:     '/apiv1/information/' + id,
-            success: (res) => {
-                if (res.err == 0) {
-                    this.setState({information: res.information, loading: false});
-                } else {
-                    notification.success({
-                        message:     'Error',
-                        description: res.msg
-                    });
-                }
-            },
-            error:   (res) => {
-                notification.error({
-                    message:     '网络错误',
-                    description: '如果该问题重复出现请联系客服人员'
-                });
-            }
-        })
-    }
-    
     render() {
         if (this.state.loading) {
             return <Spin />;
@@ -98,6 +73,38 @@ class UploadBox extends React.Component {
         );
     }
     
+    componentWillMount() {
+        this.fetchData();
+    }
+    
+    fetchData() {
+        var id = getUrlId('information');
+    
+        $.ajax({
+            type:    'GET',
+            url:     '/apiv1/information/' + id,
+            beforeSend: () => {
+                this.setState({loading: true})
+            },
+            success: (res) => {
+                if (res.err == 0) {
+                    this.setState({information: res.information, loading: false});
+                } else {
+                    notification.success({
+                        message:     'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error:   (res) => {
+                notification.error({
+                    message:     '网络错误',
+                    description: '如果该问题重复出现请联系客服人员'
+                });
+            }
+        })
+    }
+    
     handlePublish() {
         $.ajax({
             type: 'POST',
@@ -110,9 +117,9 @@ class UploadBox extends React.Component {
                 if (res.err == 0) {
                     notification.success({
                         message: 'Success',
-                        description: '操作成功'
+                        description: '发布成功, 等待审核'
                     });
-                    window.location.reload();
+                    this.fetchData();
                 } else {
                     console.error(res.msg);
                     notification.error({

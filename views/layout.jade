@@ -11,3 +11,11 @@ html
     body
         block content
         script(src='/public/js/app.bundle.js')
+        script.
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?3b7e7891e8c113e8a11bc4a3f52f7ffe";
+                var s  = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();

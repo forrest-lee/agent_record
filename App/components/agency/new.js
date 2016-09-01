@@ -32,19 +32,6 @@ class NewClient extends React.Component {
             ],
         });
         
-        const roleProps = getFieldProps('role', {
-            rules:   [
-                {type: 'number', required: true, message: '请选择代理类别'}
-            ],
-        });
-        
-        const parentProps = getFieldProps('parent', {
-            rules:   [
-                {required: true, min: 5, message: '用户名至少为 5 个字符'},
-                {validator: this.userExists},
-            ],
-        });
-        
         const genderProps = getFieldProps('gender', {
             rules:   [
                 {type: 'number', required: true}
@@ -153,6 +140,7 @@ class NewClient extends React.Component {
         this.props.form.validateFields((errors, values) => {
             if (!!errors) {
                 console.log('Errors in form!!!');
+                console.error(errors);
                 return;
             }
             

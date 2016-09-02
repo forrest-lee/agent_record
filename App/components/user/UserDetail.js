@@ -77,13 +77,13 @@ class UserDetail extends React.Component {
                     >
                         <Select
                             disabled
-                            defaultValue={this.state.user.role}
+                            defaultValue={this.state.user.role.toString()}
                             placeholder='请选择代理类型'
                         >
-                            <Select.Option value={0} diabled>管理员</Select.Option>
-                            <Select.Option value={1}>一级代理</Select.Option>
-                            <Select.Option value={2}>二级代理</Select.Option>
-                            <Select.Option value={3}>三级代理</Select.Option>
+                            <Select.Option value="0" diabled>管理员</Select.Option>
+                            <Select.Option value="1">一级代理</Select.Option>
+                            <Select.Option value="2">二级代理</Select.Option>
+                            <Select.Option value="3">三级代理</Select.Option>
                         </Select>
                     </FormItem>
     
@@ -108,10 +108,10 @@ class UserDetail extends React.Component {
                     >
                         <RadioGroup
                             disabled
-                            defaultValue={this.state.user.gender}
+                            defaultValue={this.state.user.gender.toString()}
                         >
-                            <Radio value={0}>男</Radio>
-                            <Radio value={1}>女</Radio>
+                            <Radio value="0">男</Radio>
+                            <Radio value="1">女</Radio>
                         </RadioGroup>
                     </FormItem>
     
@@ -147,7 +147,6 @@ class UserDetail extends React.Component {
             url: '/apiv1/user/' + getUrlId('user'),
             success: (res) => {
                 if(res.err == 0) {
-                    console.log(res.user);
                     this.setState({user: res.user, loading: false});
                 } else {
                     notification.error({

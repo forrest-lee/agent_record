@@ -114,7 +114,6 @@ class AgentBox extends React.Component {
             type: 'GET',
             url: '/apiv1/user/' + getUrlId('agency') + '/child',
             success: (res) => {
-                console.log(res);
                 if(res.err == 0) {
                     this.props.agentActions.setAgents(res.users);
                     this.setState({

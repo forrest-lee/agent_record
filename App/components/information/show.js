@@ -235,7 +235,6 @@ class ClientBox extends React.Component {
                 this.setState({loading: true});
             },
             success: (res) => {
-                console.log(res);
                 if(res.err == 0) {
                     this.props.infoActions.setInfos(res.infos);
                     this.setState({loading: false, infos: this.props.infos});

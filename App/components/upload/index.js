@@ -55,6 +55,13 @@ class UploadBox extends React.Component {
         }
         
         let {user} = this.props;
+        console.log(this.state.information);
+        
+        let submitButton = this.state.information.status >= 0 ?
+            <Message information={this.state.information} user={user}/> :
+            <div style={{marginTop: 20, float: 'right'}}>
+                <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
+            </div>;
         
         return (
             <div>
@@ -62,12 +69,7 @@ class UploadBox extends React.Component {
                 <InfoForm information={this.state.information}/>
                 <Attachment information={this.state.information}/>
                 {
-                    this.state.information.status >= 0 ?
-                        <Message information={this.state.information} user={user}/> :
-                        <div style={{marginTop: 20, float: 'right'}}>
-                            <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
-                        </div>
-                        
+                    sessionStorage.userId.toString() == this.state.information.agentId.toString() ? submitButton : ''
                 }
             </div>
         );

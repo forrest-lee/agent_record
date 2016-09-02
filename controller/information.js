@@ -186,23 +186,27 @@ exports.newInfo = function(req, res) {
  * @param res
  */
 exports.updateInfoStatus = function(req, res) {
+    var uid =req.user._id;
     var id = req.body.id;
     var status = req.body.status;
     var query = {_id: id};
-    
-    // TODO: 需要加权限判断
-    Information.update(query, {$set: {status: status}}, err => {
-        if(err) {
-            return res.json({
-                err: 1,
-                msg: err
+    Information.findById(id)
+        .exec((err, info) => {
+            if(err) {return res.json({err: 1, msg: err});}
+            else if(!info) {return res.json({err:1, msg:'404 Not Found'});}
+            else if(info.agentId.toString() != uid.toString()) {
+                return res.json({err:1, msg:'无权限进行此操作'});
+            }
+            Information.update(query, {$set: {status: status}}, err => {
+                if(err) {
+                    return res.json({err: 1, msg: err})
+                } else {
+                    return res.json({
+                        err: 0
+                    })
+                }
             })
-        } else {
-            return res.json({
-                err: 0
-            })
-        }
-    })
+        });
 };
 
 

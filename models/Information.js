@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var InformationSchema = new mongoose.Schema({
-    type:      {type: Number, default: -1},   // 0: 资料上传, 1: 合同上传
+    type:      {type: Number, default: 0},   // 0: 资料上传, 1: 合同上传
     title:     String,
     agentId:   {type: ObjectId, ref: 'User'},
     agentName: {type: String},

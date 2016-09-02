@@ -37,23 +37,32 @@ exports.removeAttach = function(req, res) {
                 return res.json({err: 1, msg: err});
             } else {
                 if(attach.ownerId.toString() == uid.toString()) {
-                    key = attach.filename;
                     
-                    //删除资源
-                    client.remove(bucket, key, function(err, ret) {
-                        if (!err) {
-                            // ok
-                            Attachment.remove({_id: attach._id}, err => {
-                                if(err) {
-                                    return res.json({err:1, msg:err});
+                    Information.findById(attach.infoId)
+                        .exec((err, info) => {
+                            if(err) {return res.json({err: 1, msg: err});}
+                            else if(info.status > -1 && info.status < 3) {
+                                return res.json({err:1, msg:'当前状态下不可删除!'})
+                            }
+                            
+                            key = attach.filename;
+    
+                            //删除资源
+                            client.remove(bucket, key, function(err, ret) {
+                                if (!err) {
+                                    // ok
+                                    Attachment.remove({_id: attach._id}, err => {
+                                        if(err) {
+                                            return res.json({err:1, msg:err});
+                                        } else {
+                                            return res.json({err:0, msg:'删除成功!'});
+                                        }
+                                    })
                                 } else {
-                                    return res.json({err:0, msg:'删除成功!'});
+                                    console.log(err);
                                 }
-                            })
-                        } else {
-                            console.log(err);
-                        }
-                    });
+                            });
+                        })
                     
                 } else {
                     return res.json({

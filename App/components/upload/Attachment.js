@@ -274,7 +274,6 @@ class Attachment extends React.Component {
     };
     
     handleDelete(obj, index) {
-        console.log(obj);
         $.ajax({
             type: 'POST',
             url: '/apiv1/attach/delete',

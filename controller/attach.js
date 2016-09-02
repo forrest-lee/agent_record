@@ -47,7 +47,7 @@ exports.removeAttach = function(req, res) {
                                 return res.json({err:1, msg:'当前状态下不可删除!'})
                             }
                             
-                            key = attach.filename;
+                            key = attach.key;
     
                             //删除资源
                             client.remove(bucket, key, function(err, ret) {

@@ -63,6 +63,7 @@ exports.allClient = function(req, res) {
                             }
                         });
                         userList = userList.concat(userList2);
+                        userList.push(uid.toString());
                         
                         Information.find(query)
                             .populate({
@@ -374,7 +375,6 @@ exports.newMessage = function(req, res) {
                         
                         info.save((err, obj) => {
                             if(err) {return res.json({err: 1, msg: err});}
-                            console.log(obj);
                             
                             message.save((err, obj) => {
                                 if(err) {return res.json({err: 1, msg: err});}

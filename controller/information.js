@@ -164,6 +164,7 @@ exports.newInfo = function(req, res) {
         qq: req.body.qq,
         school: req.body.school,
         status: req.body.status,
+        type:   req.body.type,
         
         comment: req.body.comment
     });

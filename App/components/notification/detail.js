@@ -45,6 +45,8 @@ class NotificationDetail extends React.Component {
         
         return (
             <div>
+                <Button type="default" onClick={this.back} icon="rollback">返回</Button>
+                
                 <h1>{this.state.notification.title}</h1>
                 <span>作者: {this.state.notification.ownerId.name}</span>
                 <span style={{marginLeft: 20}}>更新时间: {dateformat(this.state.notification.updateAt, 'yyyy-mm-dd HH:MM:ss')}</span>
@@ -100,6 +102,10 @@ class NotificationDetail extends React.Component {
             }
         })
     };
+    
+    back = () => {
+        history.back();
+    }
 }
 
 export default NotificationDetail;

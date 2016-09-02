@@ -189,6 +189,7 @@ class Information extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
+            
             let type = window.location.hash.indexOf('/information') > 0 ? 0 : 1;
             
             $.ajax({

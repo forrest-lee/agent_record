@@ -63,6 +63,12 @@ class UploadBox extends React.Component {
                     <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
                 </div>
             );
+        } else if(this.state.information.status == 3) {
+            submitButton = (
+                <div style={{marginTop: 20, float: 'right'}}>
+                    <Button type="primary" onClick={this.handlePublish.bind(this)}>提交</Button>
+                </div>
+            );
         }
         
         

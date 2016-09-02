@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Input, Spin, Select, notification } from 'antd';
 const InputGroup = Input.Group;
+import SearchInput from '../SearchInput';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -49,60 +50,6 @@ const columns = [{
 }];
 
 
-class SearchInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: '',
-            focus: false
-        }
-    }
-    
-    render() {
-        const { style, size, placeholder } = this.props;
-        const btnCls = classNames({
-            'ant-search-btn': true,
-            'ant-search-btn-noempty': !!this.state.value.trim(),
-        });
-        const searchCls = classNames({
-            'ant-search-input': true,
-            'ant-search-input-focus': this.state.focus,
-        });
-        
-        return (
-            <div className="ant-search-input-wrapper" style={style}>
-                <InputGroup className={searchCls}>
-                    <Input placeholder={placeholder} value={this.state.value} onChange={this.handleInputChange}
-                           onFocus={this.handleFocusBlur} onBlur={this.handleFocusBlur} onPressEnter={this.handleSearch}
-                    />
-                    <div className="ant-input-group-wrap">
-                        <Button icon="search" className={btnCls} size={size} onClick={this.handleSearch} />
-                    </div>
-                </InputGroup>
-            </div>
-        );
-    }
-    
-    handleInputChange = (e) => {
-        this.setState({
-            value: e.target.value,
-        });
-    };
-    
-    handleFocusBlur = (e) => {
-        this.setState({
-            focus: e.target === document.activeElement,
-        });
-    };
-    
-    handleSearch = () => {
-        if (this.props.onSearch) {
-            this.props.onSearch(this.state.value);
-        }
-    };
-    
-}
-
 
 class AgentBox extends React.Component {
     constructor(props) {
@@ -124,26 +71,26 @@ class AgentBox extends React.Component {
         switch(userRole) {
             case 0:
                 select = (
-                    <Select defaultValue={1} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
-                        <Select.Option value={1}>一级代理</Select.Option>
-                        <Select.Option value={2}>二级代理</Select.Option>
-                        <Select.Option value={3}>三级代理</Select.Option>
-                        <Select.Option value={0}>管理员</Select.Option>
+                    <Select defaultValue="1" style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value="1">一级代理</Select.Option>
+                        <Select.Option value="2">二级代理</Select.Option>
+                        <Select.Option value="3">三级代理</Select.Option>
+                        <Select.Option value="0">管理员</Select.Option>
                     </Select>
                 );
                 break;
             case 1:
                 select = (
-                    <Select defaultValue={2} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
-                        <Select.Option value={2}>二级代理</Select.Option>
-                        <Select.Option value={3}>三级代理</Select.Option>
+                    <Select defaultValue="2" style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value="2">二级代理</Select.Option>
+                        <Select.Option value="3">三级代理</Select.Option>
                     </Select>
                 );
                 break;
             case 2:
                 select = (
-                    <Select defaultValue={3} style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
-                        <Select.Option value={3}>三级代理</Select.Option>
+                    <Select defaultValue="3" style={{ width: 100, marginLeft: 10 }} onChange={this.chooseAgency}>
+                        <Select.Option value="3">三级代理</Select.Option>
                     </Select>
                 );
                 break;
@@ -157,12 +104,14 @@ class AgentBox extends React.Component {
                             <Button type="primary" onClick={this.newClient.bind(this)}>新增</Button>
                     }
                     <SearchInput
-                        placeholder="输入姓名查询代理"
+                        placeholder="输入标题查询代理"
                         style={{ width: 200, marginLeft: 10 }}
                         onSearch={value => {
-                            this.setState({
-                                agency: this.state.agency.filter(item => item.username.indexOf(value) >= 0)
-                            });
+                            this.fetchAll((users) => {
+                                this.setState({
+                                    agency: users.filter(item => item.name.indexOf(value) >= 0)
+                                });
+                            })
                         }}
                     />
                     {select}
@@ -183,7 +132,7 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all?role=' + queryRole,
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agencyActions.setAgents(res.users);
+                    //this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agency: res.users
@@ -209,17 +158,23 @@ class AgentBox extends React.Component {
         })
     }
     
-    fetchAll = () => {
+    fetchAll = (callback) => {
         $.ajax({
             type: 'GET',
             url: '/apiv1/user/all',
+            beforeSend: () => {
+                this.setState({loading: true});
+            },
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agencyActions.setAgents(res.users);
+                    //this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agency: res.users
-                    })
+                    });
+                    if(callback) {
+                        callback(res.users);
+                    }
                 } else {
                     notification.error({
                         message: 'Error',

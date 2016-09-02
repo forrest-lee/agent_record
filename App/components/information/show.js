@@ -8,6 +8,7 @@ import * as infoActions from '../../action/information';
 
 import { Table, Button, Input, Spin, Menu, Dropdown, Icon, notification } from 'antd';
 const InputGroup = Input.Group;
+import SearchInput from '../SearchInput';
 
 
 const columns = [{
@@ -114,63 +115,9 @@ const columns = [{
         }
         return content;
     }
-}
-];
+}];
 
 
-class SearchInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: '',
-            focus: false
-        }
-    }
-    
-    render() {
-        const { style, size, placeholder } = this.props;
-        const btnCls = classNames({
-            'ant-search-btn': true,
-            'ant-search-btn-noempty': !!this.state.value.trim(),
-        });
-        const searchCls = classNames({
-            'ant-search-input': true,
-            'ant-search-input-focus': this.state.focus,
-        });
-        
-        return (
-            <div className="ant-search-input-wrapper" style={style}>
-                <InputGroup className={searchCls}>
-                    <Input placeholder={placeholder} value={this.state.value} onChange={this.handleInputChange}
-                           onFocus={this.handleFocusBlur} onBlur={this.handleFocusBlur} onPressEnter={this.handleSearch}
-                    />
-                    <div className="ant-input-group-wrap">
-                        <Button icon="search" className={btnCls} size={size} onClick={this.handleSearch} />
-                    </div>
-                </InputGroup>
-            </div>
-        );
-    }
-    
-    handleInputChange = (e) => {
-        this.setState({
-            value: e.target.value,
-        });
-    };
-    
-    handleFocusBlur = (e) => {
-        this.setState({
-            focus: e.target === document.activeElement,
-        });
-    };
-    
-    handleSearch = () => {
-        if (this.props.onSearch) {
-            this.props.onSearch(this.state.value);
-        }
-    };
-    
-}
 
 class ClientBox extends React.Component {
     constructor(props) {
@@ -193,8 +140,10 @@ class ClientBox extends React.Component {
                     <SearchInput
                         placeholder="查询客户资料"
                         onSearch={value => {
-                            this.setState({
-                                infos: this.state.infos.filter(item => item.title.indexOf(value) >= 0)
+                            this.fetchClients((infos) => {
+                                this.setState({
+                                    infos: infos.filter(item => item.title.indexOf(value) >= 0)
+                                });
                             });
                         }}
                         style={{ width: 200, marginLeft: 10 }}
@@ -210,11 +159,6 @@ class ClientBox extends React.Component {
     }
     
     
-    rowClick = (record, index) => {
-        window.location.hash = '/information/' + record._id;
-    };
-    
-    
     componentDidUpdate (prevProps) {
         // 通过参数更新数据
         let oldId = prevProps.params.id;
@@ -225,7 +169,7 @@ class ClientBox extends React.Component {
         }
     }
     
-    fetchClients() {
+    fetchClients(callback) {
         var status = getUrlId('status');
         var url = !status ? '/apiv1/information/all' : '/apiv1/information/all?status=' + status;
         $.ajax({
@@ -236,8 +180,11 @@ class ClientBox extends React.Component {
             },
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.infoActions.setInfos(res.infos);
-                    this.setState({loading: false, infos: this.props.infos});
+                    //this.props.infoActions.setInfos(res.infos);
+                    this.setState({loading: false, infos: res.infos});
+                    if(callback) {
+                        callback(res.infos);
+                    }
                 } else {
                     console.error(res.msg);
                 }

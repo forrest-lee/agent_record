@@ -20,7 +20,8 @@ var UserSchema = new mongoose.Schema({
     gender:   {type: Number, default: -1},  // 男:0, 女:1
     mobile:   {type: String, unique: true },  // 手机号(限定11位)
     qq:       {type: String},
-    comment:  String  // 备注
+    comment:  String,  // 备注
+    status:   {type: Number, default: 0}    // 帐号状态, 若为-1则表示已注销
 });
 
 UserSchema.pre('save', function (next) {

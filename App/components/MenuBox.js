@@ -95,7 +95,7 @@ class MenuBox extends Component {
                             </Menu.Item>
                         </SubMenu>
                 }
-                <SubMenu key="sub4" title={<span><Icon type="setting"/> <span> 帐户 </span></span>}>
+                <SubMenu key="sub4" title={<span><Icon type="setting"/> <span> 设置 </span></span>}>
                     <Menu.Item key='2-0'>
                         <Link to='/user/setting'>修改密码</Link>
                     </Menu.Item>

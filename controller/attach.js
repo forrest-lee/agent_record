@@ -35,12 +35,14 @@ exports.removeAttach = function(req, res) {
         .exec((err, attach) => {
             if(err) {
                 return res.json({err: 1, msg: err});
+            } else if(!attach) {
+                return res.json({err:1, msg:'附件不存在'});
             } else {
                 if(attach.ownerId.toString() == uid.toString()) {
-                    
                     Information.findById(attach.infoId)
                         .exec((err, info) => {
                             if(err) {return res.json({err: 1, msg: err});}
+                            else if(!info) {return res.json({err:1, msg:'资料不存在'})}
                             else if(info.status > -1 && info.status < 3) {
                                 return res.json({err:1, msg:'当前状态下不可删除!'})
                             }

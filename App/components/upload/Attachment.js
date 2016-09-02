@@ -2,7 +2,7 @@
  * Created by leo on 8/22/16.
  */
 import React from 'react';
-import { Icon, Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification } from 'antd';
+import { Icon, Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification, Progress } from 'antd';
 const FormItem = Form.Item;
 const Dragger  = Upload.Dragger;
 
@@ -16,7 +16,11 @@ class Attachment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileList: []
+            fileList: [],
+            
+            showProgress: false,
+            filename: '',
+            progress: 0
         }
     }
     
@@ -99,17 +103,26 @@ class Attachment extends React.Component {
                     >
                         全部下载
                     </Button>
+    
+                    
+                    {
+                        !this.state.showProgress ? '' :
+                            <div style={{marginTop: 10}}>
+                                <h3>正在上传: {this.state.filename}</h3>
+                                <Progress percent={this.state.progress} />
+                            </div>
+                    }
                     
                     {this.state.fileList.length == 0 ? <h2>暂无文件</h2> : null}
                     <div className='ant-upload-list ant-upload-list-picture' style={{marginTop: 10}}>
                         {
                             this.state.fileList.map((item, index) => {
                                 var iconUrl = item.url;
-                                if(iconUrl.indexOf('xls') > 0) {
+                                if(item.filename.indexOf('xls') > 0) {
                                     iconUrl ='/public/images/excel.png'
-                                } else if(iconUrl.indexOf('doc') > 0) {
+                                } else if(item.filename.indexOf('doc') > 0) {
                                     iconUrl ='/public/images/word.png'
-                                } else if (iconUrl.indexOf('mp4') > 0) {
+                                } else if (item.filename.indexOf('mp4') > 0) {
                                     iconUrl ='/public/images/video.jpg'
                                 }
                                 return (
@@ -177,11 +190,13 @@ class Attachment extends React.Component {
                         // 文件添加进队列后,处理相关的事情
                     });
                 },
-                'BeforeUpload':   function (up, file) {
+                'BeforeUpload':   (up, file) => {
                     // 每个文件上传前,处理相关的事情
+                    this.setState({filename: file.name, progress: 0, showProgress: true});
                 },
-                'UploadProgress': function (up, file) {
+                'UploadProgress': (up, file) => {
                     // 每个文件上传时,处理相关的事情
+                    this.setState({progress: file.percent})
                 },
                 'FileUploaded':   (up, file, info) => {
                     // 每个文件上传成功后,处理相关的事情
@@ -239,8 +254,9 @@ class Attachment extends React.Component {
                         description: errTip
                     });
                 },
-                'UploadComplete': function () {
+                'UploadComplete': () => {
                     //队列文件处理完毕后,处理相关的事情
+                    this.setState({showProgress: false})
                 },
                 'Key':            function (up, file, info) {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数

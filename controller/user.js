@@ -125,6 +125,7 @@ exports.signUp = function (req, res) {
                     msg: '此账户已被注册'
                 });
             } else {
+                console.log(user);
                 return res.json({
                     err: 1,
                     msg: err

@@ -66,19 +66,19 @@ class MenuBox extends Component {
                         <Link to='/client/all'>全部列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-1'>
-                        <Link to='/client/status/-1'>正在编辑列表</Link>
+                        <Link to='/client/status/-1' style={{color: 'gray'}}>正在编辑列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-2'>
                         <Link to='/client/status/0'>待审核列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-3'>
-                        <Link to='/client/status/1'>通过列表</Link>
+                        <Link to='/client/status/1' style={{color: 'green'}}>通过列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-4'>
-                        <Link to='/client/status/2'>否决列表</Link>
+                        <Link to='/client/status/2' style={{color: 'red'}}>否决列表</Link>
                     </Menu.Item>
                     <Menu.Item key='2-5'>
-                        <Link to='/client/status/3'>退回列表</Link>
+                        <Link to='/client/status/3' style={{color: 'orange'}}>退回列表</Link>
                     </Menu.Item>
                 </SubMenu>
                 {

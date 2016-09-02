@@ -102,7 +102,6 @@ class Message extends React.Component {
         };
         
         var status = this.props.information.status;
-        var editable = status == -1 || status == 3;
         
         if(status == -1 || status == 1 || status == 2) {
             return <div></div>
@@ -179,8 +178,7 @@ class Message extends React.Component {
                             message: 'Success',
                             description: res.msg
                         });
-                        //window.location.hash = '/client/all';
-                        this.props.history.pushState(null, '/client/all');
+                        window.location.hash = '/client/all';
                     }
                 }
             })

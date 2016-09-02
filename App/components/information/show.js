@@ -83,81 +83,36 @@ const columns = [{
     sorter: (a, b) => a.status - b.status,
     render: (value, record) => {
         let status;
-        let menu = (
-            <Menu onSelect={(item) => {
-                $.ajax({
-                    type: 'POST',
-                    url: '/apiv1/information/new_message',
-                    data: {
-                        id: record._id,
-                        status: item.key,
-                        content: '',
-                    },
-                    success: (res) => {
-                        if(res.err == 0) {
-                            notification.success({
-                                message: 'Success',
-                                description: res.msg
-                            });
-                            //window.location.hash = '/client/all';
-                            this.props.history.pushState(null, '/client/all');
-                        } else {
-                            console.error(res.msg);
-                            notification.error({
-                                message: 'Error',
-                                description: '操作失败'
-                            });
-                        }
-                    }
-                });
-            }}>
-                <Menu.Item key='1'> 通过 </Menu.Item>
-                <Menu.Item key='2'> 否决 </Menu.Item>
-                <Menu.Item key='3'> 退回 </Menu.Item>
-            </Menu>
-        );
         let content;
-        
         switch(record.status) {
             case -1:
                 status = '正在编辑';
-                menu = <div></div>;
                 content = <span style={{color: 'gray'}}>{status}</span>;
                 break;
             case 0:
                 status = '待审核';    // 已提交
                 content = (
                     <a className="ant-dropdown-link">
-                        {status} <Icon type="down" />
+                        {status}
                     </a>
                 );
                 break;
             case 1:
                 status = '已通过';    // 已通过
-                menu = <div></div>;
                 content = <span style={{color: 'green'}}>{status}</span>;
                 break;
             case 2:
                 status = '已否决';    // 已否决
-                menu = <div></div>;
                 content = <span style={{color: 'red'}}>{status}</span>;
                 break;
             case 3:
                 status = '已退回';    // 已退回
-                menu = <div></div>;
                 content = <span style={{color: 'orange'}}>{status}</span>;
                 break;
             default:
                 status = '状态异常';
         }
-        
-        return (
-            <span>
-                <Dropdown overlay={menu} trigger={['click']}>
-                    {content}
-                </Dropdown>
-            </span>
-        )
+        return content;
     }
 }
 ];

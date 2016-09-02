@@ -370,14 +370,18 @@ exports.newMessage = function(req, res) {
                     
                     if(req.user.role == 0 || info.agentId.parentId.toString() == uid.toString()) {
                         // 只有风控(管理员)和直属上级代理可以发布审核信息
+                        info.status = status;
+                        
                         info.save((err, obj) => {
                             if(err) {return res.json({err: 1, msg: err});}
+                            console.log(obj);
+                            
                             message.save((err, obj) => {
                                 if(err) {return res.json({err: 1, msg: err});}
                                 return res.json({
                                     err: 0,
                                     message: obj,
-                                    msg: '消息提交成功'
+                                    msg: '审核信息提交成功'
                                 })
                             });
                         });

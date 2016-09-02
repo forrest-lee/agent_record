@@ -167,11 +167,11 @@ class Attachment extends React.Component {
             save_key:        false,
             domain:          settings.QN_Domain,
             container:       'qncontainer',
-            max_file_size:   '800kb',
+            max_file_size:   '30mb',
             max_retries:     3,
             dragdrop:        true,
             drop_element:    'container',
-            chunk_size:      '800kb',
+            chunk_size:      '30mb',
             auto_start:      true,
             init:            {
                 'FilesAdded':     function (up, files) {

@@ -15,7 +15,6 @@ class Information extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            type:    window.location.hash.indexOf('/information') > 0 ? 0 : 1,
             information: {
                 status:  !this.props.information ? -1 : !this.props.information.status,
                 name:    !this.props.information ? '' : this.props.information.name,
@@ -73,7 +72,8 @@ class Information extends React.Component {
         });
         
         
-        let type = this.state.type;
+        let type = window.location.hash.indexOf('/information') > 0 ? 0 : 1;
+        console.log(type);
 
         return (
             <div>
@@ -190,18 +190,19 @@ class Information extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
+            let type = window.location.hash.indexOf('/information') > 0 ? 0 : 1;
             
             $.ajax({
                 type: 'POST',
                 url:  '/apiv1/information/new',
                 data: {
-                    type: this.state.type,
+                    type: type,
                     mobile: values.mobile,
                     name: values.name,
                     qq: values.qq,
                     school: values.school,
                     comment: values.comment,
-                    status: -1  // 正在编辑
+                    status: -1,  // 正在编辑
                 },
                 success: (res) => {
                     if (res.err == 0) {

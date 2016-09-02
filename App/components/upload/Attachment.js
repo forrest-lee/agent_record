@@ -111,14 +111,16 @@ class Attachment extends React.Component {
                                         iconUrl ='/public/images/word.png'
                                     }
                                     return (
-                                        <div className='ant-upload-list-item ant-upload-list-item-done'>
+                                        <div className='ant-upload-list-item ant-upload-list-item-done'
+                                             key={index}
+                                        >
                                             <div className='ant-upload-list-item-info'>
                                                 <a className='ant-upload-list-item-thumbnail' href={item.url}>
                                                     <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl}
                                                          alt=""/>
                                                 </a>
                                                 <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
-                                                <i className='anticon anticon-cross'></i>
+                                                <i className='anticon anticon-cross' onClick={this.handleDelete.bind(this, item, index)}></i>
                                             </div>
                                         </div>
                                     );
@@ -255,6 +257,37 @@ class Attachment extends React.Component {
         
         // uploader 为一个plupload对象，继承了所有plupload的方法，参考http://plupload.com/docs
     };
+    
+    handleDelete(obj, index) {
+        console.log(obj);
+        $.ajax({
+            type: 'POST',
+            url: '/apiv1/attach/delete',
+            data: {
+                id: obj._id
+            },
+            success: (res) => {
+                if(res.err == 0) {
+                    var fileList = this.state.fileList;
+                    fileList.splice(index, 1);
+                    this.setState({fileList: fileList});
+                    
+                    notification.success({
+                        message:     'Success',
+                        description: res.msg
+                    });
+                } else {
+                    notification.error({
+                        message:     'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        })
+    }
 }
 
 export default Attachment;

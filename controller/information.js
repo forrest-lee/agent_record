@@ -2,13 +2,16 @@
  * Created by leo on 8/22/16.
  */
 var async = require('async');
-var co = require('co');
 var User = require('../models/User');
 var Information = require('../models/Information');
 var Attachment = require('../models/Attatchment');
 var Message = require('../models/Message');
+
+var qiniu = require("qiniu");
+
 var settings = require('../settings');
 var admins = settings.admins;
+
 
 /**
  * 查询所有客户信息

@@ -5,6 +5,7 @@ var userCtrl   = require('../controller/user');
 var qiniuCtrl  = require('../controller/qiniu');
 var infoCtrl   = require('../controller/information');
 var notiCtrl   = require('../controller/notification');
+var attachCtrl = require('../controller/attach');
 
 /**
  * Home
@@ -47,6 +48,9 @@ infoApiRouter.post('/new_message', infoCtrl.newMessage);       // 发布审核�
 infoApiRouter.post('/new', infoCtrl.newInfo);                    // 新建借款资料
 infoApiRouter.post('/update_status', infoCtrl.updateInfoStatus); // 更新资料状态
 
+var attachApiRouter = express.Router();
+attachApiRouter.post('/delete', attachCtrl.removeAttach);  // 删除附件
+
 
 // 通知
 var notiApiRouter = express.Router();
@@ -54,7 +58,7 @@ notiApiRouter.get('/all', notiCtrl.notifications);    // 所有公告
 notiApiRouter.get('/mine', notiCtrl.myNotifications);    // 我的公告
 notiApiRouter.get('/:id', notiCtrl.detail);           // 获取公告内容
 notiApiRouter.post('/new', notiCtrl.newNotification); // 新建公告
-notiApiRouter.post('/delete', notiCtrl.delete);  // 删除公告
+notiApiRouter.post('/delete', notiCtrl.delete);       // 删除公告
 
 /**
  * apiv1
@@ -63,6 +67,7 @@ var apiRouter = express.Router();
 apiRouter.use('/qiniu', qiniuApiRouter);
 apiRouter.use('/user', userApiRouter);
 apiRouter.use('/information', infoApiRouter);
+apiRouter.use('/attach', attachApiRouter);
 apiRouter.use('/notification', notiApiRouter);
 
 

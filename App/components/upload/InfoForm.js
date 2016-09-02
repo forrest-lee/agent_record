@@ -73,7 +73,6 @@ class Information extends React.Component {
         
         
         let type = window.location.hash.indexOf('/information') > 0 ? 0 : 1;
-        console.log(type);
 
         return (
             <div>

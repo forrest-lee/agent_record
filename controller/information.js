@@ -252,7 +252,14 @@ exports.detail = function(req, res) {
 exports.attachments = function(req, res) {
     var uid = req.user._id;
     Attachment.find({infoId: req.params.id})
-        .populate('ownerId')
+        .populate({
+            path: 'ownerId',
+            model: 'User',
+            populate: {
+                path: 'parentId',
+                model: 'User'
+            }
+        })
         .exec((err, attaches) => {
             if(err) {
                 return res.json({err: 1, msg: err});
@@ -263,8 +270,9 @@ exports.attachments = function(req, res) {
                 });
             } else {
                 if(attaches[0].ownerId._id.toString() == uid.toString() ||
-                    attaches[0].ownerId.parentId.toString() == uid.toString() ||
-                        req.user.role == 0 ) {
+                    attaches[0].ownerId.parentId._id.toString() == uid.toString() ||
+                        attaches[0].ownerId.parentId.parentId.toString() == uid.toString() ||
+                            req.user.role == 0 ) {
                     return res.json({
                         err: 0,
                         attaches: attaches

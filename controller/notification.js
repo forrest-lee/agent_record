@@ -92,7 +92,6 @@ exports.detail = function(req, res) {
                     msg: err
                 })
             } else {
-                console.log(notification);
                 return res.json({
                     err: 0,
                     notification: notification

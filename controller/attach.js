@@ -62,6 +62,7 @@ exports.removeAttach = function(req, res) {
                                     })
                                 } else {
                                     console.log(err);
+                                    return res.json({err:1, msg:err});
                                 }
                             });
                         })

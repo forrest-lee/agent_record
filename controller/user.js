@@ -233,7 +233,6 @@ exports.allAgency = function (req, res) {
             .exec((err, users2) => {
                 if (err) {return res.json({err: 1, msg: err});}
                 var userList = users2.map(u => u._id.toString());
-                console.log(userList);
             
                 User.find({role: 3})
                     .populate('parentId')
@@ -266,7 +265,6 @@ exports.allAgency = function (req, res) {
             query = {parentId: req.user._id, role: 3};
         }
     
-        console.log('ed');
         User.find(query).populate('parentId')
             .exec((err, users) => {
                 if (err) {

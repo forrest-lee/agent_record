@@ -51,8 +51,10 @@ infoApiRouter.post('/update_status', infoCtrl.updateInfoStatus); // 更新资料
 // 通知
 var notiApiRouter = express.Router();
 notiApiRouter.get('/all', notiCtrl.notifications);    // 所有公告
+notiApiRouter.get('/mine', notiCtrl.myNotifications);    // 我的公告
 notiApiRouter.get('/:id', notiCtrl.detail);           // 获取公告内容
 notiApiRouter.post('/new', notiCtrl.newNotification); // 新建公告
+notiApiRouter.post('/delete', notiCtrl.delete);  // 删除公告
 
 /**
  * apiv1

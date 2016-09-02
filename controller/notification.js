@@ -56,6 +56,26 @@ exports.notifications = function(req, res) {
 };
 
 
+exports.myNotifications = function(req, res) {
+    var uid = req.user._id;
+    Notification.find({ownerId: uid})
+        .populate('ownerId')
+        .exec((err, notifications) => {
+            if(err) {
+                return res.json({
+                    err: 1,
+                    msg: err
+                })
+            } else {
+                return res.json({
+                    err: 0,
+                    notifications: notifications
+                })
+            }
+        });
+};
+
+
 /**
  * 公告详情
  * @param req
@@ -79,4 +99,31 @@ exports.detail = function(req, res) {
                 });
             }
         });
+};
+
+
+/**
+ * 删除公告
+ * @param req
+ * @param res
+ */
+exports.delete = function(req, res) {
+    var id = req.body.id;
+    var uid = req.user._id;
+    Notification.findById(id)
+        .exec((err, noti) => {
+            if(err) {return res.json({err: 1, msg: err});}
+            if(noti.ownerId.toString() == uid.toString() || req.user.role == 0) {
+                // 只有管理员和本人可以删
+                Notification.remove({_id: id}, err => {
+                    if(err) {
+                        return res.json({err:1, msg:err});
+                    } else {
+                        return res.json({err:0, msg:'删除成功!'});
+                    }
+                })
+            } else {
+                return res.json({err:1, msg:'权限不够'})
+            }
+        })
 };

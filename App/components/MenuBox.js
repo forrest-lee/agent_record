@@ -49,6 +49,9 @@ class MenuBox extends Component {
                     <Menu.Item key='0-0'>
                         <Link to='/notification/all'>系统公告</Link>
                     </Menu.Item>
+                    <Menu.Item key='0-1'>
+                        <Link to='/notification/mine'>我的公告</Link>
+                    </Menu.Item>
                 </SubMenu>
                 {
                     sessionStorage.userRole == 0 ? null :

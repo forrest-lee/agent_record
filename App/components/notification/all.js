@@ -34,7 +34,49 @@ export default class NotificationBox extends React.Component {
         }
     }
     
+    render() {
+        if(this.state.loading) {
+            return <Spin />;
+        }
+        
+        return (
+            <div>
+                <Button type="primary" onClick={this.newNotification}>
+                    写公告<Icon type="edit" />
+                </Button>
+                
+                <div style={{marginTop: 20}}>
+                    <Table
+                        dataSource={this.state.notifications} columns={columns}
+                    />
+                </div>
+            </div>
+        )
+    }
+    
     componentWillMount() {
+        this.fetchData();
+    }
+    
+    componentDidUpdate (prevProps) {
+        // 通过参数更新数据
+        let oldPath = prevProps.route.path;
+        let newPath = this.props.route.path;
+        
+        if (newPath !== oldPath) {
+            this.fetchData();
+        }
+    }
+    
+    fetchData = () => {
+        if(window.location.hash.indexOf('/notification/all') > 0) {
+            this.fetchAll();
+        } else {
+            this.fetchMine();
+        }
+    };
+    
+    fetchAll = () => {
         $.ajax({
             type: 'GET',
             url:  '/apiv1/notification/all',
@@ -55,27 +97,31 @@ export default class NotificationBox extends React.Component {
                 });
             }
         })
-    }
+    };
     
-    render() {
-        if(this.state.loading) {
-            return <Spin />;
-        }
-        
-        return (
-            <div>
-                <Button type="primary" onClick={this.newNotification}>
-                    写公告<Icon type="edit" />
-                </Button>
-                
-                <div style={{marginTop: 20}}>
-                    <Table
-                        dataSource={this.state.notifications} columns={columns}
-                    />
-                </div>
-            </div>
-        )
-    }
+    
+    fetchMine = () => {
+        $.ajax({
+            type: 'GET',
+            url:  '/apiv1/notification/mine',
+            success: (res) => {
+                if(res.err == 0) {
+                    this.setState({
+                        notifications: res.notifications,
+                        loading: false
+                    });
+                } else {
+                    //console.log(res.msg);
+                }
+            },
+            error: (res) => {
+                notification.error({
+                    message: 'Error',
+                    description: res.msg
+                });
+            }
+        })
+    };
     
     newNotification = () => {
         window.location.hash = 'notification/new';

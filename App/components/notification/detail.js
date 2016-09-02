@@ -49,9 +49,55 @@ class NotificationDetail extends React.Component {
                 <div style={{marginTop: 15, whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>
                     {this.state.notification.content}
                 </div>
+    
+                {
+                    this.state.notification.ownerId.toString() != sessionStorage.userId.toString() ? null :
+                        <Button
+                            icon="delete"
+                            style={{
+                                height: 36,
+                                backgroundColor: '#EB5768',
+                                color: '#fff',
+                                float: 'right',
+                                marginTop: 22,
+                                marginRight: 22
+                            }}
+                            onClick={this.handleDelete.bind(this)}
+                        >
+                            删除公告
+                        </Button>
+                }
             </div>
         );
     }
+    
+    
+    handleDelete = () => {
+        $.ajax({
+            type: 'POST',
+            url: '/apiv1/notification/delete',
+            data: {
+                id: getUrlId('notification')
+            },
+            success: (res) => {
+                if(res.err == 0) {
+                    notification.success({
+                        message: 'Success',
+                        description: res.msg
+                    });
+                    window.location.hash = '/notification/all';
+                } else {
+                    notification.error({
+                        message: 'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        })
+    };
 }
 
 export default NotificationDetail;

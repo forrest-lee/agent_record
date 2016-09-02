@@ -40,6 +40,8 @@ class NotificationDetail extends React.Component {
         if(this.state.loading) {
             return <Spin />;
         }
+        console.log(this.state.notification.ownerId._id);
+        console.log(sessionStorage.userId);
         
         return (
             <div>
@@ -51,7 +53,7 @@ class NotificationDetail extends React.Component {
                 </div>
     
                 {
-                    this.state.notification.ownerId.toString() != sessionStorage.userId.toString() ? null :
+                    this.state.notification.ownerId._id.toString() == sessionStorage.userId.toString() || sessionStorage.userRole == 0 ?
                         <Button
                             icon="delete"
                             style={{
@@ -65,7 +67,7 @@ class NotificationDetail extends React.Component {
                             onClick={this.handleDelete.bind(this)}
                         >
                             删除公告
-                        </Button>
+                        </Button> : null
                 }
             </div>
         );

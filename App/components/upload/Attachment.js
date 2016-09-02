@@ -131,7 +131,7 @@ class Attachment extends React.Component {
                                             <a className='ant-upload-list-item-thumbnail' href={item.url}>
                                                 <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl} alt=""/>
                                             </a>
-                                            <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
+                                            <a className='ant-upload-list-item-name' onClick={this.saveFile.bind(this, item.url, item.filename)}>{item.filename}</a>
                                             <i className='anticon anticon-cross' onClick={this.handleDelete.bind(this, item, index)}></i>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@ class Attachment extends React.Component {
     
     downloadAll() {
         this.state.fileList.map(file => {
-            this.saveFile(file.url, file.key);
+            this.saveFile(file.url, file.filename);
         });
     }
     

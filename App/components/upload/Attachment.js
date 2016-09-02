@@ -100,34 +100,32 @@ class Attachment extends React.Component {
                         全部下载
                     </Button>
                     
+                    {this.state.fileList.length == 0 ? <h2>暂无文件</h2> : null}
                     <div className='ant-upload-list ant-upload-list-picture' style={{marginTop: 10}}>
                         {
-                            this.state.fileList.length == 0 ? <h2>暂无文件</h2> :
-                                this.state.fileList.map((item, index) => {
-                                    var iconUrl = item.url;
-                                    if(iconUrl.indexOf('xls') > 0) {
-                                        iconUrl ='/public/images/excel.png'
-                                    } else if(iconUrl.indexOf('doc') > 0) {
-                                        iconUrl ='/public/images/word.png'
-                                    }
-                                    return (
-                                        <div className='ant-upload-list-item ant-upload-list-item-done'
-                                             key={index}
-                                        >
-                                            <div className='ant-upload-list-item-info'>
-                                                <a className='ant-upload-list-item-thumbnail' href={item.url}>
-                                                    <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl}
-                                                         alt=""/>
-                                                </a>
-                                                <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
-                                                <i className='anticon anticon-cross' onClick={this.handleDelete.bind(this, item, index)}></i>
-                                            </div>
+                            this.state.fileList.map((item, index) => {
+                                var iconUrl = item.url;
+                                if(iconUrl.indexOf('xls') > 0) {
+                                    iconUrl ='/public/images/excel.png'
+                                } else if(iconUrl.indexOf('doc') > 0) {
+                                    iconUrl ='/public/images/word.png'
+                                } else if (iconUrl.indexOf('mp4') > 0) {
+                                    iconUrl ='/public/images/video.jpg'
+                                }
+                                return (
+                                    <div className='ant-upload-list-item ant-upload-list-item-done'>
+                                        <div className='ant-upload-list-item-info'>
+                                            <a className='ant-upload-list-item-thumbnail' href={item.url}>
+                                                <img style={{width: 48, height: 48, display: 'block'}} src={iconUrl} alt=""/>
+                                            </a>
+                                            <a download className='ant-upload-list-item-name' href={item.url}>{item.filename}</a>
+                                            <i className='anticon anticon-cross' onClick={this.handleDelete.bind(this, item, index)}></i>
                                         </div>
-                                    );
-                                })
+                                    </div>
+                                );
+                            })
                         }
                     </div>
-                
                 </Col>
             </Row>
         );
@@ -163,8 +161,8 @@ class Attachment extends React.Component {
             runtimes:        'html5',    //上传模式,依次退化
             browse_button:   'pickfiles',
             uptoken_url:     '/apiv1/qiniu/uptoken',
-            unique_names:    false,
-            save_key:        false,
+            unique_names:    true,
+            save_key:        true,
             domain:          settings.QN_Domain,
             container:       'qncontainer',
             max_file_size:   '30mb',
@@ -206,9 +204,10 @@ class Attachment extends React.Component {
                         url:     '/apiv1/information/add_attachments',
                         data:    {
                             infoId:   id,
-                            filename: fileInfo.key,
+                            filename: file.name.toString(),
+                            key:      fileInfo.key,
                             url:      sourceLink,
-                            hashId:   fileInfo.hash
+                            hash:   fileInfo.hash
                         },
                         error:   () => {
                             alert("异常");
@@ -234,6 +233,7 @@ class Attachment extends React.Component {
                 },
                 'Error':          function (up, err, errTip) {
                     //上传出错时,处理相关的事情
+                    console.error(errTip);
                     notification.error({
                         message:     'Error',
                         description: errTip
@@ -242,10 +242,9 @@ class Attachment extends React.Component {
                 'UploadComplete': function () {
                     //队列文件处理完毕后,处理相关的事情
                 },
-                'Key':            function (up, file) {
+                'Key':            function (up, file, info) {
                     // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                     // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                    
                     var key = file.name.toString();
                     // do something with key here
                     return key

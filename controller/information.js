@@ -305,8 +305,10 @@ exports.addAttaches = function(req, res) {
             } else {
                 var attach = new Attachment({
                     ownerId:        uid,
-                    userAttachId: uid.toString() + req.body.hashId,
+                    userAttachId: uid.toString() + req.body.hash,
                     filename:   req.body.filename,
+                    key:        req.body.key,
+                    hash:       req.body.hash,
                     infoId:     id,
                     url:        req.body.url,
                 });

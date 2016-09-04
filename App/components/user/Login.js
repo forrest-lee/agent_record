@@ -39,10 +39,10 @@ class Login extends React.Component {
                 <div className={styles.loginContainer}>
                     <div style={{textAlign: 'center'}}>
                         {/*<h1>{configs.sitename}</h1>*/}
-                        <img src={configs.slogan} alt="" style={{height: 50, margin: '0 auto'}}/>
+                        <img src={configs.slogan} alt="" style={{height: 80, margin: '0 auto'}}/>
                     </div>
 
-                    <div style={{marginTop: 20}}>
+                    <div style={{marginTop: 0}}>
                         <Form horizontal>
                             <FormItem
                                 label="账户"

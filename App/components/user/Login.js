@@ -39,7 +39,7 @@ class Login extends React.Component {
                 <div className={styles.loginContainer}>
                     <div style={{textAlign: 'center'}}>
                         {/*<h1>{configs.sitename}</h1>*/}
-                        <img src="/public/images/slogan.png" alt="" style={{height: 50, margin: '0 auto'}}/>
+                        <img src={configs.slogan} alt="" style={{height: 50, margin: '0 auto'}}/>
                     </div>
 
                     <div style={{marginTop: 20}}>

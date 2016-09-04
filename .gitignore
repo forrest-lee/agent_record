@@ -19,6 +19,7 @@ build
 bower_components
 .DS_Store
 settings.js
+configs.js
 .idea/
 builtAssets/
 build/

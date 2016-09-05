@@ -137,6 +137,24 @@ class UserDetail extends React.Component {
                             name="comment"/>
                     </FormItem>
                 </Form>
+    
+                {
+                    sessionStorage.userRole == 0 ?
+                        <Button
+                            icon="delete"
+                            style={{
+                                height: 36,
+                                backgroundColor: '#EB5768',
+                                color: '#fff',
+                                float: 'right',
+                                marginTop: 22,
+                                marginRight: 22
+                            }}
+                            onClick={this.handleDelete.bind(this)}
+                        >
+                            删除该用户
+                        </Button> : null
+                }
             </div>
         )
     }
@@ -156,6 +174,37 @@ class UserDetail extends React.Component {
                 }
             }, error: (res) => {
                 console.error(res);
+            }
+        })
+    }
+    
+    
+    /**
+     * 删除用户
+     */
+    handleDelete() {
+        $.ajax({
+            type: 'POST',
+            url: '/apiv1/user/delete',
+            data: {
+                id: getUrlId('user')
+            },
+            success: (res) => {
+                if(res.err == 0) {
+                    notification.success({
+                        message: 'Success',
+                        description: res.msg
+                    });
+                    window.location.hash = '/agency/all';
+                } else {
+                    notification.error({
+                        message: 'Error',
+                        description: res.msg
+                    });
+                }
+            },
+            error: (err) => {
+                console.error(err);
             }
         })
     }

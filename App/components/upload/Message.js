@@ -14,7 +14,14 @@ let cx = classNames.bind(styles);
 const columns = [{
     title: '提交人',
     dataIndex: 'ownerName',
-    key: 'ownerName'
+    key: 'ownerName',
+    render: (v, r) => {
+        if(r.status == -1) {
+            return <span>{r.name} (已注销)</span>
+        } else {
+            return <span>{r.name}</span>
+        }
+    }
 }, {
     title:     '时间',
     dataIndex: 'updateAt',

@@ -35,7 +35,11 @@ const columns = [{
     dataIndex: 'agentId',
     key: 'agentId',
     render: (v, r) => {
-        return <span>{r.agentId.name}</span>
+        if(r.agentId.status == -1) {
+            return <span>{r.agentId.name} (已注销)</span>
+        } else {
+            return <span>{r.agentId.name}</span>
+        }
     }
 }, {
     title: '代理级别',
@@ -57,7 +61,15 @@ const columns = [{
     dataIndex: 'parent',
     key: 'parent',
     render:    (value, record) => {
-        return <span>{record.agentId.role == 0 ? '无' : record.agentId.parentId.name}</span>
+        if(record.agentId.role == 0) {
+            return <span>无</span>
+        } else {
+            if(record.agentId.parentId.status == -1) {
+                return <span>{record.agentId.parentId.name} (已注销)</span>
+            } else {
+                return <span>{record.agentId.parentId.name}</span>
+            }
+        }
     }
 }, {
     title: '操作',

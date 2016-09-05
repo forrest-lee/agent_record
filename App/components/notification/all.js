@@ -21,7 +21,13 @@ const columns = [{
     title:     '发布人',
     dataIndex: 'owner',
     key:       'owner',
-    render:    (v, r) => <span>{r.ownerId.name}({v})</span>
+    render:    (v, r) => {
+        if(r.ownerId.status == -1) {
+            return <span>{r.ownerId.name} (已注销)</span>;
+        } else {
+            return <span>{r.ownerId.name}({v})</span>;
+        }
+    }
 }
 ];
 

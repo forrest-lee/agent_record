@@ -167,6 +167,11 @@ exports.login = function (req, res, next) {
                 redirect: true,
                 url:      '/'
             });
+        } else if(user.status == -1) {
+            return res.json({
+                err: 3,
+                msg: '该帐号已注销'
+            })
         }
         req.logIn(user, function (err) {
             if (err) {
@@ -225,7 +230,7 @@ exports.allAgency = function (req, res) {
     }
     
     if(req.user.role == 3) {
-        return res.json({err: 1, msg: '权限不够'})
+        return res.json({err: 1, msg: '权限不够'});
     }
     
     if(req.user.role == 1) {
@@ -420,6 +425,37 @@ exports.isUserExists = function(req, res) {
                 return res.json({err: 2, msg: '用户名已存在'})
             } else {
                 return res.json({err: 0, msg: '用户名未被占用'})
+            }
+        })
+};
+
+
+/**
+ * 删除代理
+ * @param req
+ * @param res
+ */
+exports.removeAgency = function(req, res) {
+    if(req.user.role != 0) {
+        return res.json({err:1, msg:'权限不够'});
+    }
+    
+    var id = req.body.id;
+    User.findById(id)
+        .exec((err, usr) => {
+            if(err) {
+                return res.json({err:1, msg:err});
+            } else if(!usr) {
+                return res.json({err:1, msg: '找不到该用户(404 Not FOUND)'});
+            } else {
+                usr.status = -1;  // 表示已注销
+                usr.save(err => {
+                    if(err) {
+                        return res.json({err:1, msg:err});
+                    } else {
+                        return res.json({err: 0, msg: '删除成功'})
+                    }
+                })
             }
         })
 };

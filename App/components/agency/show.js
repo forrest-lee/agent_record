@@ -13,7 +13,13 @@ const columns = [{
     title: '姓名',
     dataIndex: 'name',
     key: 'name',
-    render: (value, record) => <a href={'/#/user/' + record._id}>{value}</a>,
+    render: (value, record) => {
+        if(record.status == -1) {
+            return <span>{value} (已注销)</span>;
+        } else {
+            return <a href={'/#/user/' + record._id}>{value}</a>;
+        }
+    },
 }, {
     title: '帐号',
     dataIndex: 'username',

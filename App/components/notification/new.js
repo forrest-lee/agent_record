@@ -77,6 +77,7 @@ class NewNotification extends React.Component {
                     content: values.content
                 },
                 success: function (res) {
+                    console.log(res);
                     if(res.err == 0) {
                         notification.success({
                             message:     'Success',

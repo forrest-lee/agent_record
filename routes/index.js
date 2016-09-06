@@ -33,6 +33,7 @@ userApiRouter.post('/reset_password', userCtrl.resetPassword);  // 重置密码
 userApiRouter.post('/exists', userCtrl.isUserExists);           // 检查用户名是否存在
 userApiRouter.post('/add', userCtrl.addAgency);                 // 新增代理
 userApiRouter.post('/delete', userCtrl.removeAgency);           // 删除代理
+userApiRouter.post('/update_info', userCtrl.updateInfo);         // 更新基本信息
 
 
 /**

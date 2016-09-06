@@ -47,6 +47,7 @@ class Setting extends React.Component {
         
         return (
             <div style={{marginTop: 40}}>
+                <h2>重置密码</h2>
                 <Button type="default" onClick={() => {history.back()}} icon="rollback">返回</Button>
                 <Form horizontal>
                     <FormItem

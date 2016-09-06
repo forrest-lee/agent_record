@@ -19,9 +19,9 @@ function is_wechat(req) {
  * 管理员只能开一级, 一级代理只能开二级, 二级只能开三级, 三级没有权限
  * 只能给自己开代理
  */
-exports.addAgency = function(req, res) {
+exports.addAgency = function (req, res) {
     var uid = req.user._id;
-    if(req.user.role == 3) {
+    if (req.user.role == 3) {
         return res.json({err: 1, msg: '权限不够(Auth Failed)'});
     }
     
@@ -43,7 +43,7 @@ exports.addAgency = function(req, res) {
             msg: '重复密码不相等'
         });
     }
-
+    
     var user = new User({
         username: username,
         name:     name,
@@ -149,7 +149,7 @@ exports.signUp = function (req, res) {
  * @returns {*}
  */
 exports.login = function (req, res, next) {
-    if(req.body.captcha != req.session.captcha) {
+    if (req.body.captcha != req.session.captcha) {
         return res.json({
             err: 1,
             msg: '验证码不正确'
@@ -167,7 +167,7 @@ exports.login = function (req, res, next) {
                 redirect: true,
                 url:      '/'
             });
-        } else if(user.status == -1) {
+        } else if (user.status == -1) {
             return res.json({
                 err: 3,
                 msg: '该帐号已注销'
@@ -222,40 +222,44 @@ exports.isLogined = function (req, res, next) {
  * @param res
  */
 exports.allAgency = function (req, res) {
-    if(req.query.role) {
-        if(req.query.role <= req.user.role) {
+    if (req.query.role) {
+        if (req.query.role <= req.user.role) {
             // 不能越级查看
-            return res.json({err:1, msg:'权限不够'});
+            return res.json({err: 1, msg: '权限不够'});
         }
     }
     
-    if(req.user.role == 3) {
+    if (req.user.role == 3) {
         return res.json({err: 1, msg: '权限不够'});
     }
     
-    if(req.user.role == 1) {
+    if (req.user.role == 1) {
         User.find({role: 2, parentId: req.user._id})
             .populate('parentId')
             .exec((err, users2) => {
-                if (err) {return res.json({err: 1, msg: err});}
+                if (err) {
+                    return res.json({err: 1, msg: err});
+                }
                 var userList = users2.map(u => u._id.toString());
-            
+                
                 User.find({role: 3})
                     .populate('parentId')
                     .where('parentId').in(userList)
                     .exec((err, users3) => {
-                        if (err) {return res.json({err: 1, msg: err});}
-                        if(!req.query.role) {
+                        if (err) {
+                            return res.json({err: 1, msg: err});
+                        }
+                        if (!req.query.role) {
                             return res.json({
                                 err:   0,
                                 users: users2.concat(users3).filter(item => item.username != req.user.username)
                             });
-                        } else if(req.query.role == 2) {
+                        } else if (req.query.role == 2) {
                             return res.json({
                                 err:   0,
                                 users: users2.filter(item => item.username != req.user.username)
                             });
-                        } else if(req.query.role == 3) {
+                        } else if (req.query.role == 3) {
                             return res.json({
                                 err:   0,
                                 users: users3.filter(item => item.username != req.user.username)
@@ -265,12 +269,12 @@ exports.allAgency = function (req, res) {
             });
     } else {
         var query = {};
-        if(req.user.role == 0) {
+        if (req.user.role == 0) {
             query = req.query.role ? {role: req.query.role} : {};
-        } else if(req.user.role == 2) {
+        } else if (req.user.role == 2) {
             query = {parentId: req.user._id, role: 3};
         }
-    
+        
         User.find(query).populate('parentId')
             .exec((err, users) => {
                 if (err) {
@@ -354,21 +358,21 @@ exports.getCaptcha = function (req, res) {
  * @param req
  * @param res
  */
-exports.userDetail = function(req, res) {
+exports.userDetail = function (req, res) {
     var uid = req.params.id;
     
     User.findById(uid)
         .exec((err, user) => {
             if (err) {
                 return res.json({err: 1, msg: err});
-            } else if(!user) {
+            } else if (!user) {
                 return res.json({err: 1, msg: '该用户不存在'})
             }
             
             return res.json({
-                err: 0,
+                err:  0,
                 user: user,
-                msg: '用户信息加载成功'
+                msg:  '用户信息加载成功'
             })
         })
 };
@@ -379,16 +383,16 @@ exports.userDetail = function(req, res) {
  * @param req
  * @param res
  */
-exports.resetPassword = function(req, res) {
-    var uid = req.user.id;
-    var password = req.body.password;
+exports.resetPassword = function (req, res) {
+    var uid        = req.user.id;
+    var password   = req.body.password;
     var repassword = req.body.repassword;
     
     User.findById(uid)
         .exec((err, user) => {
             if (err) {
                 return res.json({err: 1, msg: err});
-            } else if(!user) {
+            } else if (!user) {
                 return res.json({err: 1, msg: '用户不存在'})
             } else if (password != repassword) {
                 return res.json({
@@ -400,11 +404,55 @@ exports.resetPassword = function(req, res) {
             user.password = password;
             user.save(function (err) {
                 if (err) {
-                    return res.json({err: 1,msg: err});
+                    return res.json({err: 1, msg: err});
                 } else {
-                    return res.json({err: 0,msg: '密码修改成功'});
+                    return res.json({err: 0, msg: '密码修改成功'});
                 }
             });
+        })
+};
+
+
+/**
+ * 更新信息
+ * @param req
+ * @param res
+ */
+exports.updateInfo = function (req, res) {
+    var uid     = req.user.id;
+    
+    var name    = req.body.name;
+    var mobile  = req.body.mobile;
+    var gender  = req.body.gender;
+    var qq      = req.body.qq;
+    var comment = req.body.comment;
+    
+    User.findById(uid)
+        .exec((err, user) => {
+            if (err) {
+                return res.json({err: 1, msg: err});
+            } else if (!user) {
+                return res.json({err: 1, msg: '用户不存在'})
+            } else if (uid.toString() == user._id.toString() || req.user.role == 0) {
+                user.name    = name;
+                user.mobile  = mobile;
+                user.gender  = gender;
+                user.qq      = qq;
+                user.comment = comment;
+    
+                user.save(function (err) {
+                    if (err) {
+                        return res.json({err: 1, msg: err});
+                    } else {
+                        return res.json({err: 0, msg: '信息修改成功'});
+                    }
+                });
+            } else {
+                return res.json({
+                    err: 1,
+                    msg: '权限不够'
+                });
+            }
         })
 };
 
@@ -414,14 +462,14 @@ exports.resetPassword = function(req, res) {
  * @param req
  * @param res
  */
-exports.isUserExists = function(req, res) {
+exports.isUserExists = function (req, res) {
     var username = req.body.username;
     
     User.findOne({username: username})
         .exec((err, user) => {
             if (err) {
                 return res.json({err: 1, msg: err});
-            } else if(user) {
+            } else if (user) {
                 return res.json({err: 2, msg: '用户名已存在'})
             } else {
                 return res.json({err: 0, msg: '用户名未被占用'})
@@ -435,23 +483,23 @@ exports.isUserExists = function(req, res) {
  * @param req
  * @param res
  */
-exports.removeAgency = function(req, res) {
-    if(req.user.role != 0) {
-        return res.json({err:1, msg:'权限不够'});
+exports.removeAgency = function (req, res) {
+    if (req.user.role != 0) {
+        return res.json({err: 1, msg: '权限不够'});
     }
     
     var id = req.body.id;
     User.findById(id)
         .exec((err, usr) => {
-            if(err) {
-                return res.json({err:1, msg:err});
-            } else if(!usr) {
-                return res.json({err:1, msg: '找不到该用户(404 Not FOUND)'});
+            if (err) {
+                return res.json({err: 1, msg: err});
+            } else if (!usr) {
+                return res.json({err: 1, msg: '找不到该用户(404 Not FOUND)'});
             } else {
                 usr.status = -1;  // 表示已注销
                 usr.save(err => {
-                    if(err) {
-                        return res.json({err:1, msg:err});
+                    if (err) {
+                        return res.json({err: 1, msg: err});
                     } else {
                         return res.json({err: 0, msg: '删除成功'})
                     }

@@ -54,7 +54,8 @@ import NewNotification from './components/notification/new';
 import InfoForm from './components/upload/InfoForm';   // 借款资料上传
 import InfoDetail from './components/upload/index';
 import UserDetail from './components/user/UserDetail';
-import UserSetting from './components/user/Setting';
+import ResetPassword from './components/user/ResetPwd';
+import EditInfo from './components/user/EditInfo';
 
 import useBasename from 'history/lib/useBasename';
 
@@ -106,7 +107,8 @@ ReactDOM.render(
                         <Route path='agency/:id/child' component={ChildAgency} />
     
                         <Route path='user'>
-                            <Route path='setting' component={UserSetting} />
+                            <Route path='setting/password' component={ResetPassword} />
+                            <Route path='setting/info' component={EditInfo} />
                             <Route path=':id' component={UserDetail} />
                         </Route>
                         

@@ -72,7 +72,7 @@ class Attachment extends React.Component {
             <Row gutter={10} style={{marginTop: 20}} className={style.borderBox}>
                 <Col sm={6} style={{borderRight: '2px dotted #ddd'}}>
                     {
-                        configs.domain == 'jinqiandai' ?
+                        configs.domain == 'youdai' ?
                             <pre className={style.preWrap}>
                                 <strong>附件: </strong><br/>
                                 1. 身份证正面<br/>
@@ -92,7 +92,8 @@ class Attachment extends React.Component {
                                 1. 身份证正面反面，手持身份证照片<br/>
                                 2. 学生证封面、信息页、注册页<br/>
                                 3. 手持申请表照片、协议照片、协议照片（要能看到签名的）<br/>
-                                备注：协议可电脑填写完再打印，或者直接手写，但签名必须手写，协议中有一个推荐人，写代理的名字或者不写，交单可先交电子表格，不需要打印，通过了再补交<br/>
+                                <strong>备注: </strong><br/>
+                                <br/>协议可电脑填写完再打印，或者直接手写，但签名必须手写，协议中有一个推荐人，写代理的名字或者不写，交单可先交电子表格，不需要打印，通过了再补交<br/>
                                 <br/><strong>注意: </strong><br/>
                                 仅当处于正在编辑和退回状态时, 才能修改信息和上传、删除文件<br/>
                                 <br/>父母电话一定要百分之百真实, 如果虚假百分之百被拒。一经被拒永久不能申请。

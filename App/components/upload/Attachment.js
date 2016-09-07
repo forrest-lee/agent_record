@@ -72,7 +72,7 @@ class Attachment extends React.Component {
             <Row gutter={10} style={{marginTop: 20}} className={style.borderBox}>
                 <Col sm={6} style={{borderRight: '2px dotted #ddd'}}>
                     {
-                        configs.domain = 'jinqiandai' ?
+                        configs.domain == 'jinqiandai' ?
                             <pre className={style.preWrap}>
                                 <strong>附件: </strong><br/>
                                 1. 身份证正面<br/>

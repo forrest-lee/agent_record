@@ -71,7 +71,6 @@ class UploadBox extends React.Component {
             );
         }
         
-        
         return (
             <div>
                 <h2>当前状态: {status}</h2>

@@ -109,55 +109,61 @@ class Message extends React.Component {
         };
         
         var status = this.props.information.status;
-        
         if(status == -1 || status == 1 || status == 2) {
             return <div></div>
         }
-        
         return (
             <div>
                 <div style={{ marginTop: 36 }}>
                     <h2 style={{marginBottom: 10}}>审核信息记录</h2>
                     <Table dataSource={this.state.messages} columns={columns} />
                 </div>
-    
                 {
-                    sessionStorage.userRole != 0 ? '' :
-                        <div style={{padding: '20px 15px 1px', backgroundColor: '#f7f7f7', borderRadius: 15}}>
-                            <h2 style={{marginBottom: 10}}>发布审核信息</h2>
-                            <Form horizontal>
-                                <FormItem
-                                    id="select"
-                                    label="操作"
-                                    {...commentFormLayout}
-                                >
-                                    <Select
-                                        id="status" size="large" style={{ width: 200 }}
-                                        placeholder='请选择'
-                                        {...getFieldProps('status', {rules: [{ required: true, message: '请选择' }]})}
-                                    >
-                                        <Select.Option value="1">通过</Select.Option>
-                                        <Select.Option value="2">否决</Select.Option>
-                                        <Select.Option value="3">退回</Select.Option>
-                                    </Select>
-                                </FormItem>
+                    (() => {
+                        if(sessionStorage.userRole == 0) {
+                            if(status == -1 || status == 1 || status == 2) {
+                                {/*return <div></div>*/}
+                            }
+                            
+                            return (
+                                <div style={{padding: '20px 15px 1px', backgroundColor: '#f7f7f7', borderRadius: 15}}>
+                                    <h2 style={{marginBottom: 10}}>发布审核信息</h2>
+                                    <Form horizontal>
+                                        <FormItem
+                                            id="select"
+                                            label="操作"
+                                            {...commentFormLayout}
+                                        >
+                                            <Select
+                                                id="status" size="large" style={{ width: 200 }}
+                                                placeholder='请选择'
+                                                {...getFieldProps('status', {rules: [{ required: true, message: '请选择' }]})}
+                                            >
+                                                <Select.Option value="1">通过</Select.Option>
+                                                <Select.Option value="2">否决</Select.Option>
+                                                <Select.Option value="3">退回</Select.Option>
+                                            </Select>
+                                        </FormItem>
             
-                                <FormItem
-                                    id="control-textarea"
-                                    label="备注"
-                                    {...commentFormLayout}
-                                >
-                                    <Input
-                                        type="textarea" id="content" rows="3"
-                                        {...getFieldProps('content', {rules: [{ required: true, message: '请填写' }]})}
-                                    />
-                                </FormItem>
+                                        <FormItem
+                                            id="control-textarea"
+                                            label="备注"
+                                            {...commentFormLayout}
+                                        >
+                                            <Input
+                                                type="textarea" id="content" rows="3"
+                                                {...getFieldProps('content', {rules: [{ required: true, message: '请填写' }]})}
+                                            />
+                                        </FormItem>
             
-                                <FormItem wrapperCol={{ span: 16, offset: 2 }} style={{ marginTop: 0 }}>
-                                    <Button type="primary" onClick={this.submitMsg}>提交</Button>
-                                </FormItem>
-                            </Form>
-                        </div>
+                                        <FormItem wrapperCol={{ span: 16, offset: 2 }} style={{ marginTop: 0 }}>
+                                            <Button type="primary" onClick={this.submitMsg}>提交</Button>
+                                        </FormItem>
+                                    </Form>
+                                </div>
+                            );
+                        }
+                    })()
                 }
             </div>
         );

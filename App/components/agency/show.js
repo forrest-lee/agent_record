@@ -138,7 +138,6 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all?role=' + queryRole,
             success: (res) => {
                 if(res.err == 0) {
-                    //this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agency: res.users
@@ -173,7 +172,6 @@ class AgentBox extends React.Component {
             },
             success: (res) => {
                 if(res.err == 0) {
-                    //this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agency: res.users
@@ -204,7 +202,6 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/all?role=' + value,
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agencyActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agency: res.users
@@ -226,21 +223,4 @@ class AgentBox extends React.Component {
         })
     };
 }
-
-function mapStateToProps(state) {
-    return {
-        user:  state.user,
-        agency: state.agency
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        agencyActions: bindActionCreators(agencyActions, dispatch),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AgentBox);
+export default AgentBox;

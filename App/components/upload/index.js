@@ -148,19 +148,4 @@ class UploadBox extends React.Component {
 }
 
 
-function mapStateToProps(state) {
-    return {
-        user: state.user,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        userActions: bindActionCreators(userActions, dispatch),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(UploadBox);
+export default UploadBox;

@@ -136,7 +136,7 @@ class ClientBox extends React.Component {
         super(props);
         this.state = {
             loading: true,
-            infos: this.props.infos
+            infos: []
         }
     }
     
@@ -192,7 +192,6 @@ class ClientBox extends React.Component {
             },
             success: (res) => {
                 if(res.err == 0) {
-                    //this.props.infoActions.setInfos(res.infos);
                     this.setState({loading: false, infos: res.infos});
                     if(callback) {
                         callback(res.infos);
@@ -216,20 +215,4 @@ class ClientBox extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        user: state.user,
-        infos: state.infos
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        infoActions: bindActionCreators(infoActions, dispatch),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ClientBox);
+export default ClientBox;

@@ -23,6 +23,9 @@ import configs from '../../../configs';
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: false
+        }
     }
 
     render() {
@@ -105,6 +108,7 @@ class Login extends React.Component {
                                     <Button
                                         type="primary"
                                         style={{float: 'right'}}
+                                        loading={this.state.loading}
                                         onClick={this.handleSubmit.bind(this)}
                                     >
                                         登录
@@ -138,14 +142,15 @@ class Login extends React.Component {
                     password: values.password,
                     captcha:  values.captcha
                 },
+                beforeSend: () => {
+                    this.setState({loading: true});
+                },
                 success: (res) => {
                     if (res.err == 0) {
                         sessionStorage.userId = res.user._id;
                         sessionStorage.username = res.user.username;
                         sessionStorage.nameStr = res.user.name;
                         sessionStorage.userRole = res.user.role;
-                        
-                        this.props.userActions.login(res.user);
                         
                         notification.success({
                             message: 'Success',
@@ -166,6 +171,9 @@ class Login extends React.Component {
                         message: '网络错误',
                         description: '如果该问题重复出现请联系客服人员'
                     });
+                },
+                complete: () => {
+                    this.setState({loading: false});
                 }
             })
         });
@@ -176,19 +184,4 @@ class Login extends React.Component {
 Login = Form.create()(Login);
 
 
-function mapStateToProps(state) {
-    return {
-        user: state.user
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        userActions: bindActionCreators(userActions, dispatch),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login);
+export default Login;

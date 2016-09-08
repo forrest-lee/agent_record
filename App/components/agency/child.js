@@ -61,7 +61,6 @@ class AgentBox extends React.Component {
             url: '/apiv1/user/' + getUrlId('agency') + '/child',
             success: (res) => {
                 if(res.err == 0) {
-                    this.props.agentActions.setAgents(res.users);
                     this.setState({
                         loading: false,
                         agent: res.users
@@ -112,20 +111,4 @@ class AgentBox extends React.Component {
     
 }
 
-function mapStateToProps(state) {
-    return {
-        user:  state.user,
-        agent: state.agent
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        agentActions: bindActionCreators(agentActions, dispatch),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AgentBox);
+export default AgentBox;

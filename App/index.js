@@ -4,9 +4,6 @@ import 'babel-polyfill';
 import React    from 'react';
 import ReactDOM from 'react-dom';
 import { createHashHistory } from 'history';
-import { createStore, applyMiddleware, compose } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 
 import {
     Router,
@@ -16,15 +13,6 @@ import {
     browserHistory,
     useRouterHistory
 } from 'react-router';
-
-import homeReducer from './reducer/index';
-
-
-// Creates the Redux reducer with the redux-thunk middleware, which allows us
-// to do asynchronous things in the actions
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(homeReducer, window.devToolsExtension ? window.devToolsExtension() : undefined);
-
 
 
 function checkAuth(nextState, replace) {
@@ -41,7 +29,6 @@ function checkAuth(nextState, replace) {
 
 import AppBox from './components/AppBox';
 import MainBox from './components/MainBox';
-import IndexPage from './components/index';
 import Login from './components/user/Login';
 import Register from './components/user/Register';
 import ShowAgency from './components/agency/show';
@@ -67,55 +54,52 @@ export default function withBasename(history, dirname) {
 
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Router
-            history={useRouterHistory(createHashHistory)({queryKey: true})}
-            onUpdate={() => window.scrollTo(0, 0)}
-        >
-            <Router history={withBasename(browserHistory, __dirname)}>
-                <Route path='/' component={AppBox} onEnter={checkAuth}>
-                    <IndexRoute component={Login} />
-            
-                    <Route path='login' component={Login} />
-                    {/*<Route path='register' component={Register} />*/}
-            
-                    <Route path='upload' component={MainBox} >
-                        <Route path='information' component={InfoForm} />
-                        <Route path='contract'    component={InfoForm} />
-                    </Route>
-    
-                    <Route component={MainBox} >
-                        <Route path='information/:id' component={InfoDetail} />
-    
-                        <Route path='notification'>
-                            <Route path='all' component={NotificationBox} />
-                            <Route path='mine' component={NotificationBox} />
-                            <Route path='new' component={NewNotification} />
-                            <Route path=':id' component={Notification} />
-                        </Route>
-    
-                        <Route path='client'>
-                            <Route path='all' component={ShowClient} />
-                        </Route>
-                        <Route path='client/status/:id' component={ShowClient} />
-    
-                        <Redirect from="agency" to="/agent/all"/>
-                        <Route path='agency'>
-                            <Route path='all' component={ShowAgency} />
-                            <Route path='new' component={NewAgency} />
-                        </Route>
-                        <Route path='agency/:id/child' component={ChildAgency} />
-    
-                        <Route path='user'>
-                            <Route path='setting/password' component={ResetPassword} />
-                            <Route path='setting/info' component={EditInfo} />
-                            <Route path=':id' component={UserDetail} />
-                        </Route>
-                        
+    <Router
+        history={useRouterHistory(createHashHistory)({queryKey: true})}
+        onUpdate={() => window.scrollTo(0, 0)}
+    >
+        <Router history={withBasename(browserHistory, __dirname)}>
+            <Route path='/' component={AppBox} onEnter={checkAuth}>
+                <IndexRoute component={Login} />
+                
+                <Route path='login' component={Login} />
+                {/*<Route path='register' component={Register} />*/}
+                
+                <Route path='upload' component={MainBox} >
+                    <Route path='information' component={InfoForm} />
+                    <Route path='contract'    component={InfoForm} />
+                </Route>
+                
+                <Route component={MainBox} >
+                    <Route path='information/:id' component={InfoDetail} />
+                    
+                    <Route path='notification'>
+                        <Route path='all' component={NotificationBox} />
+                        <Route path='mine' component={NotificationBox} />
+                        <Route path='new' component={NewNotification} />
+                        <Route path=':id' component={Notification} />
                     </Route>
                     
+                    <Route path='client'>
+                        <Route path='all' component={ShowClient} />
+                    </Route>
+                    <Route path='client/status/:id' component={ShowClient} />
+                    
+                    <Redirect from="agency" to="/agent/all"/>
+                    <Route path='agency'>
+                        <Route path='all' component={ShowAgency} />
+                        <Route path='new' component={NewAgency} />
+                    </Route>
+                    <Route path='agency/:id/child' component={ChildAgency} />
+                    
+                    <Route path='user'>
+                        <Route path='setting/password' component={ResetPassword} />
+                        <Route path='setting/info' component={EditInfo} />
+                        <Route path=':id' component={UserDetail} />
+                    </Route>
                 </Route>
-            </Router>
+            
+            </Route>
         </Router>
-    </Provider>
+    </Router>
 , document.getElementById('app-content'));

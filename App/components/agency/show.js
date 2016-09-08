@@ -43,7 +43,7 @@ const columns = [{
     title: '上级代理',
     dataIndex: 'parent',
     key: 'parent',
-    render: (value, record) => <span>{record.parentId.name}</span>
+    render: (value, record) => <span>{!record.parentId.name ? '?' : record.parentId.name }</span>
 }, {
     title: '子代理',
     render: (value, record) => {

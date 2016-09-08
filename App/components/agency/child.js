@@ -4,12 +4,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Input, Spin, Icon } from 'antd';
-const InputGroup = Input.Group;
 import SearchInput from '../SearchInput';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as agentActions from '../../action/agent';
+const InputGroup = Input.Group;
 
 const columns = [{
     title: '姓名',

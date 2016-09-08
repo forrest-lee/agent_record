@@ -3,13 +3,11 @@
  */
 import React from 'react';
 import dateformat from 'dateformat';
-import { Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification } from 'antd';
-const FormItem = Form.Item;
-const Dragger  = Upload.Dragger;
-
+import { Table, Form, Input, Button, Checkbox, Select, Row, Col, message, notification } from 'antd';
 import classNames from 'classnames';
 import styles from './styles.scss';
 let cx = classNames.bind(styles);
+const FormItem = Form.Item;
 
 const columns = [{
     title: '提交人',

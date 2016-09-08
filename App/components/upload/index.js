@@ -3,15 +3,9 @@
  */
 import React from 'react';
 import { Spin, notification, Button } from 'antd';
-
 import InfoForm from './InfoForm';
 import Attachment from './Attachment';
 import Message from './Message';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import * as userActions from '../../action/user';
 
 class UploadBox extends React.Component {
     constructor(props) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Form, Input, Button, Checkbox, Radio, Tooltip, Icon, Select, notification } from 'antd';
 const FormItem   = Form.Item;
 const RadioGroup = Radio.Group;

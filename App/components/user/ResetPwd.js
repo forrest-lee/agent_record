@@ -1,11 +1,9 @@
 /**
  * Created by leo on 9/1/16.
  */
-/**
- * Created by leo on 9/1/16.
- */
 import React from 'react';
 import { Form, Input, Button, Checkbox, Row, Col, notification, Spin, Select, Radio } from 'antd';
+
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 

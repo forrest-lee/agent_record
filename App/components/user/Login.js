@@ -2,23 +2,13 @@
  * Created by leo on 8/10/16.
  */
 import React from 'react';
-import { bindActionCreators, createStore, combineReducers, applyMiddleware } from 'redux';
-import { connect } from 'react-redux';
-
 import { Form, Input, Button, Checkbox, Row, Col, notification } from 'antd';
-
-
-const FormItem = Form.Item;
-
 import classNames from 'classnames';
 import styles from '../styles.scss';
 let cx = classNames.bind(styles);
-
-
-import * as userActions from '../../action/user';
-
 import configs from '../../../configs';
 
+const FormItem = Form.Item;
 
 class Login extends React.Component {
     constructor(props) {

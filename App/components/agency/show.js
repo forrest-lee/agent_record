@@ -1,12 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Input, Spin, Select, notification } from 'antd';
-const InputGroup = Input.Group;
 import SearchInput from '../SearchInput';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as agencyActions from '../../action/agent';
+const InputGroup = Input.Group;
 
 var that;
 const columns = [{

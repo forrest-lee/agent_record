@@ -3,14 +3,14 @@
  */
 import React from 'react';
 import { Icon, Table, Form, Input, Button, Checkbox, Select, Row, Col, Upload, message, notification, Progress } from 'antd';
-const FormItem = Form.Item;
-const Dragger  = Upload.Dragger;
-
 import classNames from 'classnames';
 import styles from './styles.scss';
 let cx = classNames.bind(styles);
 import settings from '../../../settings.js';
 import configs from '../../../configs';
+
+const FormItem = Form.Item;
+const Dragger  = Upload.Dragger;
 
 class Attachment extends React.Component {
     constructor(props) {

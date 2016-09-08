@@ -15,7 +15,6 @@ import {
 } from 'antd';
 
 const FormItem = Form.Item;
-
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 

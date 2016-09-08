@@ -1,11 +1,6 @@
 import React from 'react';
 import dateformat from 'dateformat';
 import classNames from 'classnames';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as infoActions from '../../action/information';
-
 import { Table, Button, Input, Spin, Menu, Dropdown, Icon, notification } from 'antd';
 const InputGroup = Input.Group;
 import SearchInput from '../SearchInput';

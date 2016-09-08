@@ -1,9 +1,14 @@
 'use strict';
 
 var User     = require('../models/User');
+var Information = require('../models/Information');
+var Attachment = require('../models/Attatchment');
+var Message = require('../models/Message');
 var passport = require('passport');
 var ccap     = require('ccap');
 var async    = require('async');
+var request = require('request');
+var settings = require('../settings');
 
 function is_wechat(req) {
     if (req.headers['user-agent']) {
@@ -478,7 +483,7 @@ exports.isUserExists = function (req, res) {
 
 
 /**
- * 删除代理
+ * 注销代理
  * @param req
  * @param res
  */
@@ -506,3 +511,70 @@ exports.removeAgency = function (req, res) {
             }
         })
 };
+
+
+/**
+ * 删除代理及其子代理（删除所有相关的数据）
+ * @param req
+ * @param res
+ */
+exports.destroyAll = function(req, res) {
+    if (req.user.role != 0) {
+        return res.json({err: 1, msg: '权限不够'});
+    }
+    
+    qiniu.conf.ACCESS_KEY = settings.QN_ACCESS_KEY;
+    qiniu.conf.SECRET_KEY = settings.QN_SECRET_KEY;
+    
+    //构建bucketmanager对象
+    var client = new qiniu.rs.Client();
+    
+    //你要测试的空间， 并且这个key在你空间中存在
+    var bucket = settings.QN_Bucket_Name;
+    var putPolicy = new qiniu.rs.PutPolicy(settings.QN_Bucket_Name);
+    var token = putPolicy.token();
+    
+    
+    var id = req.body.id;   // 要删除的用户
+    
+    Notification.remove({ownerId: id}, err => {
+        if(err) {
+            return res.json({err:1, msg:err});
+        }
+        Information.remove({agentId: id}, err => {
+            if(err) {return res.json({err:1, msg:err});}
+            Message.remove({ownerId: id}, err => {
+                if(err) {return res.json({err:1, msg:err});}
+                Attachment.find({ownerId: id})
+                    .exec((err, attaches) => {
+                        if(err) {return res.json({err: 1, msg: err});}
+    
+                        var options = {
+                            url: '/batch',
+                            headers: {
+                                'HOST': 'rs.qiniu.com',
+                                'Content-Type':   'application/x-www-form-urlencoded',
+                                'Authorization':  'QBox ' + token,
+                                'User-Agent': 'request'
+                            }
+                        };
+                        var formData = attaches.map(item => {
+                            return {'op': '/delete/' + urlsafeBase64Encode(bucket + ':' + item.key)}
+                        });
+    
+                        request.post(options, {form: formData}, (err, res) => {
+                            
+                        });
+                        
+                    });  // End Attachment.find()
+            }); // End Message.remove()
+        });  // End Information.remove();
+    }); //  End Notification.remove();
+};
+
+
+
+function urlsafeBase64Encode(jsonFlags) {
+    var encoded = new Buffer(jsonFlags).toString('base64');
+    return exports.base64ToUrlSafe(encoded);
+}

@@ -34,6 +34,7 @@ userApiRouter.post('/exists', userCtrl.isUserExists);           // 检查用户�
 userApiRouter.post('/add', userCtrl.addAgency);                 // 新增代理
 userApiRouter.post('/delete', userCtrl.removeAgency);           // 删除代理
 userApiRouter.post('/update_info', userCtrl.updateInfo);         // 更新基本信息
+userApiRouter.post('destroy_all', userCtrl.destroyAll);   // TODO
 
 
 /**

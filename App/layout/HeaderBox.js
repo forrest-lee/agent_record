@@ -24,7 +24,7 @@ class HeaderBox extends React.Component {
                 <Row style={{backgroundColor: '#3A99D8', height: 80}}>
                     <Col lg={4} md={6} sm={7} xs={7}>
                         {/*<img src="/public/images/slogan.png" alt="" style={{height: 60}}/>*/}
-                        <h1 className={style.title}>{configs.sitename}</h1>
+                        <a href="/#/client/all"><h1 className={style.title}>{configs.sitename}</h1></a>
                     </Col>
                     <Col className={`nav nav-show`}
                          lg={20} md={18} sm={17} xs={17} style={{display: 'block'}}

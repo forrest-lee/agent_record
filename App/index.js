@@ -16,8 +16,6 @@ import {
 
 
 function checkAuth(nextState, replace) {
-    let { user } = store.getState();
-    
     if (sessionStorage.userId) {
         // TODO: CheckUserExist
         return;

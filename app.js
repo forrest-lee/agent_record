@@ -24,6 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // Database
+mongoose.Promise = global.Promise;
 if(settings.mongouser){
     mongoose.connect(settings.mongouri,{user: settings.mongouser, pass: settings.mongopass});
 }else{

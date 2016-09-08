@@ -31,7 +31,7 @@ const columns = [{
     render: (v, r) => {
         var roleType = '';
         switch(r.role) {
-            case 0: roleType='总代理'; break;
+            case 0: roleType='风控'; break;
             case 1: roleType='一级代理'; break;
             case 2: roleType='二级代理'; break;
             case 3: roleType='三级代理'; break;

@@ -22,7 +22,7 @@ const columns = [{
     render: (v, r) => {
         var roleType = '';
         switch(r.role) {
-            case 0: roleType='总代理'; break;
+            case 0: roleType='风控'; break;
             case 1: roleType='一级代理'; break;
             case 2: roleType='二级代理'; break;
             case 3: roleType='三级代理'; break;
@@ -34,7 +34,7 @@ const columns = [{
     title: '上级代理',
     dataIndex: 'parent',
     key: 'parent',
-    render: (value, record) => <span>{record.parentId.name}</span>
+    render: (value, record) => record.role !=0 ? <span>{record.parentId.name}</span> : <span>无</span>
 }, {
     title: '备注',
     dataIndex: 'comment',

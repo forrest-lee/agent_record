@@ -109,9 +109,7 @@ class Message extends React.Component {
         };
         
         var status = this.props.information.status;
-        if(status == -1 || status == 1 || status == 2) {
-            return <div></div>
-        }
+        
         return (
             <div>
                 <div style={{ marginTop: 36 }}>

@@ -337,6 +337,7 @@ exports.addAttaches = function(req, res) {
 exports.messages = function(req, res) {
     var id = req.params.id;
     Message.find({infoId: id})
+        .populate('ownerId')
         .exec((err, messages) => {
             if(err) {
                 return res.json({

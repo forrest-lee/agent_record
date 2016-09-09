@@ -14,10 +14,10 @@ const columns = [{
     dataIndex: 'ownerName',
     key: 'ownerName',
     render: (v, r) => {
-        if(r.status == -1) {
-            return <span>{r.name} (已注销)</span>
+        if(r.ownerId.status == -1) {
+            return <span>{r.ownerId.name} (已注销)</span>
         } else {
-            return <span>{r.name}</span>
+            return <span>{r.ownerId.name}</span>
         }
     }
 }, {

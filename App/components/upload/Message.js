@@ -32,6 +32,9 @@ const columns = [{
     render: (value, record) => {
         let status = '';
         switch(value) {
+            case 0:
+                status = '提交审核';
+                break;
             case 1:
                 status = '通过';
                 break;

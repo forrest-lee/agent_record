@@ -239,6 +239,7 @@ exports.allAgency = function (req, res) {
     
     if (req.user.role == 1) {
         User.find({role: 2, parentId: req.user._id})
+            .find({status: 0})
             .populate('parentId')
             .exec((err, users2) => {
                 if (err) {
@@ -247,6 +248,7 @@ exports.allAgency = function (req, res) {
                 var userList = users2.map(u => u._id.toString());
                 
                 User.find({role: 3})
+                    .find({status: 0})
                     .populate('parentId')
                     .where('parentId').in(userList)
                     .exec((err, users3) => {
@@ -280,6 +282,7 @@ exports.allAgency = function (req, res) {
         }
         
         User.find(query).populate('parentId')
+            .find({status: 0})
             .exec((err, users) => {
                 if (err) {
                     return res.json({err: 1, msg: err});
@@ -301,6 +304,7 @@ exports.allAgency = function (req, res) {
  */
 exports.childAgency = function (req, res) {
     User.find({parentId: req.params.id}).populate('parentId')
+        .find({status: 0})
         .exec((err, users) => {
             if (err) {
                 return res.json({
@@ -491,30 +495,95 @@ exports.removeAgency = function (req, res) {
     if (req.user.role != 0) {
         return res.json({err: 1, msg: '权限不够'});
     }
-    
     var id = req.body.id;
     User.findById(id)
-        .exec((err, usr) => {
+        .exec((err, user) => {
             if (err) {
                 return res.json({err: 1, msg: err});
-            } else if (!usr) {
-                return res.json({err: 1, msg: '找不到该用户(404 Not FOUND)'});
-            } else {
-                usr.status = -1;  // 表示已注销
-                usr.save(err => {
-                    if (err) {
-                        return res.json({err: 1, msg: err});
-                    } else {
-                        return res.json({err: 0, msg: '删除成功'})
-                    }
-                })
             }
-        })
+    
+            if(user.role == 3) {
+                User.findById(id)
+                    .exec((err, usr) => {
+                        if (err) {
+                            return res.json({err: 1, msg: err});
+                        } else if (!usr) {
+                            return res.json({err: 1, msg: '找不到该用户(404 Not FOUND)'});
+                        } else {
+                            usr.status = -1;  // 表示已注销
+                            usr.username = usr._id.toString();
+                            usr.save(err => {
+                                if (err) {
+                                    return res.json({err: 1, msg: err});
+                                } else {
+                                    return res.json({err: 0, msg: '删除成功'})
+                                }
+                            })
+                        }
+                    })
+            } else if(user.role == 2) {
+                User.find({role: 3, parentId: id})
+                    .exec((err, users) => {
+                        if (err) {
+                            return res.json({err: 1, msg: err});
+                        }
+                        users = users.concat(user);
+                        async.each(users, (user, callback) => {
+                            User.update({_id: user._id}, {
+                                $set: {
+                                    status: -1,
+                                    username: user._id.toString(),
+                                }
+                            }, err => callback(err));
+                        }, err => {
+                            if (err) {
+                                return res.json({'err': 1, 'msg': '异常'});
+                            } else {
+                                return res.json({'err': 0, 'msg': '完成'});
+                            }
+                        })
+                    })
+            } else {
+                User.find({role: 2, parentId: id})
+                    .populate('parentId')
+                    .exec((err, users2) => {
+                        if (err) {
+                            return res.json({err: 1, msg: err});
+                        }
+                        var userList = users2.map(u => u._id.toString());
+                
+                        User.find({role: 3})
+                            .where('parentId').in(userList)
+                            .exec((err, users3) => {
+                                if (err) {
+                                    return res.json({err: 1, msg: err});
+                                }
+                        
+                                var users = users2.concat(users3).concat(user);
+                                console.log(users);
+                                async.each(users, (user, callback) => {
+                                    User.update({_id: user._id}, {
+                                        $set: {
+                                            status: -1,
+                                            username: user._id.toString(),
+                                        }
+                                    }, err => callback(err));
+                                }, err => {
+                                    if (err) {
+                                        return res.json({'err': 1, 'msg': '异常'});
+                                    } else {
+                                        return res.json({'err': 0, 'msg': '完成'});
+                                    }
+                                })
+                            })
+                    });
+            }
+        });
 };
 
 
 /**
- * 删除代理及其子代理（删除所有相关的数据）
+ * TODO: 删除代理及其子代理（删除所有相关的数据）
  * @param req
  * @param res
  */

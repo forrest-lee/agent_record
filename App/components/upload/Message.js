@@ -26,7 +26,7 @@ const columns = [{
     key:       'updateAt',
     render:    (value, record) => <span>{dateformat(value, 'yyyy-mm-dd HH:MM:ss')}</span>
 }, {
-    title: '意见',
+    title: '操作',
     dataIndex: 'status',
     key: 'status',
     render: (value, record) => {

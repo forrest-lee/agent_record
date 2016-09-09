@@ -117,13 +117,14 @@ class UploadBox extends React.Component {
     handlePublish() {
         $.ajax({
             type: 'POST',
-            url:  '/apiv1/information/update_status',
+            url: '/apiv1/information/new_message',
             data: {
                 id: this.state.information._id,
-                status: 0
+                status: 0,
+                content: '提交',
             },
             success: (res) => {
-                if (res.err == 0) {
+                if(res.err == 0) {
                     notification.success({
                         message: 'Success',
                         description: '发布成功, 等待审核'
@@ -137,7 +138,7 @@ class UploadBox extends React.Component {
                     });
                 }
             }
-        })
+        });
     }
 }
 

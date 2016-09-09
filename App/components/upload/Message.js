@@ -42,7 +42,7 @@ const columns = [{
                 status = '退回';
                 break;
             default:
-                status = '异常';
+                status = '无';
         }
         return <span>{status}</span>;
     }

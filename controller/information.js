@@ -377,34 +377,28 @@ exports.newMessage = function(req, res) {
             if(err) {
                 return res.json({err: 1, msg: err});
             } else {
-                if(info.status == -1) {
-                    return res.json({err: 1, msg: '不可更改'});
-                } else if(info.status > 0 && info.status < 3) {
-                    return res.json({err: 1, msg: '不可更改'});
+                if(status == 0) {
+                    // 发布
+                    info.status = 0;
+                } else if(req.user.role == 0 || info.agentId.parentId.toString() == uid.toString()) {
+                    // 只有风控(管理员)和直属上级代理可以发布审核信息
+                    info.status = status;
                 } else {
-                    // status: 0 或 3 才能进行编辑
-                    
-                    if(req.user.role == 0 || info.agentId.parentId.toString() == uid.toString()) {
-                        // 只有风控(管理员)和直属上级代理可以发布审核信息
-                        info.status = status;
-                        
-                        info.save((err, obj) => {
-                            if(err) {return res.json({err: 1, msg: err});}
-                            
-                            message.save((err, obj) => {
-                                if(err) {return res.json({err: 1, msg: err});}
-                                return res.json({
-                                    err: 0,
-                                    message: obj,
-                                    msg: '审核信息提交成功'
-                                })
-                            });
-                        });
-                    } else {
-                        return res.json({err: 1, msg: '权限不够'})
-                    }
-                    
+                    return res.json({err: 1, msg: '权限不够'})
                 }
+    
+                info.save((err, obj) => {
+                    if(err) {return res.json({err: 1, msg: err});}
+        
+                    message.save((err, obj) => {
+                        if(err) {return res.json({err: 1, msg: err});}
+                        return res.json({
+                            err: 0,
+                            message: obj,
+                            msg: '审核信息提交成功'
+                        })
+                    });
+                });
             }
         });
 };

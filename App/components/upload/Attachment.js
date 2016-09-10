@@ -195,7 +195,7 @@ class Attachment extends React.Component {
             max_retries:     3,
             dragdrop:        true,
             drop_element:    'container',
-            chunk_size:      '30mb',
+            chunk_size:      '100mb',
             auto_start:      true,
             init:            {
                 'FilesAdded':     function (up, files) {

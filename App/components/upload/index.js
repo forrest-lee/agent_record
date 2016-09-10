@@ -18,7 +18,8 @@ class UploadBox extends React.Component {
                 school:  '',
                 qq:      '',
                 comment: ''
-            }
+            },
+            btnLoading: false
         }
     }
     
@@ -51,16 +52,13 @@ class UploadBox extends React.Component {
         let {user} = this.props;
         
         let submitButton;
-        if(this.state.information.status == -1) {
+        if(this.state.information.status == -1 || this.state.information.status == 3) {
             submitButton = (
                 <div style={{marginTop: 20, float: 'right'}}>
-                    <Button type="primary" onClick={this.handlePublish.bind(this)}>发布</Button>
-                </div>
-            );
-        } else if(this.state.information.status == 3) {
-            submitButton = (
-                <div style={{marginTop: 20, float: 'right'}}>
-                    <Button type="primary" onClick={this.handlePublish.bind(this)}>提交</Button>
+                    <Button
+                        type="primary"
+                        loading={this.state.btnLoading}
+                        onClick={this.handlePublish.bind(this)}>提交</Button>
                 </div>
             );
         }
@@ -123,6 +121,11 @@ class UploadBox extends React.Component {
                 status: 0,
                 content: '提交',
             },
+            beforeSend: () => {
+                this.setState({
+                    btnLoading: true
+                })
+            },
             success: (res) => {
                 if(res.err == 0) {
                     notification.success({
@@ -137,6 +140,11 @@ class UploadBox extends React.Component {
                         description: '操作失败'
                     });
                 }
+            },
+            complete: () => {
+                this.setState({
+                    btnLoading: false
+                })
             }
         });
     }

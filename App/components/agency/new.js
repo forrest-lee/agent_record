@@ -8,6 +8,9 @@ const RadioGroup = Radio.Group;
 class NewClient extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            btnLoading: false
+        }
     }
     
     render() {
@@ -103,7 +106,7 @@ class NewClient extends React.Component {
                     
                     
                     <FormItem wrapperCol={{span: 12, offset: 7}} style={{marginTop: 24}}>
-                        <Button type='primary' size='large' htmlType='submit'>提交</Button>
+                        <Button type='primary' size='large' htmlType='submit' loading={this.state.btnLoading}>提交</Button>
                     </FormItem>
                 </Form>
             </div>
@@ -154,6 +157,11 @@ class NewClient extends React.Component {
                     qq:       values.qq,
                     comment:  values.comment
                 },
+                beforeSend: () => {
+                    this.setState({
+                        btnLoading: true
+                    })
+                },
                 success: function (res) {
                     if(res.err == 0) {
                         notification.success({
@@ -173,6 +181,11 @@ class NewClient extends React.Component {
                         message:     'Error',
                         description: res.msg
                     });
+                },
+                complete: () => {
+                    this.setState({
+                        btnLoading: false
+                    })
                 }
             });
         });

@@ -52,7 +52,6 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('name') ? '校验中...' : (getFieldError('name') || []).join(', ')}
                     >
                         <Input
-                            disabled
                             defaultValue={this.state.user.name}
                             placeholder='请输入真实姓名'
                         />
@@ -65,7 +64,6 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
                     >
                         <Input
-                            disabled
                             defaultValue={this.state.user.mobile}
                             placeholder="手机号"
                         />
@@ -109,7 +107,6 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('gender') ? '校验中...' : (getFieldError('gender') || []).join(', ')}
                     >
                         <RadioGroup
-                            disabled
                             defaultValue={this.state.user.gender.toString()}
                         >
                             <Radio value="0">男</Radio>
@@ -122,7 +119,6 @@ class UserDetail extends React.Component {
                         {...formItemLayout}
                     >
                         <Input
-                            disabled
                             defaultValue={this.state.user.qq}
                             placeholder='请输入QQ号'
                         />
@@ -133,13 +129,12 @@ class UserDetail extends React.Component {
                         label="备注"
                     >
                         <Input
-                            disabled
                             defaultValue={this.state.user.comment}
                             type="textarea"
                             name="comment"/>
                     </FormItem>
                 </Form>
-    
+                
                 {
                     sessionStorage.userRole == 0 ?
                         <Button
@@ -155,6 +150,23 @@ class UserDetail extends React.Component {
                             onClick={this.handleDelete.bind(this)}
                         >
                             删除该用户
+                        </Button> : null
+                }
+                {
+                    sessionStorage.userRole == 0 ?
+                        <Button
+                            icon="delete"
+                            style={{
+                                height: 36,
+                                backgroundColor: '#EB5768',
+                                color: '#fff',
+                                float: 'right',
+                                marginTop: 22,
+                                marginRight: 22
+                            }}
+                            onClick={this._handleSubmit.bind(this)}
+                        >
+                            确认修改
                         </Button> : null
                 }
             </div>
@@ -208,6 +220,47 @@ class UserDetail extends React.Component {
             error: (err) => {
                 console.error(err);
             }
+        })
+    }
+    
+    /**
+     * 修改
+     * @private
+     */
+    _handleSubmit() {
+        this.props.form.validateFields((errors, values) => {
+            if (!!errors) {
+                console.log('Errors in form!!!');
+                return;
+            }
+            
+            $.ajax({
+                type: 'POST',
+                url: '/apiv1/user/update_info',
+                data: {
+                    name: values.name,
+                    mobile: values.mobile,
+                    gender: values.gender,
+                    qq: values.qq,
+                    comment: values.comment
+                },
+                success: (res) => {
+                    if (res.err == 0) {
+                        notification.success({
+                            message:     'Success',
+                            description: res.msg
+                        });
+                    } else {
+                        notification.error({
+                            message:     'Error',
+                            description: res.msg
+                        });
+                    }
+                },
+                error: (res) => {
+                    console.error(res.msg);
+                }
+            })
         })
     }
 }

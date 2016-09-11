@@ -47,7 +47,7 @@ const columns = [{
 }, {
     title: '子代理',
     render: (value, record) => {
-        return <a href={'/#/agency/' + record._id + '/child'}>查看</a>
+        return <a href={'/#/agency/' + record._id + '/child'}>修改</a>
     }
 }];
 

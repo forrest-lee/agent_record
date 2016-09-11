@@ -10,6 +10,7 @@ var qiniu = require("qiniu");
 
 var settings = require('../settings');
 var admins = settings.admins;
+var request = require('request');
 
 
 /**
@@ -75,4 +76,25 @@ exports.removeAttach = function(req, res) {
                 }
             }
         })
+};
+
+
+
+exports.downloadAll = function(req, res) {
+    var options = {
+        url: '/pfop/',
+        headers: {
+            'HOST': 'api.qiniu.com',
+            'Content-Type':   'application/x-www-form-urlencoded',
+            'Authorization':  'QBox ' + token,
+            'User-Agent': 'request'
+        }
+    };
+    var formData = {
+        'bucket': settings.QN_Bucket_Name + '&key=1.png&fops=mkzip/2/'
+    };
+    
+    request.post(options, {form: formData}, (err, res) => {
+        console.log(res);
+    });
 };

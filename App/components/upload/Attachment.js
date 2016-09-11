@@ -8,6 +8,7 @@ import styles from './styles.scss';
 let cx = classNames.bind(styles);
 import settings from '../../../settings.js';
 import configs from '../../../configs';
+import request from 'request';
 
 const FormItem = Form.Item;
 const Dragger  = Upload.Dragger;
@@ -169,7 +170,9 @@ class Attachment extends React.Component {
         }))
     }
     
-    
+    /**
+     * 打包并下载全部文件
+     */
     downloadAll() {
         this.state.fileList.map(file => {
             this.saveFile(file.url, file.filename);

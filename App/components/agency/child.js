@@ -39,6 +39,17 @@ const columns = [{
     title: '备注',
     dataIndex: 'comment',
     key: 'comment'
+}, {
+    title: '编辑',
+    key: 'edit',
+    render: (value, record) => {
+        if(record.status == -1) {
+            // 已注销
+            return <span>{'(不可编辑)'}</span>;
+        } else {
+            return <a href={'/#/user/' + record._id}>编辑</a>;
+        }
+    }
 }];
 
 

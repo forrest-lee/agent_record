@@ -79,8 +79,15 @@ exports.removeAttach = function(req, res) {
 };
 
 
-
+/**
+ * 下载全部文件的压缩包
+ * @param req
+ * @param res
+ */
 exports.downloadAll = function(req, res) {
+    var putPolicy = new qiniu.rs.PutPolicy(settings.QN_Bucket_Name);
+    var token = putPolicy.token();
+    
     var options = {
         url: '/pfop/',
         headers: {
@@ -90,11 +97,31 @@ exports.downloadAll = function(req, res) {
             'User-Agent': 'request'
         }
     };
-    var formData = {
-        'bucket': settings.QN_Bucket_Name + '&key=1.png&fops=mkzip/2/'
-    };
     
-    request.post(options, {form: formData}, (err, res) => {
-        console.log(res);
-    });
+    var fileList = JSON.parse(req.body.fileList);
+    try {
+        var urls = '';
+        fileList.map(item => {
+            urls += '/url/' + Buffer(item.url).toString('base64');
+        });
+        
+        console.log(encodeURIComponent('mkzip/2/' + urls));
+    
+        var formData = {
+            bucket: settings.QN_Bucket_Name,
+            key: '1.png',
+            fops: encodeURIComponent('mkzip/2/' + urls)
+        };
+    
+        request.post(options, {form: formData}, (err, res) => {
+            if(err) {
+                console.log(err);
+                return res.json({err: 1, msg: err});
+            }
+            console.log(res);
+            return res.json(res);
+        });
+    } catch(e) {
+        console.error(e);
+    }
 };

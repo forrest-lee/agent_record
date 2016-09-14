@@ -8,14 +8,7 @@ var that;
 const columns = [{
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
-    render: (value, record) => {
-        if(record.status == -1) {
-            return <span>{value} (已注销)</span>;
-        } else {
-            return <a href={'/#/user/' + record._id}>{value}</a>;
-        }
-    },
+    key: 'name'
 }, {
     title: '帐号',
     dataIndex: 'username',
@@ -46,8 +39,20 @@ const columns = [{
     render: (value, record) => record.role !=0 ? <span>{record.parentId.name}</span> : <span>无</span>
 }, {
     title: '子代理',
+    key: 'child',
     render: (value, record) => {
         return <a href={'/#/agency/' + record._id + '/child'}>查看</a>
+    }
+}, {
+    title: '编辑',
+    key: 'edit',
+    render: (value, record) => {
+        if(record.status == -1) {
+            // 已注销
+            return <span>{'(不可编辑)'}</span>;
+        } else {
+            return <a href={'/#/user/' + record._id}>编辑</a>;
+        }
     }
 }];
 

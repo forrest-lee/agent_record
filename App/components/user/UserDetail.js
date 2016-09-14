@@ -25,7 +25,28 @@ class UserDetail extends React.Component {
             labelCol:   {span: 7},
             wrapperCol: {span: 12},
         };
-        
+    
+        const nameProps = getFieldProps('name', {
+            rules:   [
+                {required: true, min: 2, message: '姓名名至少为 2 个字符'},
+            ],
+            initialValue: this.state.user.name
+        });
+    
+        const mobileProps = getFieldProps('mobile', {
+            rules: [
+                {required: true, len: 11, message: '手机号必须为11位'},
+            ],
+            initialValue: this.state.user.mobile
+        });
+    
+        const qqProps = getFieldProps('qq', {
+            initialValue: this.state.user.qq
+        });
+    
+        const commentProps = getFieldProps('comment', {
+            initialValue: this.state.user.comment
+        });
         
         return (
             <div style={{marginTop: 40}}>
@@ -52,7 +73,7 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('name') ? '校验中...' : (getFieldError('name') || []).join(', ')}
                     >
                         <Input
-                            defaultValue={this.state.user.name}
+                            {...nameProps}
                             placeholder='请输入真实姓名'
                         />
                     </FormItem>
@@ -64,7 +85,7 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('mobile') ? '校验中...' : (getFieldError('mobile') || []).join(', ')}
                     >
                         <Input
-                            defaultValue={this.state.user.mobile}
+                            {...mobileProps}
                             placeholder="手机号"
                         />
                     </FormItem>
@@ -107,7 +128,7 @@ class UserDetail extends React.Component {
                         help={isFieldValidating('gender') ? '校验中...' : (getFieldError('gender') || []).join(', ')}
                     >
                         <RadioGroup
-                            defaultValue={this.state.user.gender.toString()}
+                            {...getFieldProps('gender', { initialValue: this.state.user.gender.toString() })}
                         >
                             <Radio value="0">男</Radio>
                             <Radio value="1">女</Radio>
@@ -119,7 +140,7 @@ class UserDetail extends React.Component {
                         {...formItemLayout}
                     >
                         <Input
-                            defaultValue={this.state.user.qq}
+                            {...qqProps}
                             placeholder='请输入QQ号'
                         />
                     </FormItem>
@@ -129,7 +150,7 @@ class UserDetail extends React.Component {
                         label="备注"
                     >
                         <Input
-                            defaultValue={this.state.user.comment}
+                            {...commentProps}
                             type="textarea"
                             name="comment"/>
                     </FormItem>
@@ -155,11 +176,10 @@ class UserDetail extends React.Component {
                 {
                     sessionStorage.userRole == 0 ?
                         <Button
-                            icon="delete"
+                            type='primary'
+                            icon="edit"
                             style={{
                                 height: 36,
-                                backgroundColor: '#EB5768',
-                                color: '#fff',
                                 float: 'right',
                                 marginTop: 22,
                                 marginRight: 22
@@ -233,11 +253,12 @@ class UserDetail extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
-            
+    
             $.ajax({
                 type: 'POST',
                 url: '/apiv1/user/update_info',
                 data: {
+                    id:   getUrlId('user'),
                     name: values.name,
                     mobile: values.mobile,
                     gender: values.gender,
@@ -250,6 +271,7 @@ class UserDetail extends React.Component {
                             message:     'Success',
                             description: res.msg
                         });
+                        window.location.hash = '/agency/all';
                     } else {
                         notification.error({
                             message:     'Error',

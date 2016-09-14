@@ -20,7 +20,9 @@ class Attachment extends React.Component {
             
             showProgress: false,
             filename: '',
-            progress: 0
+            progress: 0,
+            
+            btnLoading: false
         }
     }
     
@@ -176,6 +178,31 @@ class Attachment extends React.Component {
         this.state.fileList.map(file => {
             this.saveFile(file.url, file.filename);
         });
+        
+        /*
+        var fileList = this.state.fileList;
+        console.log(fileList);
+        $.ajax({
+            type: 'POST',
+            url: '/apiv1/attach/download_all',
+            data: {
+                fileList: JSON.stringify(fileList)
+            },
+            beforeSend: () => {
+                this.setState({
+                    btnLoading: true
+                })
+            },
+            success: (res) => {
+                console.log(res);
+            },
+            complete: () => {
+                this.setState({
+                    btnLoading: false
+                })
+            }
+        });
+        */
     }
     
     

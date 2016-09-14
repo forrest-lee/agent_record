@@ -53,6 +53,7 @@ infoApiRouter.post('/update_status', infoCtrl.updateInfoStatus); // 更新资料
 
 var attachApiRouter = express.Router();
 attachApiRouter.post('/delete', attachCtrl.removeAttach);  // 删除附件
+attachApiRouter.post('/download_all', attachCtrl.downloadAll); // 以压缩包形式下载所有文件
 
 
 // 通知

@@ -429,13 +429,14 @@ exports.resetPassword = function (req, res) {
 exports.updateInfo = function (req, res) {
     var uid     = req.user.id;
     
+    var id      = req.body.id;
     var name    = req.body.name;
     var mobile  = req.body.mobile;
     var gender  = req.body.gender;
     var qq      = req.body.qq;
     var comment = req.body.comment;
     
-    User.findById(uid)
+    User.findById(id)
         .exec((err, user) => {
             if (err) {
                 return res.json({err: 1, msg: err});

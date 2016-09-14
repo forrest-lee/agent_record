@@ -116,11 +116,10 @@ class EditInfo extends React.Component {
                 </Form>
     
                 <Button
-                    icon="delete"
+                    type='primary'
+                    icon="edit"
                     style={{
                         height: 36,
-                        backgroundColor: '#EB5768',
-                        color: '#fff',
                         float: 'right',
                         marginTop: 22,
                         marginRight: 22
@@ -158,11 +157,12 @@ class EditInfo extends React.Component {
                 console.log('Errors in form!!!');
                 return;
             }
-    
+            
             $.ajax({
                 type: 'POST',
                 url: '/apiv1/user/update_info',
                 data: {
+                    id:   sessionStorage.userId,
                     name: values.name,
                     mobile: values.mobile,
                     gender: values.gender,
